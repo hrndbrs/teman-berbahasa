@@ -1,6 +1,14 @@
-# Nuxt Minimal Starter
+# Teman Berbahasa
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Platform untuk belajar bahasa Jepang dengan cara yang menyenangkan dan efektif.
+
+## Tech Stack
+
+- **Framework**: Nuxt 3
+- **Styling**: Tailwind CSS
+- **UI Components**: Reka UI
+- **Animations**: GSAP
+- **SEO**: @nuxtjs/seo (sitemap, robots, schema.org, og-image)
 
 ## Setup
 
@@ -71,5 +79,3 @@ yarn preview
 # bun
 bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
