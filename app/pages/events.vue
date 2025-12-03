@@ -62,8 +62,7 @@ const events: Event[] = [
     duration: 90,
     image:
       'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&h=500&fit=crop',
-    speaker_image:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop',
+    speaker_image: '/assets/mc-01.png',
   },
   {
     id: 2,
@@ -84,8 +83,7 @@ const events: Event[] = [
     duration: 90,
     image:
       'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=500&fit=crop',
-    speaker_image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
+    speaker_image: '/assets/mc-02.png',
   },
 ];
 </script>
@@ -93,7 +91,10 @@ const events: Event[] = [
 <template>
   <AppSectionsEventsHeader :events="events" />
   <AppSectionsEventsHero />
-  <AppSectionsEventsEventCards :events="events" />
+  <AppSectionsEventsEventCards
+    class="hidden md:block"
+    :events="events"
+  />
   <AppSectionsEventsEventDetails :events="events" />
   <AppSectionsEventsCTA />
   <AppFooter :events="events" />

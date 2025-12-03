@@ -33,7 +33,7 @@ function scrollToTop() {
       >
         <Icon
           name="svg:tb"
-          class="h-20 w-22.5 shrink-0"
+          class="h-20 w-50 shrink-0"
         />
       </a>
 

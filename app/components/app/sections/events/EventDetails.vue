@@ -14,6 +14,7 @@ interface Event {
   platform: string;
   duration: number;
   image: string;
+  speaker_image: string;
 }
 
 defineProps<{
@@ -55,15 +56,16 @@ useGSAP(
       });
 
       // Single ScrollTrigger to handle fade in/out for each panel
+
       ScrollTrigger.create({
         trigger: panel,
-        start: 'top 80%',
+        start: 'top 50%',
         end: isLast ? 'top 20%' : 'bottom 20%',
         onEnter: () => {
           gsap.to(content, {
             opacity: 1,
             y: 0,
-            duration: 0.5,
+            duration: 2,
             ease: 'power2.out',
           });
         },
@@ -72,7 +74,7 @@ useGSAP(
             gsap.to(content, {
               opacity: 0,
               y: -30,
-              duration: 0.3,
+              duration: 2,
               ease: 'power2.in',
             });
           }
@@ -81,7 +83,7 @@ useGSAP(
           gsap.to(content, {
             opacity: 1,
             y: 0,
-            duration: 0.5,
+            duration: 2,
             ease: 'power2.out',
           });
         },
@@ -89,7 +91,7 @@ useGSAP(
           gsap.to(content, {
             opacity: 0,
             y: 30,
-            duration: 0.3,
+            duration: 2,
             ease: 'power2.in',
           });
         },
@@ -104,7 +106,7 @@ useGSAP(
           images.forEach((img, imgIndex) => {
             gsap.to(img, {
               opacity: imgIndex === index ? 1 : 0,
-              duration: 0.4,
+              duration: 0.02,
               ease: 'power2.inOut',
             });
           });
@@ -113,7 +115,7 @@ useGSAP(
           images.forEach((img, imgIndex) => {
             gsap.to(img, {
               opacity: imgIndex === index ? 1 : 0,
-              duration: 0.4,
+              duration: 0.02,
               ease: 'power2.inOut',
             });
           });
@@ -139,7 +141,7 @@ useGSAP(
             :id="`event-${event.id}`"
             :key="event.id"
             ref="panelRefs"
-            class="panel flex items-center min-h-dvh"
+            class="panel flex items-center md:min-h-dvh"
             :data-index="index"
           >
             <div
@@ -199,9 +201,9 @@ useGSAP(
                 }"
               >
                 <NuxtImg
-                  :src="event.image"
+                  :src="event.speaker_image"
                   :alt="event.title"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain"
                   loading="lazy"
                 />
               </div>
@@ -219,9 +221,9 @@ useGSAP(
         class="px-6 pb-8"
       >
         <NuxtImg
-          :src="event.image"
+          :src="event.speaker_image"
           :alt="event.title"
-          class="w-full h-64 object-cover"
+          class="w-full aspect-square object-contain"
           loading="lazy"
         />
       </div>
