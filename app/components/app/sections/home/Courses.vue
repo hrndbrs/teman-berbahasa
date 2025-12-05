@@ -1,17 +1,63 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { courses } from '#shared/data/courses';
+import { useGSAP, gsap } from '~/composables/useGSAP';
 
 const config = useRuntimeConfig();
+
+const sectionRef = ref<HTMLElement | null>(null);
+const headerRef = ref<HTMLElement | null>(null);
+const cardsRef = ref<HTMLElement[]>([]);
+
+useGSAP(
+  () => {
+    if (!sectionRef.value || !headerRef.value) return;
+
+    // Animate header
+    gsap.from(headerRef.value, {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+
+    // Animate cards with stagger
+    if (cardsRef.value.length) {
+      gsap.from(cardsRef.value, {
+        opacity: 0,
+        y: 50,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.value,
+          start: 'bottom 80%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+    }
+  },
+  { scope: sectionRef }
+);
 </script>
 
 <template>
   <section
     id="program"
+    ref="sectionRef"
     class="bg-white py-20"
   >
     <div class="container px-6">
       <!-- Section Header -->
-      <div class="mb-16 max-w-xl">
+      <div
+        ref="headerRef"
+        class="mb-16 max-w-xl"
+      >
         <h2
           class="mb-6 text-3xl leading-tight font-bold text-gray-900 md:text-4xl"
         >
@@ -30,6 +76,7 @@ const config = useRuntimeConfig();
       <div class="grid max-w-4xl gap-8 md:grid-cols-2">
         <div
           v-for="course in courses"
+          ref="cardsRef"
           :key="course.title"
           class="rounded-lg border border-gray-200 p-6"
         >
