@@ -10,11 +10,16 @@ export default defineNuxtConfig({
   vite: { plugins: [tailwindcss()] },
   css: ['./app/assets/css/main.css'],
 
+  imports: {
+    dirs: ['./shared/data'],
+  },
+
   runtimeConfig: {
     public: {
       phoneNumber: process.env.CONTACT_PHONE_NUMBER || '',
       instagramHandle: process.env.CONTACT_INSTAGRAM_HANDLE || '',
       registrationUrl: process.env.REGISTRATION_URL || '',
+      eventRegistrationUrl: process.env.EVENT_REGISTRATION_URL || '',
       siteUrl,
     },
   },

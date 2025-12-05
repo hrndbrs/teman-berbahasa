@@ -1,11 +1,8 @@
 <script setup lang="ts">
-interface Event {
-  id: number;
-  title: string;
-}
+import type { EventSummary } from '#shared/types/event';
 
 defineProps<{
-  events?: Event[];
+  events?: EventSummary[];
 }>();
 
 const config = useRuntimeConfig();
@@ -14,26 +11,26 @@ const config = useRuntimeConfig();
 <template>
   <footer
     id="contact"
-    class="bg-gradient-to-r from-blue-700 to-blue-950 text-white py-12"
+    class="bg-gradient-to-r from-blue-700 to-blue-950 py-12 text-white"
   >
-    <div class="container mx-auto px-6">
+    <div class="container px-6">
       <div class="flex items-end justify-between">
         <!-- Left Column -->
         <div>
           <!-- Mini Courses -->
           <nav
             v-if="events?.length"
-            class="space-y-1 text-sm mb-8"
+            class="mb-8 space-y-1 text-sm"
           >
-            <p class="text-white font-semibold mb-2">Mini Courses</p>
-            <a
+            <p class="mb-2 font-semibold text-white">Mini Courses</p>
+            <NuxtLink
               v-for="event in events"
               :key="event.id"
-              :href="`#event-${event.id}`"
-              class="block text-white/80 hover:text-white transition"
+              :to="`/events/#event-${event.id}`"
+              class="block text-white/80 transition hover:text-white"
             >
               {{ event.title }}
-            </a>
+            </NuxtLink>
           </nav>
 
           <!-- Contact Info -->
@@ -43,7 +40,7 @@ const config = useRuntimeConfig();
               :href="`https://wa.me/${config.public.phoneNumber}`"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 text-white/80 hover:text-white transition"
+              class="flex items-center gap-2 text-white/80 transition hover:text-white"
             >
               <Icon
                 name="mdi:whatsapp"
@@ -56,7 +53,7 @@ const config = useRuntimeConfig();
               :href="`https://instagram.com/${config.public.instagramHandle}`"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 text-white/80 hover:text-white transition"
+              class="flex items-center gap-2 text-white/80 transition hover:text-white"
             >
               <Icon
                 name="mdi:instagram"

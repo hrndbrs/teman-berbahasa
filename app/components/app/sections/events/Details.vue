@@ -1,21 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-interface EventDate {
-  start: string;
-  end: string;
-}
-
-interface Event {
-  id: number;
-  title: string;
-  description: string;
-  dates: EventDate[];
-  platform: string;
-  duration: number;
-  image: string;
-  speaker_image: string;
-}
+import type { Event } from '#shared/types/event';
 
 defineProps<{
   events: Event[];
@@ -132,8 +116,8 @@ useGSAP(
     ref="containerRef"
     class="relative bg-white"
   >
-    <div class="container mx-auto px-6">
-      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div class="container px-6">
+      <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
         <!-- Left Side: Scrollable Content Panels -->
         <div ref="panelsRef">
           <div
@@ -148,15 +132,15 @@ useGSAP(
               ref="contentRefs"
               class="panel-content py-16"
             >
-              <p class="text-xs text-gray-400 uppercase tracking-wide mb-2">
+              <p class="mb-2 text-xs tracking-wide text-gray-400 uppercase">
                 Mini Course
               </p>
               <h2
-                class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4"
+                class="mb-4 text-3xl leading-tight font-bold text-gray-900 md:text-4xl"
               >
                 {{ event.title }}
               </h2>
-              <div class="text-xs text-gray-500 mb-4 space-y-1">
+              <div class="mb-4 space-y-1 text-xs text-gray-500">
                 <p
                   v-for="(date, idx) in event.dates"
                   :key="idx"
@@ -166,13 +150,13 @@ useGSAP(
                 </p>
               </div>
               <p
-                class="text-sm text-gray-600 mb-6 leading-relaxed text-justify"
+                class="mb-6 text-justify text-sm leading-relaxed text-gray-600"
               >
                 {{ event.description }}
               </p>
               <a
                 href="#cta"
-                class="inline-block bg-tb-blue-3 text-white text-sm px-6 py-2 rounded-full hover:bg-blue-800 transition"
+                class="inline-block rounded-full bg-tb-blue-3 px-6 py-2 text-sm text-white transition hover:bg-blue-800"
               >
                 Daftar Sekarang
               </a>
@@ -183,13 +167,13 @@ useGSAP(
         <!-- Right Side: Pinned Images -->
         <div
           ref="imagesContainerRef"
-          class="hidden md:block relative"
+          class="relative hidden md:block"
         >
           <div
             ref="imagesPinRef"
-            class="h-dvh flex items-center justify-center sticky top-0"
+            class="sticky top-0 flex h-dvh items-center justify-center"
           >
-            <div class="relative w-full h-[70vh]">
+            <div class="relative h-[70vh] w-full">
               <div
                 v-for="(event, index) in events"
                 :key="event.id"
@@ -203,7 +187,7 @@ useGSAP(
                 <NuxtImg
                   :src="event.speaker_image"
                   :alt="event.title"
-                  class="w-full h-full object-contain"
+                  class="h-full w-full object-contain"
                   loading="lazy"
                 />
               </div>
@@ -223,7 +207,7 @@ useGSAP(
         <NuxtImg
           :src="event.speaker_image"
           :alt="event.title"
-          class="w-full aspect-square object-contain"
+          class="aspect-square w-full object-contain"
           loading="lazy"
         />
       </div>
