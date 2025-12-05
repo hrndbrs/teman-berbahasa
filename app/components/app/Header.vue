@@ -16,15 +16,17 @@ function closeMenu() {
 
 <template>
   <header class="fixed top-0 z-1000 w-full bg-white py-4">
-    <nav class="container flex items-center justify-between px-6 md:gap-12">
+    <nav aria-label="Main navigation" class="container flex items-center justify-between px-6 md:gap-12">
       <!-- Logo -->
       <NuxtLink
         to="/"
+        aria-label="Teman Berbahasa - Halaman utama"
         @click="closeMenu"
       >
         <Icon
           name="svg:tb"
           class="h-20 w-50 shrink-0"
+          aria-hidden="true"
         />
       </NuxtLink>
 
@@ -45,11 +47,14 @@ function closeMenu() {
         type="button"
         class="flex items-center justify-center p-2 text-gray-600 transition hover:text-tb-blue-3 md:hidden"
         aria-label="Toggle menu"
+        aria-controls="mobile-menu"
+        :aria-expanded="isMenuOpen"
         @click="toggleMenu"
       >
         <Icon
           :name="isMenuOpen ? 'lucide:x' : 'lucide:menu'"
           class="size-6"
+          aria-hidden="true"
         />
       </button>
     </nav>
@@ -65,6 +70,8 @@ function closeMenu() {
     >
       <div
         v-if="isMenuOpen"
+        id="mobile-menu"
+        role="menu"
         class="absolute top-full right-0 left-0 border-t border-gray-100 bg-white shadow-lg md:hidden"
       >
         <div class="container px-6 py-4">

@@ -7,12 +7,13 @@ defineProps<{
 </script>
 
 <template>
-  <section class="bg-white py-12">
+  <section aria-label="Mini Course Cards" class="bg-white py-12">
     <div class="container px-6">
       <div class="mx-auto grid max-w-4xl gap-6 sm:gap-8 md:grid-cols-2">
-        <div
+        <article
           v-for="event in events"
           :key="event.id"
+          :aria-label="event.title"
           class="group"
         >
           <div class="mb-4 aspect-square overflow-hidden">
@@ -35,11 +36,12 @@ defineProps<{
           </p>
           <NuxtLink
             :href="`/events/#event-${event.id}`"
+            :aria-label="`Lihat detail ${event.title}`"
             class="inline-block rounded-full bg-tb-blue-3 px-4 py-2 text-xs text-white transition hover:bg-blue-800"
           >
             Lihat Detail
           </NuxtLink>
-        </div>
+        </article>
       </div>
     </div>
   </section>

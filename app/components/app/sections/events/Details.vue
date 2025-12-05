@@ -114,17 +114,19 @@ useGSAP(
 <template>
   <section
     ref="containerRef"
+    aria-label="Mini Course Details"
     class="relative bg-white"
   >
     <div class="container px-6">
       <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
         <!-- Left Side: Scrollable Content Panels -->
         <div ref="panelsRef">
-          <div
+          <article
             v-for="(event, index) in events"
             :id="`event-${event.id}`"
             :key="event.id"
             ref="panelRefs"
+            :aria-label="event.title"
             class="panel flex items-center md:min-h-dvh"
             :data-index="index"
           >
@@ -156,12 +158,13 @@ useGSAP(
               </p>
               <a
                 href="#cta"
+                :aria-label="`Daftar sekarang untuk ${event.title}`"
                 class="inline-block rounded-full bg-tb-blue-3 px-6 py-2 text-sm text-white transition hover:bg-blue-800"
               >
                 Daftar Sekarang
               </a>
             </div>
-          </div>
+          </article>
         </div>
 
         <!-- Right Side: Pinned Images -->

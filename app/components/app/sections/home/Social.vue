@@ -45,6 +45,7 @@ useGSAP(
   <section
     id="about"
     ref="sectionRef"
+    aria-labelledby="about-heading"
     class="bg-tb-blue-3"
   >
     <div
@@ -53,9 +54,11 @@ useGSAP(
       <!-- Left - Instagram Handle -->
       <div ref="handleRef">
         <a
+          id="about-heading"
           :href="`https://instagram.com/${config.public.instagramHandle}`"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Follow Teman Berbahasa on Instagram"
           class="text-xl font-semibold text-white transition hover:text-white/80 sm:text-2xl md:text-3xl"
         >
           @{{ config.public.instagramHandle }}

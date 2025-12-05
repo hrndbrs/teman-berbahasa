@@ -20,10 +20,10 @@ useSeoMeta({
   <AppSectionsHomeHero />
   <AppSectionsHomeSocial />
   <AppSectionsHomeCourses />
-  <section class="bg-white pt-12">
+  <section aria-labelledby="ongoing-courses-heading" class="bg-white pt-12">
     <div class="container px-6">
       <div class="mb-12">
-        <h2 class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+        <h2 id="ongoing-courses-heading" class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
           Ongoing Mini Courses
         </h2>
         <p class="max-w-xl text-sm text-gray-600">

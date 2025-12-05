@@ -50,6 +50,7 @@ useGSAP(
   <section
     id="program"
     ref="sectionRef"
+    aria-labelledby="program-heading"
     class="bg-white py-20"
   >
     <div class="container px-6">
@@ -59,6 +60,7 @@ useGSAP(
         class="mb-16 max-w-xl"
       >
         <h2
+          id="program-heading"
           class="mb-6 text-3xl leading-tight font-bold text-gray-900 md:text-4xl"
         >
           Mudah Lulus JLPT<br />
@@ -84,6 +86,7 @@ useGSAP(
             <Icon
               :name="course.icon"
               class="size-8 text-gray-900"
+              aria-hidden="true"
             />
           </div>
           <h3 class="mb-3 text-lg font-bold text-gray-900">
@@ -96,6 +99,7 @@ useGSAP(
             :href="config.public.registrationUrl"
             target="_blank"
             rel="noopener noreferrer"
+            :aria-label="`Daftar sekarang untuk ${course.title}`"
             class="inline-block rounded-full bg-tb-blue-3 px-6 py-2 text-sm font-medium text-white transition hover:bg-blue-800"
           >
             Daftar sekarang

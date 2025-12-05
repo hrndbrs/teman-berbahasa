@@ -52,6 +52,7 @@ useGSAP(
 <template>
   <section
     ref="sectionRef"
+    aria-label="Mini Course Hero"
     class="relative h-dvh bg-white overflow-hidden flex items-center justify-center"
   >
     <!-- Hero Image -->

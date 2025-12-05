@@ -67,6 +67,7 @@ useGSAP(
 <template>
   <section
     ref="sectionRef"
+    aria-label="Hero - Teman Berbahasa"
     class="min-h-dvh bg-white"
   >
     <div
@@ -78,6 +79,8 @@ useGSAP(
         <!-- Japanese Characters -->
         <h1
           class="text-[8.75rem] leading-none font-bold tracking-tight text-[#4D4D4D] md:text-[17.25rem]"
+          lang="ja"
+          aria-label="Tomodachi - Teman"
         >
           <span
             :ref="(el) => charsRef.push(el as HTMLElement)"
@@ -111,6 +114,8 @@ useGSAP(
         <a
           :href="`https://instagram.com/${config.public.instagramHandle}`"
           target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow Teman Berbahasa on Instagram"
           class="text-sm text-gray-600 transition hover:text-tb-blue-3"
         >
           @{{ config.public.instagramHandle }}
