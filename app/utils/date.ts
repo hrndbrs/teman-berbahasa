@@ -52,3 +52,17 @@ export function formatDateTime(isoString?: string): string {
   if (!isoString) return '';
   return `${formatDate(isoString)} ${formatTime(isoString)}`;
 }
+
+/**
+ * Format a Date object to Indonesian locale date
+ * @param date - Date object
+ * @returns Formatted date string
+ */
+export function formatDateObject(date?: Date): string {
+  if (!date) return '';
+  return date.toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
