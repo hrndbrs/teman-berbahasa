@@ -28,6 +28,6 @@ export function formatPhoneNumber(phone?: unknown): string {
     return `${digits.slice(0, 4)}-${digits.slice(4, 8)}-${digits.slice(8)}`;
   }
 
-  // Other format, just add + if it was there
-  return hasPlus ? `+${digits}` : digits;
+  // Other format, just add + if it wasn't there
+  return hasPlus ? digits : `+${digits}`;
 }
