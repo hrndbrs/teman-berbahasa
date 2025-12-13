@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     public: {
       phoneNumber: process.env.CONTACT_PHONE_NUMBER || '',
       instagramHandle: process.env.CONTACT_INSTAGRAM_HANDLE || '',
+      tiktokHandle: process.env.CONTACT_TIKTOK_HANDLE || '',
       registrationUrl: process.env.REGISTRATION_URL || '',
       eventRegistrationUrl: process.env.EVENT_REGISTRATION_URL || '',
       siteUrl,
