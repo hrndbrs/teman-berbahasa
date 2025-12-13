@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import {
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  AccordionRoot,
+  AccordionTrigger,
+} from 'reka-ui';
+import { courses } from '#shared/data/courses';
+
 const config = useRuntimeConfig();
 
 definePageMeta({
@@ -34,6 +43,19 @@ useSeoMeta({
   twitterDescription:
     'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
 });
+
+const registrationLinks = computed(() =>
+  courses.flatMap((course) =>
+    course.schedules
+      .filter((schedule) => !!schedule.registrationUrl)
+      .map((schedule) => ({
+        id: schedule.id,
+        title: course.title,
+        label: `${schedule.days} • ${schedule.time}`,
+        url: schedule.registrationUrl,
+      }))
+  )
+);
 </script>
 
 <template>
@@ -66,29 +88,86 @@ useSeoMeta({
           </div>
 
           <div class="space-y-3">
-            <a
-              v-if="config.public.registrationUrl"
-              :href="config.public.registrationUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Buka formulir pendaftaran"
+            <NuxtLink
+              to="/"
+              aria-label="Buka halaman utama Teman Berbahasa"
               class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
-              style="--delay: 80ms"
+              style="--delay: 400ms"
             >
               <span class="flex items-center gap-2">
                 <Icon
-                  name="lucide:notebook-pen"
+                  name="lucide:house"
                   class="size-4 text-gray-900"
                   aria-hidden="true"
                 />
-                <span>Form Pendaftaran</span>
+                <span>Homepage Teman Berbahasa </span>
               </span>
               <Icon
-                name="lucide:external-link"
+                name="lucide:arrow-right"
                 class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
-            </a>
+            </NuxtLink>
+            <AccordionRoot
+              v-if="registrationLinks.length"
+              type="single"
+              collapsible
+              :unmount-on-hide="false"
+              class="tb-enter"
+              style="--delay: 80ms"
+            >
+              <AccordionItem value="registration">
+                <AccordionHeader>
+                  <AccordionTrigger
+                    aria-label="Buka daftar formulir pendaftaran"
+                    class="tb-accordion-trigger tb-link flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
+                  >
+                    <span class="flex items-center gap-2">
+                      <Icon
+                        name="lucide:notebook-pen"
+                        class="size-4 text-gray-900"
+                        aria-hidden="true"
+                      />
+                      <span>Registration</span>
+                    </span>
+                    <Icon
+                      name="lucide:chevron-down"
+                      class="tb-accordion-chevron size-4 text-gray-500"
+                      aria-hidden="true"
+                    />
+                  </AccordionTrigger>
+                </AccordionHeader>
+
+                <AccordionContent
+                  class="tb-accordion-content mt-2 overflow-hidden rounded-xl border border-gray-200 bg-white"
+                >
+                  <div class="space-y-2 p-3">
+                    <a
+                      v-for="link in registrationLinks"
+                      :key="link.id"
+                      :href="link.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-900 transition hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-gray-200/60 active:scale-[0.99]"
+                    >
+                      <div class="space-y-2 pr-2">
+                        <p class="font-semibold">
+                          {{ link.title }}
+                        </p>
+                        <p>
+                          {{ link.label }}
+                        </p>
+                      </div>
+                      <Icon
+                        name="lucide:external-link"
+                        class="size-4 shrink-0 text-gray-500 transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </AccordionRoot>
 
             <a
               v-if="whatsappUrl"
@@ -161,27 +240,6 @@ useSeoMeta({
                 aria-hidden="true"
               />
             </a>
-
-            <NuxtLink
-              to="/"
-              aria-label="Buka halaman utama Teman Berbahasa"
-              class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
-              style="--delay: 400ms"
-            >
-              <span class="flex items-center gap-2">
-                <Icon
-                  name="lucide:house"
-                  class="size-4 text-gray-900"
-                  aria-hidden="true"
-                />
-                <span>Homepage Teman Berbahasa </span>
-              </span>
-              <Icon
-                name="lucide:arrow-right"
-                class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </NuxtLink>
           </div>
         </div>
       </div>
@@ -320,6 +378,50 @@ useSeoMeta({
   .tb-blob,
   .tb-logo-shadow {
     animation: none !important;
+  }
+
+  :deep(.tb-accordion-content) {
+    animation: none !important;
+  }
+}
+
+:deep(.tb-accordion-trigger .tb-accordion-chevron) {
+  transition: transform 0.2s ease;
+}
+
+:deep(.tb-accordion-trigger[data-state='open'] .tb-accordion-chevron) {
+  transform: rotate(180deg);
+}
+
+:deep(.tb-accordion-content[data-state='open']) {
+  animation: tb-accordion-down 0.2s ease-out;
+}
+
+:deep(.tb-accordion-content[data-state='closed']) {
+  animation: tb-accordion-up 0.2s ease-out;
+}
+
+@keyframes tb-accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+
+  to {
+    height: var(--reka-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes tb-accordion-up {
+  from {
+    height: var(--reka-accordion-content-height);
+    opacity: 1;
+  }
+
+  to {
+    height: 0;
+    opacity: 0;
   }
 }
 </style>

@@ -2,8 +2,6 @@
 import { courses, courseCategories } from '#shared/data/courses';
 import type { CourseCategory } from '#shared/types/course';
 
-const config = useRuntimeConfig();
-
 const sectionRef = ref<HTMLElement | null>(null);
 const headerRef = ref<HTMLElement | null>(null);
 const activeCategory = ref<CourseCategory>('Kelas Reguler');
@@ -189,9 +187,7 @@ useGSAP(
 
                 <!-- CTA Button -->
                 <a
-                  :href="
-                    schedule.registrationUrl || config.public.registrationUrl
-                  "
+                  :href="schedule.registrationUrl"
                   target="_blank"
                   rel="noopener noreferrer"
                   role="button"
