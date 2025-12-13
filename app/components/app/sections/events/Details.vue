@@ -5,6 +5,15 @@ defineProps<{
   events: Event[];
 }>();
 
+function isEventEnded(event: Event): boolean {
+  if (!event.dates?.length) return false;
+  const now = Date.now();
+  return event.dates.every((d) => {
+    const end = d.end || d.start;
+    return new Date(end).getTime() < now;
+  });
+}
+
 const containerRef = ref<HTMLElement | null>(null);
 const panelsRef = ref<HTMLElement | null>(null);
 const panelRefs = ref<HTMLElement[]>([]);
@@ -157,11 +166,20 @@ useGSAP(
                 {{ event.description }}
               </p>
               <a
+                v-if="!isEventEnded(event)"
                 href="#cta"
                 :aria-label="`Daftar sekarang untuk ${event.title}`"
                 class="inline-block rounded-full bg-tb-blue-3 px-6 py-2 text-sm text-white transition hover:bg-blue-800"
               >
                 Daftar Sekarang
+              </a>
+              <a
+                v-else
+                aria-disabled="true"
+                tabindex="-1"
+                class="inline-block cursor-not-allowed rounded-full bg-gray-200 px-6 py-2 text-sm text-gray-500 pointer-events-none"
+              >
+                Sudah Berakhir
               </a>
             </div>
           </article>
