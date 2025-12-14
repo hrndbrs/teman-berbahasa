@@ -32,7 +32,7 @@ export const courses: Course[] = [
       {
         id: '1-3',
         days: 'Sabtu',
-        time: '10:00 - 13:00',
+        time: '09:00 - 12:00',
         startDate: new Date('2026-01-17'),
         registrationUrl: 'https://forms.gle/KbR9caoX8WZ6pncg6',
       },
