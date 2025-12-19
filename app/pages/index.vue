@@ -27,10 +27,10 @@ useSeoMeta({
     <div class="container px-6">
       <div class="mb-12">
         <h2
-          id="ongoing-courses-heading"
+          id="past-events"
           class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl"
         >
-          Ongoing Mini Courses
+          Past Events
         </h2>
         <p class="max-w-xl text-sm text-gray-600">
           Ikuti mini course kami untuk belajar bahasa Jepang dengan cara yang

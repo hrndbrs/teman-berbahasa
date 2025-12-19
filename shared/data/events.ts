@@ -5,7 +5,7 @@ export const events: Event[] = [
     id: 1,
     title: 'Ngomong Bahasa Jepang Dalam 90 Menit',
     description:
-      'Kelas ini dirancang buat kamu yang pengen mulai belajar bahasa Jepang tapi bingung harus mulai dari mana. Dalam 90 menit, kamu akan belajar cara memperkenalkan diri dalam bahasa Jepang dengan percaya diri. Formatnya interaktif dan langsung praktik, bukan cuma teori. Cocok banget buat first step kamu sebelum lanjut ke kelas yang lebih intensif. Bonus e-certificate, worksheet self-introduction, plus voucher diskon kelas utama!',
+      'Kelas ini dirancang buat kamu yang pengen mulai belajar bahasa Jepang tapi bingung harus mulai dari mana. Dalam 90 menit, kamu akan belajar cara memperkenalkan diri dalam bahasa Jepang dengan percaya diri. Formatnya interaktif dan langsung praktik, bukan cuma teori. Cocok banget buat first step kamu sebelum lanjut ke kelas yang lebih intensif.',
     dates: [
       {
         start: '2025-12-05T12:30:00.000Z',
