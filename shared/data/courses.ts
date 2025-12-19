@@ -45,7 +45,7 @@ export const courses: Course[] = [
       'Persiapan khusus untuk ujian JLPT dengan materi yang fokus dan latihan soal yang komprehensif untuk memastikan kelulusan kamu.',
     category: 'Kelas Intensif JLPT',
     maxStudents: 10,
-    price: 1_951_000,
+    price: 1_950_000,
     schedules: [
       {
         id: '2-1',

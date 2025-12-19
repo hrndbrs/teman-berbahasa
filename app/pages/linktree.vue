@@ -88,26 +88,6 @@ const registrationLinks = computed(() =>
           </div>
 
           <div class="space-y-3">
-            <NuxtLink
-              to="/"
-              aria-label="Buka halaman utama Teman Berbahasa"
-              class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
-              style="--delay: 400ms"
-            >
-              <span class="flex items-center gap-2">
-                <Icon
-                  name="lucide:house"
-                  class="size-4 text-gray-900"
-                  aria-hidden="true"
-                />
-                <span>Homepage Teman Berbahasa </span>
-              </span>
-              <Icon
-                name="lucide:arrow-right"
-                class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </NuxtLink>
             <AccordionRoot
               v-if="registrationLinks.length"
               type="single"
@@ -128,7 +108,7 @@ const registrationLinks = computed(() =>
                         class="size-4 text-gray-900"
                         aria-hidden="true"
                       />
-                      <span>Registration</span>
+                      <span>Daftar Kelas Bahasa Jepang</span>
                     </span>
                     <Icon
                       name="lucide:chevron-down"
@@ -168,6 +148,27 @@ const registrationLinks = computed(() =>
                 </AccordionContent>
               </AccordionItem>
             </AccordionRoot>
+
+            <NuxtLink
+              to="/"
+              aria-label="Buka halaman utama Teman Berbahasa"
+              class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
+              style="--delay: 400ms"
+            >
+              <span class="flex items-center gap-2">
+                <Icon
+                  name="lucide:house"
+                  class="size-4 text-gray-900"
+                  aria-hidden="true"
+                />
+                <span>Homepage Teman Berbahasa </span>
+              </span>
+              <Icon
+                name="lucide:arrow-right"
+                class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </NuxtLink>
 
             <a
               v-if="whatsappUrl"
