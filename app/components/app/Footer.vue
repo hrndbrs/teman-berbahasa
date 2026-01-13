@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { EventSummary } from '#shared/types/event';
-
-defineProps<{
-  events?: EventSummary[];
-}>();
+import { courses } from '#shared/data/courses';
 
 const config = useRuntimeConfig();
 </script>
@@ -18,20 +14,20 @@ const config = useRuntimeConfig();
       <div class="flex items-end justify-between">
         <!-- Left Column -->
         <div>
-          <!-- Mini Courses -->
+          <!-- Courses -->
           <nav
-            v-if="events?.length"
-            aria-label="Mini Courses navigation"
+            v-if="courses.length"
+            aria-label="Courses navigation"
             class="mb-8 space-y-1 text-sm"
           >
-            <p class="mb-2 font-semibold text-white">Mini Courses</p>
+            <p class="mb-2 font-semibold text-white">Program Belajar</p>
             <NuxtLink
-              v-for="event in events"
-              :key="event.id"
-              :to="`/events/#event-${event.id}`"
+              v-for="course in courses"
+              :key="course.id"
+              :to="`/courses/${course.slug}`"
               class="block text-white/80 transition hover:text-white"
             >
-              {{ event.title }}
+              {{ course.title }}
             </NuxtLink>
           </nav>
 

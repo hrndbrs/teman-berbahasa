@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { events } from '#shared/data/events';
 </script>
 
 <template>
@@ -8,6 +7,6 @@ import { events } from '#shared/data/events';
     <main>
       <slot />
     </main>
-    <AppFooter :events />
+    <AppFooter />
   </div>
 </template>
