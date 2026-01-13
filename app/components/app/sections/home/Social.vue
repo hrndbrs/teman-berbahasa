@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useGSAP, gsap } from '~/composables/useGSAP';
-
 const config = useRuntimeConfig();
 
-const sectionRef = ref<HTMLElement | null>(null);
-const handleRef = ref<HTMLElement | null>(null);
-const descriptionRef = ref<HTMLElement | null>(null);
+const sectionRef = useTemplateRef('sectionRef');
+const handleRef = useTemplateRef('handleRef');
+const descriptionRef = useTemplateRef('descriptionRef');
 
 useGSAP(
   () => {

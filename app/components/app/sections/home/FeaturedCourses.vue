@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { courses } from '#shared/data/courses';
 
-const sectionRef = ref<HTMLElement | null>(null);
-const headerRef = ref<HTMLElement | null>(null);
+const sectionRef = useTemplateRef('sectionRef');
+const headerRef = useTemplateRef('headerRef');
 
 useGSAP(
   () => {

@@ -14,26 +14,26 @@ function isEventEnded(event: Event): boolean {
   });
 }
 
-const containerRef = ref<HTMLElement | null>(null);
-const panelsRef = ref<HTMLElement | null>(null);
-const panelRefs = ref<HTMLElement[]>([]);
-const contentRefs = ref<HTMLElement[]>([]);
-const imagesContainerRef = ref<HTMLElement | null>(null);
-const imagesPinRef = ref<HTMLElement | null>(null);
-const imageRefs = ref<HTMLElement[]>([]);
+const containerRef = useTemplateRef('containerRef');
+const panelsRef = useTemplateRef('panelsRef');
+const panelRefs = useTemplateRef('panelRefs');
+const contentRefs = useTemplateRef('contentRefs');
+const imagesContainerRef = useTemplateRef('imagesContainerRef');
+const imagesPinRef = useTemplateRef('imagesPinRef');
+const imageRefs = useTemplateRef('imageRefs');
 
 useGSAP(
   () => {
     if (
       !containerRef.value ||
-      !panelRefs.value.length ||
-      !contentRefs.value.length
+      !panelRefs.value?.length ||
+      !contentRefs.value?.length
     )
       return;
 
     const panels = panelRefs.value;
     const contents = contentRefs.value;
-    const images = imageRefs.value;
+    const images = imageRefs.value || [];
 
     // Create ScrollTrigger for each panel
     panels.forEach((panel, index) => {

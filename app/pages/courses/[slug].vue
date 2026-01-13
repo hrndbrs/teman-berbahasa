@@ -165,7 +165,7 @@ const config = useRuntimeConfig();
 
         <!-- Sidebar -->
         <aside class="relative">
-          <div class="sticky top-24 space-y-6">
+          <div class="sticky top-40 space-y-6">
             <div
               class="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
             >

@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useGSAP, gsap } from '~/composables/useGSAP';
-
 const config = useRuntimeConfig();
+const characters = ['友', '達'];
 
-const sectionRef = ref<HTMLElement | null>(null);
-const contentRef = ref<HTMLElement | null>(null);
-const charsRef = ref<HTMLElement[]>([]);
-const imageRef = ref<HTMLElement | null>(null);
+const sectionRef = useTemplateRef('sectionRef');
+const contentRef = useTemplateRef('contentRef');
+const imageRef = useTemplateRef('imageRef');
+const charsRef = useTemplateRef('charsRef');
 
 useGSAP(
   () => {
     if (
       !sectionRef.value ||
-      !charsRef.value.length ||
+      !charsRef.value?.length ||
       !imageRef.value ||
       !contentRef.value
     )
@@ -83,16 +81,12 @@ useGSAP(
           aria-label="Tomodachi - Teman"
         >
           <span
-            :ref="(el) => charsRef.push(el as HTMLElement)"
+            v-for="char in characters"
+            :key="char"
+            ref="charsRef"
             class="inline-block"
           >
-            友
-          </span>
-          <span
-            :ref="(el) => charsRef.push(el as HTMLElement)"
-            class="inline-block"
-          >
-            達
+            {{ char }}
           </span>
         </h1>
       </div>

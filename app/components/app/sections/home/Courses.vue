@@ -2,8 +2,8 @@
 import { courses, courseCategories } from '#shared/data/courses';
 import type { CourseCategory } from '#shared/types/course';
 
-const sectionRef = ref<HTMLElement | null>(null);
-const headerRef = ref<HTMLElement | null>(null);
+const sectionRef = useTemplateRef('sectionRef');
+const headerRef = useTemplateRef('headerRef');
 const activeCategory = ref<CourseCategory>('Kelas Reguler');
 
 const filteredCourses = computed(() =>

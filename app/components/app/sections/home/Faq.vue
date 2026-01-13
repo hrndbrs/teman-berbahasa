@@ -9,8 +9,8 @@ import {
 import { faqs } from '#shared/data/faq';
 
 const config = useRuntimeConfig();
-const sectionRef = ref<HTMLElement | null>(null);
-const headerRef = ref<HTMLElement | null>(null);
+const sectionRef = useTemplateRef('sectionRef');
+const headerRef = useTemplateRef('headerRef');
 const activeValue = ref<string | undefined>(undefined);
 
 const whatsappUrl = computed(() =>
