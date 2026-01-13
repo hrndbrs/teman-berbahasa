@@ -1,6 +1,10 @@
 <script setup lang="ts">
-// Catch-all route for 404 - redirect to events
-navigateTo('/', { redirectCode: 301 });
+// Catch-all route for 404
+throw createError({
+  statusCode: 404,
+  statusMessage: 'Page Not Found',
+  fatal: true,
+});
 </script>
 
 <template>

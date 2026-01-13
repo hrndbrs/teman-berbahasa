@@ -53,6 +53,7 @@ const registrationLinks = computed(() =>
         title: course.title,
         label: `${schedule.days} • ${schedule.time}`,
         url: schedule.registrationUrl,
+        isExpired: new Date() > new Date(schedule.startDate),
       }))
   )
 );
@@ -122,32 +123,69 @@ const registrationLinks = computed(() =>
                   class="tb-accordion-content mt-2 overflow-hidden rounded-xl border border-gray-200 bg-white"
                 >
                   <div class="space-y-2 p-3">
-                    <a
+                    <template
                       v-for="link in registrationLinks"
                       :key="link.id"
-                      :href="link.url"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="group flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-900 transition hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-gray-200/60 active:scale-[0.99]"
                     >
-                      <div class="space-y-2 pr-2">
-                        <p class="font-semibold">
-                          {{ link.title }}
-                        </p>
-                        <p>
-                          {{ link.label }}
-                        </p>
+                      <div
+                        v-if="link.isExpired"
+                        class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-400 cursor-not-allowed"
+                      >
+                        <div class="space-y-2 pr-2">
+                          <p class="font-semibold">
+                            {{ link.title }}
+                          </p>
+                          <p class="text-xs">
+                            Pendaftaran Tutup
+                          </p>
+                        </div>
+                        <Icon
+                          name="lucide:lock"
+                          class="size-4 shrink-0"
+                          aria-hidden="true"
+                        />
                       </div>
-                      <Icon
-                        name="lucide:external-link"
-                        class="size-4 shrink-0 text-gray-500 transition-transform group-hover:translate-x-0.5"
-                        aria-hidden="true"
-                      />
-                    </a>
+                      <a
+                        v-else
+                        :href="link.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="group flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-900 transition hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-gray-200/60 active:scale-[0.99]"
+                      >
+                        <div class="space-y-2 pr-2">
+                          <p class="font-semibold">
+                            {{ link.title }}
+                          </p>
+                          <p>
+                            {{ link.label }}
+                          </p>
+                        </div>
+                        <Icon
+                          name="lucide:external-link"
+                          class="size-4 shrink-0 text-gray-500 transition-transform group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </a>
+                    </template>
                   </div>
                 </AccordionContent>
               </AccordionItem>
             </AccordionRoot>
+
+            <div
+              v-else
+              class="tb-enter flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-500"
+              style="--delay: 80ms"
+            >
+              <span class="flex items-center gap-2">
+                <Icon
+                  name="lucide:info"
+                  class="size-4 text-gray-400"
+                  aria-hidden="true"
+                />
+                <span>Pendaftaran Belum Dibuka</span>
+              </span>
+            </div>
 
             <NuxtLink
               to="/"

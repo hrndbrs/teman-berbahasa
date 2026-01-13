@@ -19,7 +19,7 @@ useSeoMeta({
 <template>
   <AppSectionsHomeHero />
   <AppSectionsHomeSocial />
-  <AppSectionsHomeCourses />
+  <AppSectionsHomeFeaturedCourses />
   <AppSectionsHomeFaq />
   <section
     aria-labelledby="ongoing-courses-heading"

@@ -3,7 +3,11 @@ import { ref } from 'vue';
 
 const isMenuOpen = ref(false);
 
-const navLinks = [{ to: '/events', label: 'Mini Courses' }];
+const navLinks = [
+  { to: '/', label: 'Beranda' },
+  { to: '/courses', label: 'Program Belajar' },
+  { to: '/events', label: 'Mini Course' },
+];
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;

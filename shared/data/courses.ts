@@ -8,10 +8,11 @@ export const courseCategories: CourseCategory[] = [
 export const courses: Course[] = [
   {
     id: '1',
+    slug: 'kiso',
     title: 'Kelas Dasar Bahasa Jepang',
     category: 'Kelas Reguler',
     description:
-      'Kelas yang distruktur menggunakan kurikulum yang dirancang untuk membantu kamu memulai perjalanan belajar bahasa Jepang dari dasar.',
+      'Kelas ini dirancang bagi peserta yang ingin belajar bahasa Jepang dari tingkat dasar. Program terdiri dari 30 kali pertemuan dengan materi yang disusun secara bertahap, sehingga peserta dapat membangun kemampuan bahasa Jepang secara kuat, terstruktur, dan mudah dipraktikkan dalam kehidupan sehari-hari.',
     maxStudents: 10,
     price: 2_736_000,
     schedules: [
@@ -40,9 +41,10 @@ export const courses: Course[] = [
   },
   {
     id: '2',
+    slug: 'jlpt-n4',
     title: 'Kelas Intensif JLPT N4',
     description:
-      'Persiapan khusus untuk ujian JLPT dengan materi yang fokus dan latihan soal yang komprehensif untuk memastikan kelulusan kamu.',
+      'Kelas N4 Bahasa Jepang terdiri dari 30 pertemuan yang dirancang untuk peserta yang telah memiliki dasar bahasa Jepang dan ingin meningkatkan kemampuan ke level N4. Program ini mencakup materi kosakata, tata bahasa, pola kalimat, dan percakapan yang sesuai dengan standar JLPT N4. Program ini juga dilengkapi dengan latihan praktik dan evaluasi untuk memastikan peserta dapat menguasai materi secara bertahap dan efektif.',
     category: 'Kelas Intensif JLPT',
     maxStudents: 10,
     price: 1_950_000,

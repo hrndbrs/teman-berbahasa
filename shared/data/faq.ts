@@ -55,13 +55,8 @@ export const faqs: FaqItem[] = [
       'Pendaftaran dapat dilakukan melalui link registrasi yang tersedia di website ini. Setelah mengisi formulir dan melakukan pembayaran, tim kami akan menghubungi Anda melalui WhatsApp/Email untuk konfirmasi.',
   },
   {
-    question: 'Metode pembayaran apa saja yang tersedia?',
-    answer:
-      'Kami menerima pembayaran melalui transfer bank dan E-wallet. Detail rekening akan diinformasikan setelah Anda mengisi formulir pendaftaran.',
-  },
-  {
     question: 'Jika masih punya pertanyaan, ke mana harus menghubungi?',
     answer:
-      'Jika memiliki pertanyaan lebih lanjut, silakan hubungi tim kami melalui WhatsApp Admin atau DM Instagram @temanberbahasa.',
+      'Jika memiliki pertanyaan lebih lanjut, silakan hubungi tim kami melalui WhatsApp Admin atau DM Instagram @teman.berbahasa.',
   },
 ];
