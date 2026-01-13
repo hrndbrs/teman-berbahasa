@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useWindowScroll } from '@vueuse/core';
 
 const isMenuOpen = ref(false);
+const { y } = useWindowScroll();
+
+const isScrolled = computed(() => y.value > 0);
 
 const navLinks = [
   { to: '/', label: 'Beranda' },
@@ -19,7 +23,10 @@ function closeMenu() {
 </script>
 
 <template>
-  <header class="fixed top-0 z-1000 w-full bg-white py-4">
+  <header
+    class="fixed top-0 z-1000 w-full py-4 transition-all duration-300"
+    :class="[isScrolled ? 'bg-white' : 'bg-transparent']"
+  >
     <nav aria-label="Main navigation" class="container flex items-center justify-between px-6 md:gap-12">
       <!-- Logo -->
       <NuxtLink
