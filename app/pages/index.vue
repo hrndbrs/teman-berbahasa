@@ -20,6 +20,7 @@ useSeoMeta({
   <AppSectionsHomeHero />
   <AppSectionsHomeSocial />
   <AppSectionsHomeCourses />
+  <AppSectionsHomeFaq />
   <section
     aria-labelledby="ongoing-courses-heading"
     class="bg-white py-8"
