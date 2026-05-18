@@ -62,10 +62,16 @@ export default defineNuxtConfig({
 
   schemaOrg: {
     identity: {
-      type: 'Organization',
+      type: 'EducationalOrganization',
       name: 'Teman Berbahasa',
       url: siteUrl,
-      logo: '/logo.png',
+      logo: `${siteUrl}/favicon.svg`,
+      description:
+        'Platform pembelajaran bahasa Jepang online berbasis diskusi interaktif bersama Discussion Partner dari mahasiswa Indonesia di Jepang.',
+      sameAs: [
+        `https://instagram.com/${process.env.CONTACT_INSTAGRAM_HANDLE || 'teman.berbahasa'}`,
+        `https://www.tiktok.com/@${(process.env.CONTACT_TIKTOK_HANDLE || 'teman.berbahasa').replace(/^@/, '')}`,
+      ],
     },
   },
 

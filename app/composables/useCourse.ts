@@ -1,4 +1,5 @@
 import { courses } from '#shared/data/courses';
+import type { Course } from '#shared/types/course';
 
 export const useCourse = () => {
   const route = useRoute();
@@ -15,5 +16,5 @@ export const useCourse = () => {
     });
   }
 
-  return { course };
+  return { course: course as ComputedRef<Course> };
 };
