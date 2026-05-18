@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const config = useRuntimeConfig();
+const { instagramHandle, instagramUrl } = useContact();
 const characters = ['友', '達'];
 
 const sectionRef = useTemplateRef('sectionRef');
@@ -106,13 +106,13 @@ useGSAP(
           />
         </div>
         <a
-          :href="`https://instagram.com/${config.public.instagramHandle}`"
+          :href="instagramUrl"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Follow Teman Berbahasa on Instagram"
           class="text-sm text-gray-600 transition hover:text-tb-blue-3"
         >
-          @{{ config.public.instagramHandle }}
+          @{{ instagramHandle }}
         </a>
       </div>
     </div>

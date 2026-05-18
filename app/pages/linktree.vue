@@ -1,33 +1,10 @@
 <script setup lang="ts">
-import {
-  AccordionContent,
-  AccordionHeader,
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from 'reka-ui';
 import { courses } from '#shared/data/courses';
 
-const config = useRuntimeConfig();
+const { whatsappUrl, instagramUrl, tiktokUrl } = useContact();
 
 definePageMeta({
   layout: false,
-});
-
-const instagramUrl = computed(() =>
-  config.public.instagramHandle
-    ? `https://instagram.com/${config.public.instagramHandle}`
-    : ''
-);
-
-const whatsappUrl = computed(() =>
-  config.public.phoneNumber ? `https://wa.me/${config.public.phoneNumber}` : ''
-);
-
-const tiktokUrl = computed(() => {
-  const raw = config.public.tiktokHandle || '';
-  const handle = raw.startsWith('@') ? raw.slice(1) : raw;
-  return handle ? `https://www.tiktok.com/@${handle}` : '';
 });
 
 useSeoMeta({

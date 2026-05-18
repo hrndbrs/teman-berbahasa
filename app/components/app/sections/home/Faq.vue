@@ -1,21 +1,10 @@
 <script setup lang="ts">
-import {
-  AccordionContent,
-  AccordionHeader,
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from 'reka-ui';
 import { faqs } from '#shared/data/faq';
 
-const config = useRuntimeConfig();
+const { whatsappUrl } = useContact();
 const sectionRef = useTemplateRef('sectionRef');
 const headerRef = useTemplateRef('headerRef');
 const activeValue = ref<string | undefined>(undefined);
-
-const whatsappUrl = computed(() =>
-  config.public.phoneNumber ? `https://wa.me/${config.public.phoneNumber}` : ''
-);
 
 useGSAP(
   () => {

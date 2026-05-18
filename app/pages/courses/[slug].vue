@@ -1,25 +1,11 @@
 <script setup lang="ts">
-import { courses } from '#shared/data/courses';
-
-const route = useRoute();
-const course = computed(() =>
-  courses.find((c) => c.slug === route.params.slug)
-);
-
-if (!course.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Program tidak ditemukan',
-    fatal: true,
-  });
-}
+const { course } = useCourse();
+const { whatsappUrl } = useContact();
 
 useSeoMeta({
   title: () => `${course.value?.title} - Teman Berbahasa`,
   description: () => course.value?.description,
 });
-
-const config = useRuntimeConfig();
 </script>
 
 <template>
@@ -213,7 +199,7 @@ const config = useRuntimeConfig();
                 untuk menghubungi kami.
               </p>
               <NuxtLink
-                :href="`https://wa.me/${config.public.phoneNumber}`"
+                :href="whatsappUrl"
                 target="_blank"
                 class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
               >

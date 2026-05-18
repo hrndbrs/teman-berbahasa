@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { courses } from '#shared/data/courses';
 
-const config = useRuntimeConfig();
+const { phoneNumber, instagramHandle, whatsappUrl, instagramUrl } = useContact();
 </script>
 
 <template>
@@ -34,8 +34,8 @@ const config = useRuntimeConfig();
           <!-- Contact Info -->
           <div class="space-y-2 text-sm">
             <a
-              v-if="config.public.phoneNumber"
-              :href="`https://wa.me/${config.public.phoneNumber}`"
+              v-if="phoneNumber"
+              :href="whatsappUrl"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Contact us on WhatsApp"
@@ -46,11 +46,11 @@ const config = useRuntimeConfig();
                 class="size-4"
                 aria-hidden="true"
               />
-              <span>{{ formatPhoneNumber(config.public.phoneNumber) }}</span>
+              <span>{{ formatPhoneNumber(phoneNumber) }}</span>
             </a>
             <a
-              v-if="config.public.instagramHandle"
-              :href="`https://instagram.com/${config.public.instagramHandle}`"
+              v-if="instagramHandle"
+              :href="instagramUrl"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow us on Instagram"
@@ -61,7 +61,7 @@ const config = useRuntimeConfig();
                 class="size-4"
                 aria-hidden="true"
               />
-              <span>@{{ config.public.instagramHandle }}</span>
+              <span>@{{ instagramHandle }}</span>
             </a>
           </div>
         </div>
