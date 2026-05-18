@@ -2,6 +2,17 @@
 import { faqs } from '#shared/data/faq';
 
 const { whatsappUrl } = useContact();
+
+useSchemaOrg([
+  {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+]);
 const sectionRef = useTemplateRef('sectionRef');
 const headerRef = useTemplateRef('headerRef');
 const activeValue = ref<string | undefined>(undefined);

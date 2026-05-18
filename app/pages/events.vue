@@ -22,6 +22,18 @@ useSchemaOrg([
     name: 'Mini Courses',
     description: seoDescription,
   }),
+  ...events.map((event) => ({
+    '@type': 'Event',
+    name: event.title,
+    description: event.description,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+    location: { '@type': 'VirtualLocation', url: 'https://zoom.us' },
+    organizer: { '@type': 'Organization', name: 'Teman Berbahasa' },
+    startDate: event.dates[0]?.start,
+    endDate: event.dates.at(-1)?.end,
+    image: event.image,
+  })),
 ]);
 </script>
 
