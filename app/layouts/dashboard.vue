@@ -1,22 +1,82 @@
 <script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui';
+
 const { user, role, logout } = useAuth();
 
-const navItems = computed(() => {
-  const items = [
-    { label: 'Dashboard', icon: 'lucide:layout-dashboard', to: '/dashboard' },
-    { label: 'Siswa', icon: 'lucide:users', to: '/dashboard/students' },
-    { label: 'Kursus', icon: 'lucide:book-open', to: '/dashboard/courses' },
-    { label: 'Batch', icon: 'lucide:layers', to: '/dashboard/batches' },
-    { label: 'Enrollment', icon: 'lucide:user-check', to: '/dashboard/enrollments' },
-    { label: 'Jadwal', icon: 'lucide:calendar', to: '/dashboard/schedules' },
-    { label: 'Event', icon: 'lucide:calendar-days', to: '/dashboard/events' },
-    { label: 'Form', icon: 'lucide:file-text', to: '/dashboard/forms' },
+const semesterLabel = computed(() => {
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  const season =
+    month >= 2 && month <= 4
+      ? 'Spring'
+      : month >= 5 && month <= 7
+        ? 'Summer'
+        : month >= 8 && month <= 10
+          ? 'Fall'
+          : 'Winter';
+  return `${season} · ${year}`;
+});
+
+const workspaceNav = computed<NavigationMenuItem[]>(() => [
+  { label: 'Overview', icon: 'i-lucide-house', to: '/dashboard' },
+  {
+    label: 'Schedule',
+    icon: 'i-lucide-calendar',
+    to: '/dashboard/schedules',
+    badge: '17',
+  },
+  {
+    label: 'Events',
+    icon: 'i-lucide-calendar-days',
+    to: '/dashboard/events',
+    badge: '8',
+  },
+]);
+
+const academicNav = computed<NavigationMenuItem[]>(() => [
+  {
+    label: 'Students',
+    icon: 'i-lucide-users',
+    to: '/dashboard/students',
+    badge: '24',
+  },
+  {
+    label: 'Courses',
+    icon: 'i-lucide-book-open',
+    to: '/dashboard/courses',
+    badge: '8',
+  },
+  {
+    label: 'Batches',
+    icon: 'i-lucide-layers',
+    to: '/dashboard/batches',
+    badge: '11',
+  },
+  {
+    label: 'Enrollments',
+    icon: 'i-lucide-graduation-cap',
+    to: '/dashboard/enrollments',
+    badge: '36',
+  },
+]);
+
+const engagementNav = computed<NavigationMenuItem[]>(() => {
+  const items: NavigationMenuItem[] = [
+    {
+      label: 'Forms',
+      icon: 'i-lucide-file-text',
+      to: '/dashboard/forms',
+      badge: '4',
+    },
   ];
-
   if (role.value === 'admin') {
-    items.push({ label: 'Pengguna', icon: 'lucide:shield-user', to: '/dashboard/users' });
+    items.push({
+      label: 'Users',
+      icon: 'i-lucide-shield',
+      to: '/dashboard/users',
+    });
   }
-
   return items;
 });
 
@@ -27,69 +87,108 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <div class="flex min-h-dvh bg-gray-50">
-    <!-- Sidebar -->
-    <aside class="flex w-60 shrink-0 flex-col border-r border-gray-200 bg-white">
-      <div class="flex h-16 items-center border-b border-gray-200 px-4">
-        <Icon
-          name="svg:tb"
-          class="h-8 w-auto"
-          aria-hidden="true"
-        />
-      </div>
-
-      <nav
-        aria-label="Dashboard navigation"
-        class="flex-1 overflow-y-auto p-3"
-      >
-        <ul class="space-y-1">
-          <li
-            v-for="item in navItems"
-            :key="item.to"
-          >
-            <NuxtLink
-              :to="item.to"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-gray-900"
-              active-class="bg-blue-50 text-tb-blue-3 hover:bg-blue-50 hover:text-tb-blue-3"
-            >
-              <Icon
-                :name="item.icon"
-                class="size-4 shrink-0"
-                aria-hidden="true"
-              />
-              {{ item.label }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="border-t border-gray-200 p-3">
-        <div class="mb-2 px-3 py-2">
-          <p class="text-sm font-medium text-gray-900 truncate">{{ user?.name }}</p>
-          <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
-        </div>
-        <button
-          class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-gray-900"
-          @click="handleLogout"
-        >
+  <UDashboardGroup>
+    <UDashboardSidebar
+      collapsible
+      resizable
+    >
+      <template #header="{ collapsed }">
+        <div class="flex items-center gap-2.5 min-w-0">
           <Icon
-            name="lucide:log-out"
-            class="size-4 shrink-0"
-            aria-hidden="true"
+            name="svg:tb-icon"
+            class="size-8 shrink-0"
           />
-          Keluar
-        </button>
-      </div>
-    </aside>
+          <div
+            v-if="!collapsed"
+            class="flex flex-col leading-none min-w-0"
+          >
+            <span class="text-sm font-bold tracking-tight">tb.</span>
+            <span
+              class="text-2xs font-mono tracking-looser uppercase text-dimmed"
+              >Tutor Center</span
+            >
+          </div>
+        </div>
+      </template>
 
-    <!-- Main -->
-    <div class="flex flex-1 flex-col overflow-hidden">
-      <header class="flex h-16 items-center border-b border-gray-200 bg-white px-6">
-        <slot name="header" />
-      </header>
-      <main class="flex-1 overflow-y-auto p-6">
-        <slot />
-      </main>
-    </div>
-  </div>
+      <template #default="{ collapsed }">
+        <div class="flex flex-col gap-4 py-1">
+          <DashboardNavSection
+            label="Workspace"
+            :items="workspaceNav"
+            :collapsed
+          />
+          <DashboardNavSection
+            label="Academic"
+            :items="academicNav"
+            :collapsed
+          />
+          <DashboardNavSection
+            label="Engagement"
+            :items="engagementNav"
+            :collapsed
+          />
+        </div>
+      </template>
+
+      <template #footer="{ collapsed }">
+        <div class="flex flex-col gap-2">
+          <div
+            v-if="!collapsed"
+            class="flex items-center justify-between px-3"
+          >
+            <span
+              class="text-2xs font-mono tracking-looser uppercase text-dimmed"
+              >{{ semesterLabel }}</span
+            >
+            <UButton
+              icon="i-lucide-settings"
+              color="neutral"
+              variant="ghost"
+              size="xs"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 px-2 py-1">
+            <UAvatar
+              :alt="user?.name ?? 'User'"
+              size="sm"
+              class="shrink-0"
+            />
+            <div
+              v-if="!collapsed"
+              class="min-w-0 flex-1"
+            >
+              <p class="truncate text-sm font-medium">{{ user?.name }}</p>
+              <p
+                class="truncate text-xs font-mono tracking-widest uppercase text-dimmed"
+              >
+                {{ role }}
+              </p>
+            </div>
+            <ClientOnly>
+              <UColorModeButton
+                v-if="!collapsed"
+                size="xs"
+                color="neutral"
+                variant="ghost"
+              />
+            </ClientOnly>
+          </div>
+
+          <UButton
+            :icon="collapsed ? 'i-lucide-log-out' : undefined"
+            :label="collapsed ? undefined : 'Sign out'"
+            color="neutral"
+            variant="ghost"
+            block
+            size="sm"
+            @click="handleLogout"
+          />
+        </div>
+      </template>
+    </UDashboardSidebar>
+
+    <slot />
+  </UDashboardGroup>
 </template>
