@@ -2,7 +2,9 @@ export const useContact = () => {
   const config = useRuntimeConfig();
 
   const whatsappUrl = computed(() =>
-    config.public.phoneNumber ? `https://wa.me/${config.public.phoneNumber}` : ''
+    config.public.phoneNumber
+      ? `https://wa.me/${config.public.phoneNumber}`
+      : ''
   );
 
   const instagramUrl = computed(() =>

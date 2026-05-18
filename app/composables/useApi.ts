@@ -13,7 +13,8 @@ export const useApi = () => {
     onRequest({ options }) {
       const token = accessToken.value;
       if (token) {
-        (options.headers as Record<string, string>).Authorization = `Bearer ${token}`;
+        (options.headers as Record<string, string>).Authorization =
+          `Bearer ${token}`;
       }
     },
     async onResponseError({ response, options, request }) {
@@ -33,7 +34,8 @@ export const useApi = () => {
         return;
       }
 
-      (options.headers as Record<string, string>).Authorization = `Bearer ${newToken}`;
+      (options.headers as Record<string, string>).Authorization =
+        `Bearer ${newToken}`;
       return $fetch(request as string, options as FetchOptions);
     },
   });

@@ -97,7 +97,9 @@ useGSAP(
                 <span class="font-bold text-gray-900">{{ faq.question }}</span>
                 <Icon
                   :name="
-                    activeValue === `item-${index}` ? 'lucide:minus' : 'lucide:plus'
+                    activeValue === `item-${index}`
+                      ? 'lucide:minus'
+                      : 'lucide:plus'
                   "
                   class="size-5 shrink-0 text-gray-500 transition-transform duration-300"
                   :class="{ 'rotate-180': activeValue === `item-${index}` }"

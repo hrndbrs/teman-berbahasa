@@ -7,7 +7,10 @@ defineProps<{
 </script>
 
 <template>
-  <section aria-label="Mini Course Cards" class="bg-white py-12">
+  <section
+    aria-label="Mini Course Cards"
+    class="bg-white py-12"
+  >
     <div class="container px-6">
       <div class="mx-auto grid max-w-4xl gap-6 sm:gap-8 md:grid-cols-2">
         <article

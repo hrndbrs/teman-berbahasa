@@ -9,7 +9,10 @@ const config = useRuntimeConfig();
     class="relative overflow-hidden bg-tb-blue-1 py-24"
   >
     <div class="relative z-10 container px-6 text-center">
-      <h2 id="cta-heading" class="mb-6 text-3xl font-bold text-tb-blue-3 md:text-5xl">
+      <h2
+        id="cta-heading"
+        class="mb-6 text-3xl font-bold text-tb-blue-3 md:text-5xl"
+      >
         Siap Untuk Belajar?
       </h2>
       <p class="mx-auto mb-8 max-w-2xl text-lg text-blue-800 md:text-xl">
