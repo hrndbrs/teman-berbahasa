@@ -1,4 +1,9 @@
-import type { AuthState, LoginPayload, AuthResponse, UserRole } from '#shared/types/auth';
+import type {
+  AuthState,
+  LoginPayload,
+  AuthResponse,
+  UserRole,
+} from '#shared/types/auth';
 
 const initialState = (): AuthState => ({ user: null, accessToken: null });
 
@@ -11,7 +16,8 @@ export const useAuth = () => {
   const isAuthenticated = computed(() => !!state.value.accessToken);
   const role = computed(() => state.value.user?.role ?? null);
 
-  const can = (roles: UserRole[]) => computed(() => !!role.value && roles.includes(role.value));
+  const can = (roles: UserRole[]) =>
+    computed(() => !!role.value && roles.includes(role.value));
 
   const setAuth = (response: AuthResponse) => {
     state.value = { user: response.user, accessToken: response.accessToken };
@@ -37,7 +43,9 @@ export const useAuth = () => {
       baseURL: config.public.apiBaseUrl,
       method: 'POST',
       credentials: 'include',
-      headers: accessToken.value ? { Authorization: `Bearer ${accessToken.value}` } : {},
+      headers: accessToken.value
+        ? { Authorization: `Bearer ${accessToken.value}` }
+        : {},
     }).catch(() => {});
     clearAuth();
   };
@@ -57,5 +65,27 @@ export const useAuth = () => {
     }
   };
 
-  return { user, accessToken, isAuthenticated, role, can, login, logout, refresh, setAuth, clearAuth };
+  const userInitials = computed(() => {
+    if (!user.value?.name) return 'U';
+    return user.value.name
+      .split(' ')
+      .map((n: string) => n[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  });
+
+  return {
+    user,
+    accessToken,
+    isAuthenticated,
+    role,
+    can,
+    userInitials,
+    login,
+    logout,
+    refresh,
+    setAuth,
+    clearAuth,
+  };
 };
