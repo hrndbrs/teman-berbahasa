@@ -75,13 +75,6 @@ export function useGSAP(
     }
   });
 
-  // Also clean up when the effect scope is disposed (for SSR safety)
-  if (getCurrentScope()) {
-    onUnmounted(() => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    });
-  }
-
   return {
     context,
     contextSafe,

@@ -22,7 +22,7 @@ useSeoMeta({
   <AppSectionsHomeFeaturedCourses />
   <AppSectionsHomeFaq />
   <section
-    aria-labelledby="ongoing-courses-heading"
+    aria-labelledby="past-events"
     class="bg-white py-8"
   >
     <div class="container px-6">

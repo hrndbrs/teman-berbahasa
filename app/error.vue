@@ -51,8 +51,8 @@ const handleError = () => clearError({ redirect: '/' });
 
     <div class="flex flex-col gap-4 sm:flex-row">
       <button
-        @click="handleError"
         class="inline-flex items-center justify-center gap-2 rounded-lg bg-tb-blue-3 px-6 py-3 text-base font-semibold text-white transition hover:bg-blue-800"
+        @click="handleError"
       >
         <Icon
           name="lucide:house"

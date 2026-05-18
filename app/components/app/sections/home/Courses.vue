@@ -190,7 +190,6 @@ useGSAP(
                   :href="schedule.registrationUrl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  role="button"
                   :aria-label="`Daftar sekarang untuk ${course.title} - ${schedule.days}`"
                   class="inline-block rounded-md bg-tb-blue-3 px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-blue-800 md:justify-self-end"
                 >
