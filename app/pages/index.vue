@@ -13,7 +13,19 @@ useSeoMeta({
   twitterTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
   twitterDescription:
     'Belajar bahasa Jepang dengan cara yang menyenangkan dan interaktif bersama Teman Berbahasa.',
+  keywords:
+    'belajar bahasa jepang, kursus bahasa jepang online, teman berbahasa, JLPT, discussion partner bahasa jepang, kelas bahasa jepang indonesia',
 });
+
+useSchemaOrg([
+  {
+    '@type': 'WebSite',
+    name: 'Teman Berbahasa',
+    description:
+      'Platform pembelajaran bahasa Jepang online berbasis diskusi interaktif bersama Discussion Partner.',
+    url: '/',
+  },
+]);
 </script>
 
 <template>

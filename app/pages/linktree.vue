@@ -39,7 +39,7 @@ const registrationLinks = computed(() =>
 <template>
   <section
     aria-label="Teman Berbahasa Link"
-    class="relative flex min-h-dvh items-center justify-center overflow-hidden bg-gradient-to-b from-white via-white to-gray-50 py-5"
+    class="relative flex min-h-dvh items-center justify-center overflow-hidden bg-linear-to-b from-white via-white to-gray-50 py-5"
   >
     <div
       aria-hidden="true"
@@ -112,9 +112,7 @@ const registrationLinks = computed(() =>
                           <p class="font-semibold">
                             {{ link.title }}
                           </p>
-                          <p class="text-xs">
-                            Pendaftaran Tutup
-                          </p>
+                          <p class="text-xs">Pendaftaran Tutup</p>
                         </div>
                         <Icon
                           name="lucide:lock"

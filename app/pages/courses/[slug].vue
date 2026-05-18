@@ -3,9 +3,55 @@ const { course } = useCourse();
 const { whatsappUrl } = useContact();
 
 useSeoMeta({
-  title: () => `${course.value?.title} - Teman Berbahasa`,
-  description: () => course.value?.description,
+  title: () => `${course.value.title} - Teman Berbahasa`,
+  description: () => course.value.description,
+  keywords: () =>
+    `${course.value.title}, kelas bahasa jepang online, teman berbahasa, ${course.value.category.toLowerCase()}, belajar bahasa jepang`,
+  ogTitle: () => `${course.value.title} - Teman Berbahasa`,
+  ogDescription: () => course.value.description,
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => `${course.value.title} - Teman Berbahasa`,
+  twitterDescription: () => course.value.description,
 });
+
+useSchemaOrg([
+  {
+    '@type': 'Course',
+    name: course.value.title,
+    description: course.value.description,
+    provider: {
+      '@type': 'EducationalOrganization',
+      name: 'Teman Berbahasa',
+    },
+    courseMode: 'online',
+    inLanguage: ['id', 'ja'],
+    offers: course.value.schedules.map((s) => ({
+      '@type': 'Offer',
+      price: course.value.price,
+      priceCurrency: 'IDR',
+      validFrom: s.startDate.toISOString(),
+      url: s.registrationUrl,
+      availability:
+        new Date() > s.startDate
+          ? 'https://schema.org/SoldOut'
+          : 'https://schema.org/InStock',
+    })),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Beranda', item: '/' },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Program Belajar',
+        item: '/courses',
+      },
+      { '@type': 'ListItem', position: 3, name: course.value.title },
+    ],
+  },
+]);
 </script>
 
 <template>
@@ -15,7 +61,7 @@ useSeoMeta({
   >
     <!-- Background Decor -->
     <div
-      class="absolute inset-0 -z-10 overflow-hidden bg-gradient-to-b from-blue-50/50 to-white"
+      class="absolute inset-0 -z-10 overflow-hidden bg-linear-to-b from-blue-50/50 to-white"
     >
       <div
         class="absolute top-20 -left-20 h-96 w-96 rounded-full bg-blue-100 opacity-50 blur-3xl"

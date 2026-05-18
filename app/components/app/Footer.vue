@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { courses } from '#shared/data/courses';
 
-const { phoneNumber, instagramHandle, whatsappUrl, instagramUrl } = useContact();
+const { phoneNumber, instagramHandle, whatsappUrl, instagramUrl } =
+  useContact();
 </script>
 
 <template>
   <footer
     id="contact"
     aria-label="Contact and site links"
-    class="bg-gradient-to-r from-blue-700 to-blue-950 py-12 text-white"
+    class="bg-linear-to-r from-blue-700 to-blue-950 py-12 text-white"
   >
     <div class="container px-6">
       <div class="flex items-end justify-between">
