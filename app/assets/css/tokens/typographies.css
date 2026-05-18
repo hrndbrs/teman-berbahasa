@@ -1,0 +1,12 @@
+@theme {
+  /* ---- Extended font-size scale (sizes absent from Tailwind's built-in scale) ---- */
+  --text-2xs: 0.5625rem; /* 9px  — decorative mono labels, badge text              */
+  --text-label: 0.625rem; /* 10px — table column headers, stat card labels           */
+  --text-caption: 0.6875rem; /* 11px — timestamps, secondary fine info               */
+  --text-body-sm: 0.8125rem; /* 13px — table cell content, list body text            */
+  --text-subhead: 0.9375rem; /* 15px — card section headings (h2)                    */
+
+  /* ---- Extended tracking scale (values absent from Tailwind's built-in scale) ---- */
+  --tracking-loose: 0.12em; /* mono stat/badge labels  */
+  --tracking-looser: 0.14em; /* sidebar section labels  */
+}
