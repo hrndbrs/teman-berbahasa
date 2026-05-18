@@ -14,6 +14,10 @@ export default defineNuxtConfig({
     dirs: ['./shared/data'],
   },
 
+  routeRules: {
+    '/dashboard/**': { ssr: false },
+  },
+
   runtimeConfig: {
     public: {
       phoneNumber: process.env.CONTACT_PHONE_NUMBER || '',
@@ -21,6 +25,7 @@ export default defineNuxtConfig({
       tiktokHandle: process.env.CONTACT_TIKTOK_HANDLE || '',
       eventRegistrationUrl: process.env.EVENT_REGISTRATION_URL || '',
       siteUrl,
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000/api',
     },
   },
 
@@ -113,6 +118,10 @@ export default defineNuxtConfig({
       // Content Security Policy
       contentSecurityPolicy: {
         'base-uri': ["'none'"],
+        'connect-src': [
+          "'self'",
+          process.env.API_BASE_URL || 'http://localhost:8000',
+        ],
         'font-src': ["'self'", 'https:', 'data:'],
         'form-action': ["'self'"],
         'frame-ancestors': ["'none'"],
