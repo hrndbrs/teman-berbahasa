@@ -82,12 +82,11 @@ export default defineNuxtConfig({
   modules: [
     'reka-ui/nuxt',
     '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/hints',
     '@nuxtjs/seo',
     'nuxt-security',
+    '@nuxt/ui',
   ],
 
   security: {
