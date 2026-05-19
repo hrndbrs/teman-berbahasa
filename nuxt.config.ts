@@ -90,6 +90,11 @@ export default defineNuxtConfig({
     ],
   },
 
+  colorMode: {
+    dataValue: 'theme',
+    classSuffix: '',
+  },
+
   modules: [
     'reka-ui/nuxt',
     '@nuxt/eslint',

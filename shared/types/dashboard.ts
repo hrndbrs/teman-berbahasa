@@ -1,4 +1,10 @@
-export type ActivityColor = 'success' | 'info' | 'error' | 'warning' | 'neutral';
+export type ActivityColor =
+  | 'success'
+  | 'info'
+  | 'error'
+  | 'warning'
+  | 'neutral';
+
 export type EventType = 'MEETING' | 'WORKSHOP' | 'HOLIDAY';
 
 export interface Stat {
