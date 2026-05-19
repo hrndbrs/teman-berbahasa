@@ -10,7 +10,7 @@ defineProps<{ courses: CourseLoadItem[] }>();
     to="/dashboard/courses"
     link-label="Manage"
   >
-    <ul class="divide-y divide-muted">
+    <ul class="divide-y divide-muted overflow-x-scroll">
       <li
         v-for="course in courses"
         :key="course.code"

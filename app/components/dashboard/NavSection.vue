@@ -20,6 +20,7 @@ defineProps<{
       :items
       :collapsed
       orientation="vertical"
+      color="neutral"
     />
   </div>
 </template>
