@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui';
+import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui';
 
 const { user, role, logout } = useAuth();
+
+const colorMode = useColorMode();
+
+const seasonMap = {
+  Spring: '春',
+  Summer: '夏',
+  Fall: '秋',
+  Winter: '冬',
+} as const;
 
 const semesterLabel = computed(() => {
   const now = new Date();
@@ -15,7 +24,7 @@ const semesterLabel = computed(() => {
         : month >= 8 && month <= 10
           ? 'Fall'
           : 'Winter';
-  return `${season} · ${year}`;
+  return `${season} · ${year} ${seasonMap[season]}`;
 });
 
 const workspaceNav = computed<NavigationMenuItem[]>(() => [
@@ -84,13 +93,33 @@ const handleLogout = async () => {
   await logout();
   await navigateTo('/login');
 };
+
+const userMenuItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: colorMode.value === 'dark' ? 'Light mode' : 'Dark mode',
+      icon: colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon',
+      onSelect: () => {
+        colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+      },
+    },
+  ],
+  [
+    {
+      label: 'Logout',
+      icon: 'i-lucide-log-out',
+      color: 'error' as const,
+      onSelect: handleLogout,
+    },
+  ],
+]);
 </script>
 
 <template>
-  <UDashboardGroup>
+  <UDashboardGroup unit="rem">
     <UDashboardSidebar
       collapsible
-      resizable
+      class="bg-neutral-100 dark:bg-default"
     >
       <template #header="{ collapsed }">
         <div class="flex items-center gap-2.5 min-w-0">
@@ -102,17 +131,20 @@ const handleLogout = async () => {
             v-if="!collapsed"
             class="flex flex-col leading-none min-w-0"
           >
-            <span class="text-sm font-bold tracking-tight">tb.</span>
+            <span class="text-sm font-bold tracking-tight">
+              Teman Berbahasa
+            </span>
             <span
               class="text-2xs font-mono tracking-looser uppercase text-dimmed"
-              >Tutor Center</span
             >
+              Dashboard
+            </span>
           </div>
         </div>
       </template>
 
       <template #default="{ collapsed }">
-        <div class="flex flex-col gap-4 py-1">
+        <div class="flex flex-col gap-4 py-1 flex-1">
           <DashboardNavSection
             label="Workspace"
             :items="workspaceNav"
@@ -132,63 +164,95 @@ const handleLogout = async () => {
       </template>
 
       <template #footer="{ collapsed }">
-        <div class="flex flex-col gap-2">
-          <div
+        <div class="flex flex-col gap-2 pb-2 w-full">
+          <p
             v-if="!collapsed"
-            class="flex items-center justify-between px-3"
+            class="text-2xs font-mono tracking-looser uppercase text-dimmed"
           >
-            <span
-              class="text-2xs font-mono tracking-looser uppercase text-dimmed"
-              >{{ semesterLabel }}</span
-            >
-            <UButton
-              icon="i-lucide-settings"
-              color="neutral"
-              variant="ghost"
-              size="xs"
-            />
-          </div>
+            {{ semesterLabel }}
+          </p>
 
-          <div class="flex items-center gap-2 px-2 py-1">
-            <UAvatar
-              :alt="user?.name ?? 'User'"
-              size="sm"
-              class="shrink-0"
-            />
-            <div
-              v-if="!collapsed"
-              class="min-w-0 flex-1"
+          <ClientOnly>
+            <UDropdownMenu
+              :items="userMenuItems"
+              :side="collapsed ? 'right' : 'top'"
+              :ui="{ content: 'w-48' }"
             >
-              <p class="truncate text-sm font-medium">{{ user?.name }}</p>
-              <p
-                class="truncate text-xs font-mono tracking-widest uppercase text-dimmed"
-              >
-                {{ role }}
-              </p>
-            </div>
-            <ClientOnly>
-              <UColorModeButton
-                v-if="!collapsed"
-                size="xs"
+              <UButton
+                :avatar="{
+                  src: '',
+                  alt: user?.name ?? 'User',
+                  loading: 'lazy' as const,
+                  size: 'sm',
+                  ui: {
+                    root: 'bg-primary-100 dark:bg-primary-900/30',
+                    fallback:
+                      'text-primary-700 dark:text-primary-300 font-semibold',
+                  },
+                }"
                 color="neutral"
                 variant="ghost"
-              />
-            </ClientOnly>
-          </div>
-
-          <UButton
-            :icon="collapsed ? 'i-lucide-log-out' : undefined"
-            :label="collapsed ? undefined : 'Sign out'"
-            color="neutral"
-            variant="ghost"
-            block
-            size="sm"
-            @click="handleLogout"
-          />
+                class="w-full p-0 gap-3 justify-start"
+                :square="collapsed"
+                size="sm"
+                block
+              >
+                <template v-if="!collapsed">
+                  <span class="text-left">
+                    <span class="block line-clamp-1">
+                      {{ user?.name || 'User' }}
+                    </span>
+                    <span class="block text-dimmed line-clamp-1">
+                      {{ role || 'UNKNOWN' }}
+                    </span>
+                  </span>
+                </template>
+              </UButton>
+            </UDropdownMenu>
+          </ClientOnly>
         </div>
       </template>
     </UDashboardSidebar>
 
-    <slot />
+    <UDashboardPanel>
+      <template #header>
+        <UDashboardNavbar>
+          <template #leading>
+            <UDashboardSidebarCollapse />
+            <span
+              class="ml-2 text-label font-mono tracking-loose uppercase text-dimmed"
+            >
+              TB / Overview
+            </span>
+          </template>
+
+          <template #default>
+            <UInput
+              placeholder="Search students, courses, batches…"
+              icon="i-lucide-search"
+              size="sm"
+              class="w-72"
+            >
+              <template #trailing>
+                <UKbd>⌘K</UKbd>
+              </template>
+            </UInput>
+          </template>
+
+          <template #right>
+            <UButton
+              icon="i-lucide-bell"
+              color="neutral"
+              variant="ghost"
+              size="sm"
+            />
+          </template>
+        </UDashboardNavbar>
+      </template>
+
+      <template #body>
+        <slot />
+      </template>
+    </UDashboardPanel>
   </UDashboardGroup>
 </template>
