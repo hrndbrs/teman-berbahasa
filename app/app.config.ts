@@ -14,31 +14,20 @@ export default defineAppConfig({
       slots: {
         base: [
           'rounded-md font-medium inline-flex items-center gap-1.5',
-          'transition-colors duration-150 ease-[var(--ease-out-soft)]',
+          'transition-colors duration-150 ease-(--ease-out-soft)',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500',
+          'cursor-pointer',
           'disabled:opacity-50 disabled:cursor-not-allowed',
-        ].join(' '),
-      },
-      defaultVariants: {
-        size: 'md',
-        color: 'neutral',
-        variant: 'outline',
-      },
-      variants: {
-        size: {
-          sm: { base: 'h-7 px-2.5 text-xs gap-1' },
-          md: { base: 'h-8 px-3 text-[13px]' },
-          lg: { base: 'h-10 px-4 text-sm' },
-        },
+        ],
       },
     },
 
     card: {
       slots: {
-        root: 'bg-[var(--ui-bg)] ring-1 ring-[var(--ui-border)] rounded-[var(--radius-card)] shadow-[var(--shadow-soft)]',
-        header: 'px-5 py-4 border-b border-[var(--ui-border-muted)]',
+        root: 'bg-default ring-1 ring-default rounded-(--radius-card) shadow-(--shadow-soft)',
+        header: 'px-5 py-4 border-b border-muted',
         body: 'px-5 py-4',
-        footer: 'px-5 py-3 border-t border-[var(--ui-border-muted)]',
+        footer: 'px-5 py-3 border-t border-muted',
       },
     },
 
@@ -46,54 +35,52 @@ export default defineAppConfig({
       slots: {
         base: [
           'inline-flex items-center gap-1',
-          'font-mono text-[10px] tracking-[0.08em] uppercase',
-          'rounded px-1.5 py-0.5 border',
-        ].join(' '),
+          'font-mono text-3xs tracking-[0.08em] uppercase',
+        ],
       },
-      defaultVariants: { variant: 'subtle', color: 'neutral' },
     },
 
     input: {
       slots: {
         base: [
-          'bg-[var(--ui-bg-muted)] ring-1 ring-[var(--ui-border)]',
-          'rounded-md text-[13px] placeholder:text-[var(--ui-text-dimmed)]',
+          'bg-muted ring-1 ring-default',
+          'rounded-md text-body-sm placeholder:text-dimmed',
           'focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none',
-        ].join(' '),
+        ],
       },
       defaultVariants: { size: 'md', variant: 'outline' },
     },
 
     select: {
       slots: {
-        base: 'bg-[var(--ui-bg-muted)] ring-1 ring-[var(--ui-border)] rounded-md',
+        base: 'bg-muted ring-1 ring-default rounded-md',
       },
     },
 
     table: {
       slots: {
-        th: 'font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--ui-text-dimmed)] font-medium bg-[var(--ui-bg-muted)] px-3 py-2.5 border-b border-[var(--ui-border)]',
-        td: 'px-4 py-3 border-b border-[var(--ui-border-muted)] text-[13px] align-middle',
-        tr: 'transition-colors hover:bg-[var(--ui-bg-muted)]',
+        th: 'font-mono text-label tracking-loose uppercase text-dimmed font-medium bg-muted px-3 py-2.5 border-b border-default',
+        td: 'px-4 py-3 border-b border-muted text-body-sm align-middle',
+        tr: 'transition-colors hover:bg-muted',
       },
     },
 
     modal: {
       slots: {
-        overlay: 'bg-[oklch(0.18_0_0_/_0.45)] backdrop-blur-sm',
+        overlay: 'bg-black/45 backdrop-blur-sm',
         content:
-          'bg-[var(--ui-bg)] rounded-[var(--radius-card)] ring-1 ring-[var(--ui-border)] shadow-[var(--shadow-pop)] max-w-[720px]',
+          'bg-default rounded-(--radius-card) ring-1 ring-default shadow-(--shadow-pop) max-w-[45rem]',
       },
     },
 
     tabs: {
       slots: {
-        list: 'border-b border-[var(--ui-border)] gap-1',
+        list: 'border-b border-default gap-1',
         trigger: [
-          'px-3.5 py-2.5 text-[13px] text-[var(--ui-text-muted)]',
+          'px-3.5 py-2.5 text-muted',
           'border-b-2 border-transparent -mb-px',
-          'data-[state=active]:text-[var(--ui-text)] data-[state=active]:border-[var(--ui-text)]',
-        ].join(' '),
+          'data-[state=active]:text-default data-[state=active]:border-(--ui-text)',
+        ],
       },
     },
 
@@ -101,9 +88,32 @@ export default defineAppConfig({
        via <span class="kicker"> or compose with the tokens directly. */
     // kbd: {
     //   slots: {
-    //     base: 'font-mono text-[10px] tracking-[0.06em] uppercase border border-[var(--ui-border)] rounded px-1 py-0.5 text-[var(--ui-text-dimmed)]',
+    //     base: 'font-mono text-label tracking-[0.06em] uppercase border border-default rounded px-1 py-0.5 text-dimmed',
     //   },
     // },
+
+    navigationMenu: {
+      compoundVariants: [
+        {
+          variant: 'pill',
+          active: true,
+          highlight: false,
+          class: {
+            link: 'before:bg-inverted',
+          },
+        },
+        {
+          color: 'neutral',
+          variant: 'pill',
+          active: true,
+          class: {
+            link: 'text-inverted',
+            linkLeadingIcon:
+              'text-inverted group-data-[state=open]:text-inverted',
+          },
+        },
+      ],
+    },
   },
 
   brand: {
