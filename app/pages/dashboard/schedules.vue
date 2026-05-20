@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ALL_LEVELS, LEVEL_COLORS } from '~/utils/schedule';
-
 definePageMeta({ layout: 'dashboard' });
 useSeoMeta({ title: 'Schedule — Teman Berbahasa', robots: 'noindex' });
 
 const {
+  ALL_LEVELS,
+  LEVEL_COLORS,
   visibleSessions,
   weekDays,
   weekLabel,
@@ -15,15 +15,10 @@ const {
   next,
   today,
   reschedule,
-} = useSchedules();
-
-const selectedSession = ref<ScheduleSession | null>(null);
-const isModalOpen = ref(false);
-
-function onSelect(session: ScheduleSession) {
-  selectedSession.value = session;
-  isModalOpen.value = true;
-}
+  selectedSession,
+  isModalOpen,
+  onSelect,
+} = useSchedulesPage();
 </script>
 
 <template>

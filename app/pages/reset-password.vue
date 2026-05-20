@@ -1,163 +1,78 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'auth' });
-
 useSeoMeta({ title: 'Reset Password - Teman Berbahasa', robots: 'noindex' });
 
-const { resetPassword } = useAuth();
-const route = useRoute();
-const token = route.query.token as string | undefined;
-
-const form = reactive({ password: '', confirm: '' });
-const errors = reactive({ password: '', confirm: '' });
-const serverError = ref('');
-const loading = ref(false);
-const done = ref(false);
-
-const validatePassword = () => {
-  if (!form.password) {
-    errors.password = 'Password wajib diisi';
-    return false;
-  }
-  if (form.password.length < 8) {
-    errors.password = 'Password minimal 8 karakter';
-    return false;
-  }
-  errors.password = '';
-  return true;
-};
-
-const validateConfirm = () => {
-  if (!form.confirm) {
-    errors.confirm = 'Konfirmasi password wajib diisi';
-    return false;
-  }
-  if (form.confirm !== form.password) {
-    errors.confirm = 'Password tidak cocok';
-    return false;
-  }
-  errors.confirm = '';
-  return true;
-};
-
-const handleSubmit = async () => {
-  const valid = validatePassword() && validateConfirm();
-  if (!valid) return;
-
-  loading.value = true;
-  serverError.value = '';
-
-  try {
-    await resetPassword(token!, form.password);
-    done.value = true;
-  } catch (err: unknown) {
-    if (err instanceof ApiError && (err.status === 400 || err.status === 422)) {
-      serverError.value = 'Link reset tidak valid atau sudah kedaluwarsa';
-    } else {
-      serverError.value = 'Terjadi kesalahan. Coba lagi.';
-    }
-  } finally {
-    loading.value = false;
-  }
-};
+const { token, state, loading, serverError, done, onSubmit } =
+  useResetPasswordPage();
 </script>
 
 <template>
   <div>
-    <h1 class="mb-6 text-2xl font-bold text-gray-900">Reset Password</h1>
+    <h1 class="mb-6 text-2xl font-bold text-default">Reset Password</h1>
 
     <div
       v-if="!token"
-      class="text-center text-sm text-gray-600"
+      class="text-center text-sm text-muted"
     >
       Link tidak valid. Minta link reset baru di halaman
       <NuxtLink
         to="/forgot-password"
         class="text-tb-blue-3 hover:underline"
       >
-        Lupa Password </NuxtLink
-      >.
+        Lupa Password
+      </NuxtLink>
+      .
     </div>
 
     <template v-else-if="!done">
-      <div
+      <UAlert
         v-if="serverError"
-        role="alert"
-        class="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700"
-      >
-        {{ serverError }}
-      </div>
+        color="error"
+        variant="subtle"
+        :description="serverError"
+        class="mb-4"
+      />
 
-      <form
-        novalidate
-        @submit.prevent="handleSubmit"
+      <UForm
+        :schema="resetPasswordSchema"
+        :state="state"
+        class="space-y-4"
+        @submit="onSubmit"
       >
-        <div class="mb-4">
-          <label
-            for="password"
-            class="mb-1.5 block text-sm font-medium text-gray-700"
-          >
-            Password Baru
-          </label>
-          <input
-            id="password"
-            v-model="form.password"
+        <UFormField
+          name="password"
+          label="Password Baru"
+          required
+        >
+          <UInput
+            v-model="state.password"
             type="password"
             autofocus
-            :aria-invalid="!!errors.password"
-            aria-describedby="password-error"
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition focus:border-tb-blue-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
-            :class="{ 'border-red-400': errors.password }"
-            @blur="validatePassword"
+            placeholder="Min 8 karakter"
+            class="w-full"
           />
-          <p
-            v-if="errors.password"
-            id="password-error"
-            class="mt-1 text-xs text-red-600"
-          >
-            {{ errors.password }}
-          </p>
-        </div>
+        </UFormField>
 
-        <div class="mb-6">
-          <label
-            for="confirm"
-            class="mb-1.5 block text-sm font-medium text-gray-700"
-          >
-            Konfirmasi Password
-          </label>
-          <input
-            id="confirm"
-            v-model="form.confirm"
-            type="password"
-            :aria-invalid="!!errors.confirm"
-            aria-describedby="confirm-error"
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition focus:border-tb-blue-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
-            :class="{ 'border-red-400': errors.confirm }"
-            @blur="validateConfirm"
-          />
-          <p
-            v-if="errors.confirm"
-            id="confirm-error"
-            class="mt-1 text-xs text-red-600"
-          >
-            {{ errors.confirm }}
-          </p>
-        </div>
-
-        <button
-          type="submit"
-          :disabled="loading"
-          class="flex w-full items-center justify-center gap-2 rounded-lg bg-tb-blue-3 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+        <UFormField
+          name="confirm"
+          label="Konfirmasi Password"
+          required
         >
-          <Icon
-            v-if="loading"
-            name="lucide:loader-circle"
-            class="size-4 animate-spin"
-            aria-hidden="true"
+          <UInput
+            v-model="state.confirm"
+            type="password"
+            placeholder="Ulangi password baru"
+            class="w-full"
           />
-          {{ loading ? 'Menyimpan...' : 'Simpan Password Baru' }}
-        </button>
-      </form>
+        </UFormField>
+
+        <UButton
+          type="submit"
+          label="Simpan Password Baru"
+          :loading="loading"
+          block
+        />
+      </UForm>
     </template>
 
     <div
@@ -169,7 +84,7 @@ const handleSubmit = async () => {
         class="mx-auto mb-4 size-12 text-green-500"
         aria-hidden="true"
       />
-      <p class="mb-4 font-semibold text-gray-900">Password berhasil diubah</p>
+      <p class="mb-4 font-semibold text-default">Password berhasil diubah</p>
       <NuxtLink
         to="/login"
         class="inline-flex items-center gap-2 rounded-lg bg-tb-blue-3 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800"

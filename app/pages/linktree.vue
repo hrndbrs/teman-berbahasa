@@ -1,39 +1,7 @@
 <script setup lang="ts">
-import { courses } from '#shared/data/courses';
+definePageMeta({ layout: false });
 
-const { whatsappUrl, instagramUrl, tiktokUrl } = useContact();
-
-definePageMeta({
-  layout: false,
-});
-
-useSeoMeta({
-  title: 'Link - Teman Berbahasa',
-  description:
-    'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
-  ogTitle: 'Link - Teman Berbahasa',
-  ogDescription:
-    'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
-  twitterTitle: 'Link - Teman Berbahasa',
-  twitterDescription:
-    'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
-});
-
-const registrationLinks = computed(() =>
-  courses.flatMap((course) =>
-    course.schedules
-      .filter((schedule) => !!schedule.registrationUrl)
-      .map((schedule) => ({
-        id: schedule.id,
-        title: course.title,
-        label: `${schedule.days} • ${schedule.time}`,
-        url: schedule.registrationUrl,
-        isExpired: new Date() > new Date(schedule.startDate),
-      }))
-  )
-);
+const { whatsappUrl, instagramUrl, tiktokUrl, registrationLinks } = useLinktreePage();
 </script>
 
 <template>
@@ -109,9 +77,7 @@ const registrationLinks = computed(() =>
                         class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-400 cursor-not-allowed"
                       >
                         <div class="space-y-2 pr-2">
-                          <p class="font-semibold">
-                            {{ link.title }}
-                          </p>
+                          <p class="font-semibold">{{ link.title }}</p>
                           <p class="text-xs">Pendaftaran Tutup</p>
                         </div>
                         <Icon
@@ -128,12 +94,8 @@ const registrationLinks = computed(() =>
                         class="group flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-900 transition hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-gray-200/60 active:scale-[0.99]"
                       >
                         <div class="space-y-2 pr-2">
-                          <p class="font-semibold">
-                            {{ link.title }}
-                          </p>
-                          <p>
-                            {{ link.label }}
-                          </p>
+                          <p class="font-semibold">{{ link.title }}</p>
+                          <p>{{ link.label }}</p>
                         </div>
                         <Icon
                           name="lucide:external-link"
@@ -174,7 +136,7 @@ const registrationLinks = computed(() =>
                   class="size-4 text-gray-900"
                   aria-hidden="true"
                 />
-                <span>Homepage Teman Berbahasa </span>
+                <span>Homepage Teman Berbahasa</span>
               </span>
               <Icon
                 name="lucide:arrow-right"

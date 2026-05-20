@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-dvh items-center justify-center bg-gray-50 px-4">
+  <div class="flex min-h-dvh items-center justify-center bg-muted px-4">
     <div class="w-full max-w-md">
       <div class="mb-8 text-center">
         <NuxtLink to="/">
@@ -10,7 +10,7 @@
           />
         </NuxtLink>
       </div>
-      <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+      <div class="rounded-2xl border border-default bg-elevated p-8 shadow-sm">
         <slot />
       </div>
     </div>
