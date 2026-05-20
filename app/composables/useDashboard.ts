@@ -117,9 +117,19 @@ const COURSE_LOAD: CourseLoadItem[] = [
   { code: 'JP-N5', name: 'JLPT N5 Foundations', attending: 14, capacity: 16 },
   { code: 'JP-N4', name: 'JLPT N4 Grammar Bridge', attending: 8, capacity: 14 },
   { code: 'JP-N3', name: 'JLPT N3 Intermediate', attending: 3, capacity: 12 },
-  { code: 'JP-CONV', name: 'Conversational Japanese', attending: 3, capacity: 12 },
+  {
+    code: 'JP-CONV',
+    name: 'Conversational Japanese',
+    attending: 3,
+    capacity: 12,
+  },
   { code: 'JP-N2', name: 'JLPT N2 Advanced', attending: 2, capacity: 10 },
-  { code: 'JP-BIZ', name: 'Business Japanese (Keigo)', attending: 0, capacity: 10 },
+  {
+    code: 'JP-BIZ',
+    name: 'Business Japanese (Keigo)',
+    attending: 0,
+    capacity: 10,
+  },
 ];
 
 const UPCOMING_EVENTS: UpcomingEvent[] = [
