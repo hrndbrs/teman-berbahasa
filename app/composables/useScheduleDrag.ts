@@ -1,5 +1,4 @@
 import type { Ref } from 'vue';
-import type { ScheduleSession, DayOfWeek } from '#shared/types/schedule';
 import {
   toMinutes,
   minutesToTime,

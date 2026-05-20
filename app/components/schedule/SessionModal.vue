@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ScheduleSession } from '#shared/types/schedule';
 import { DAY_NAMES_FULL } from '~/utils/schedule';
 
 defineProps<{

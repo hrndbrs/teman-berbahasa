@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ScheduleSession } from '#shared/types/schedule';
 import { LEVEL_COLORS } from '~/utils/schedule';
 
 const props = defineProps<{

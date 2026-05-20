@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ScheduleSession } from '#shared/types/schedule';
 import { ALL_LEVELS, LEVEL_COLORS } from '~/utils/schedule';
 
 definePageMeta({ layout: 'dashboard' });

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { courses, courseCategories } from '#shared/data/courses';
-import type { CourseCategory } from '#shared/types/course';
 
 const sectionRef = useTemplateRef('sectionRef');
 const headerRef = useTemplateRef('headerRef');

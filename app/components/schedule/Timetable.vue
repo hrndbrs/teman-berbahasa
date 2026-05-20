@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ScheduleSession, DayOfWeek } from '#shared/types/schedule';
 import {
   GRID_START_HOUR,
   GRID_END_HOUR,

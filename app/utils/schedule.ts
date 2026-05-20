@@ -1,4 +1,3 @@
-import type { CourseLevel, ScheduleSession } from '#shared/types/schedule';
 
 export const GRID_START_HOUR = 8;
 export const GRID_END_HOUR = 20;

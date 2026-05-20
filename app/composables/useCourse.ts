@@ -1,5 +1,4 @@
 import { courses } from '#shared/data/courses';
-import type { Course } from '#shared/types/course';
 
 export const useCourse = () => {
   const route = useRoute();

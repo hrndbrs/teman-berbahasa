@@ -1,8 +1,3 @@
-import type {
-  ScheduleSession,
-  DayOfWeek,
-  CourseLevel,
-} from '#shared/types/schedule';
 import { toMinutes, ALL_LEVELS } from '~/utils/schedule';
 
 function startOfWeek(date: Date): Date {
