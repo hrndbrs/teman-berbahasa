@@ -3,7 +3,7 @@ definePageMeta({ layout: 'auth' });
 
 useSeoMeta({ title: 'Lupa Password - Teman Berbahasa', robots: 'noindex' });
 
-const config = useRuntimeConfig();
+const { forgotPassword } = useAuth();
 const email = ref('');
 const emailError = ref('');
 const serverError = ref('');
@@ -30,11 +30,7 @@ const handleSubmit = async () => {
   serverError.value = '';
 
   try {
-    await $fetch('/auth/password-reset/request', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      body: { email: email.value },
-    });
+    await forgotPassword(email.value);
     sent.value = true;
   } catch {
     serverError.value = 'Terjadi kesalahan. Coba lagi.';

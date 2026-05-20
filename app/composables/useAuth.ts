@@ -1,15 +1,9 @@
-import type {
-  AuthState,
-  LoginPayload,
-  AuthResponse,
-  UserRole,
-} from '#shared/types/auth';
 
 const initialState = (): AuthState => ({ user: null, accessToken: null });
 
 export const useAuth = () => {
   const state = useState<AuthState>('auth', initialState);
-  const config = useRuntimeConfig();
+  const fetch = usePublicApi();
 
   const user = computed(() => state.value.user);
   const accessToken = computed(() => state.value.accessToken);
@@ -19,60 +13,53 @@ export const useAuth = () => {
   const can = (roles: UserRole[]) =>
     computed(() => !!role.value && roles.includes(role.value));
 
-  const setAuth = (response: AuthResponse) => {
-    state.value = { user: response.user, accessToken: response.accessToken };
-  };
-
   const clearAuth = () => {
     state.value = initialState();
   };
 
   const login = async (payload: LoginPayload) => {
-    const response = await $fetch<AuthResponse>('/auth/login', {
-      baseURL: config.public.apiBaseUrl,
+    const response = await fetch<LoginResponse>('/auth/login', {
       method: 'POST',
       body: payload,
-      credentials: 'include',
     });
-    setAuth(response);
+    state.value = { user: response.user, accessToken: response.access_token };
     return response;
   };
 
   const logout = async () => {
-    await $fetch('/auth/logout', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      credentials: 'include',
-      headers: accessToken.value
-        ? { Authorization: `Bearer ${accessToken.value}` }
-        : {},
-    }).catch(() => {});
+    await fetch('/auth/logout', { method: 'POST' }).catch(() => {});
     clearAuth();
   };
 
   const refresh = async (): Promise<string | null> => {
     try {
-      const response = await $fetch<AuthResponse>('/auth/refresh', {
-        baseURL: config.public.apiBaseUrl,
-        method: 'POST',
-        credentials: 'include',
-      });
-      setAuth(response);
-      return response.accessToken;
+      const response = await fetch<TokenPair>('/auth/refresh', { method: 'POST' });
+      state.value = { ...state.value, accessToken: response.access_token };
+      return response.access_token;
     } catch {
       clearAuth();
       return null;
     }
   };
 
+  const forgotPassword = async (email: string) => {
+    await fetch('/auth/forgot-password', {
+      method: 'POST',
+      body: { email },
+    });
+  };
+
+  const resetPassword = async (token: string, newPassword: string) => {
+    await fetch('/auth/reset-password', {
+      method: 'POST',
+      body: { token, new_password: newPassword },
+    });
+  };
+
   const userInitials = computed(() => {
-    if (!user.value?.name) return 'U';
-    return user.value.name
-      .split(' ')
-      .map((n: string) => n[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase();
+    const u = user.value;
+    if (!u) return 'U';
+    return `${u.first_name[0] ?? ''}${u.last_name[0] ?? ''}`.toUpperCase() || 'U';
   });
 
   return {
@@ -85,7 +72,8 @@ export const useAuth = () => {
     login,
     logout,
     refresh,
-    setAuth,
+    forgotPassword,
+    resetPassword,
     clearAuth,
   };
 };

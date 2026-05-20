@@ -3,7 +3,7 @@ definePageMeta({ layout: 'auth' });
 
 useSeoMeta({ title: 'Reset Password - Teman Berbahasa', robots: 'noindex' });
 
-const config = useRuntimeConfig();
+const { resetPassword } = useAuth();
 const route = useRoute();
 const token = route.query.token as string | undefined;
 
@@ -47,15 +47,10 @@ const handleSubmit = async () => {
   serverError.value = '';
 
   try {
-    await $fetch('/auth/password-reset/confirm', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      body: { token, password: form.password },
-    });
+    await resetPassword(token!, form.password);
     done.value = true;
-  } catch (err: any) {
-    const status = err?.response?.status;
-    if (status === 400 || status === 422) {
+  } catch (err: unknown) {
+    if (err instanceof ApiError && (err.status === 400 || err.status === 422)) {
       serverError.value = 'Link reset tidak valid atau sudah kedaluwarsa';
     } else {
       serverError.value = 'Terjadi kesalahan. Coba lagi.';

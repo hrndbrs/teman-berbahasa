@@ -48,16 +48,12 @@ const handleSubmit = async () => {
     await login({ email: form.email, password: form.password });
     const redirect = route.query.redirect as string | undefined;
     await navigateTo(redirect || '/dashboard');
-  } catch (err: any) {
-    const status = err?.response?.status;
-    if (status === 401) {
-      serverError.value = 'Email atau password salah';
-    } else if (status === 423) {
-      serverError.value = 'Akun dinonaktifkan, hubungi admin';
-    } else if (status === 429) {
-      const retryAfter = err?.response?.headers?.get?.('Retry-After');
-      const minutes = retryAfter ? Math.ceil(Number(retryAfter) / 60) : '?';
-      serverError.value = `Terlalu banyak percobaan. Coba lagi dalam ${minutes} menit`;
+  } catch (err: unknown) {
+    if (err instanceof ApiError && err.status === 401) {
+      serverError.value =
+        err.code === ApiError.Code.ACCOUNT_LOCKED
+          ? 'Akun dikunci karena terlalu banyak percobaan login'
+          : 'Email atau password salah';
     } else {
       serverError.value = 'Terjadi kesalahan. Coba lagi.';
     }

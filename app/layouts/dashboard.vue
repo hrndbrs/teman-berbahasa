@@ -181,7 +181,7 @@ const userMenuItems = computed<DropdownMenuItem[][]>(() => [
               <UButton
                 :avatar="{
                   src: '',
-                  alt: user?.name ?? 'User',
+                  alt: user ? `${user.first_name} ${user.last_name}` : 'User',
                   loading: 'lazy' as const,
                   size: 'sm',
                   ui: {
@@ -200,7 +200,7 @@ const userMenuItems = computed<DropdownMenuItem[][]>(() => [
                 <template v-if="!collapsed">
                   <span class="text-left">
                     <span class="block line-clamp-1">
-                      {{ user?.name || 'User' }}
+                      {{ user ? `${user.first_name} ${user.last_name}` : 'User' }}
                     </span>
                     <span class="block text-dimmed line-clamp-1">
                       {{ role || 'UNKNOWN' }}
