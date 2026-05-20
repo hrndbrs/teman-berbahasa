@@ -22,3 +22,18 @@ export const resetPasswordSchema = z
 export type LoginSchema = z.output<typeof loginSchema>;
 export type ForgotPasswordSchema = z.output<typeof forgotPasswordSchema>;
 export type ResetPasswordSchema = z.output<typeof resetPasswordSchema>;
+
+export const courseFormSchema = z.object({
+  course_name: z.string().min(1, 'Nama kursus wajib diisi'),
+  course_code: z
+    .string()
+    .min(1, 'Kode kursus wajib diisi')
+    .regex(/^[A-Z0-9-]+$/, 'Hanya huruf kapital, angka, dan tanda hubung'),
+  description: z.string().optional(),
+  level: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+  session_count: z.number().int().positive().optional(),
+  price: z.string().optional(),
+  max_capacity: z.number().int().positive().optional(),
+});
+
+export type CourseFormSchema = z.output<typeof courseFormSchema>;
