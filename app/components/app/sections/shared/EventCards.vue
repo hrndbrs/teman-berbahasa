@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { Event } from '#shared/types/event';
 
 defineProps<{
-  events: Event[];
+  events: TbEvent[];
 }>();
 </script>
 

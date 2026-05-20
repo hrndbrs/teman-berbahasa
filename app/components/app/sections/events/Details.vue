@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { Event } from '#shared/types/event';
 
 defineProps<{
-  events: Event[];
+  events: TbEvent[];
 }>();
 
-function isEventEnded(event: Event): boolean {
+function isEventEnded(event: TbEvent): boolean {
   if (!event.dates?.length) return false;
   const now = Date.now();
   return event.dates.every((d) => {

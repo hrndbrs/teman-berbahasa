@@ -1,16 +1,14 @@
 export type UserRole = 'admin' | 'teacher' | 'staff';
 
-export interface User {
+export interface UserInfo {
   id: string;
-  name: string;
-  email: string;
+  first_name: string;
+  last_name: string;
   role: UserRole;
-  phone?: string;
-  status: 'active' | 'inactive';
 }
 
 export interface AuthState {
-  user: User | null;
+  user: UserInfo | null;
   accessToken: string | null;
 }
 
@@ -19,7 +17,15 @@ export interface LoginPayload {
   password: string;
 }
 
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
+export interface LoginResponse {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  user: UserInfo;
+}
+
+export interface TokenPair {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
 }

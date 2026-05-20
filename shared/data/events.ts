@@ -1,6 +1,6 @@
-import type { Event } from '../types/event';
+import type { TbEvent } from '../types/event';
 
-export const events: Event[] = [
+export const events: TbEvent[] = [
   {
     id: 1,
     title: 'Ngomong Bahasa Jepang Dalam 90 Menit',

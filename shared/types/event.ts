@@ -3,7 +3,7 @@ export interface EventDate {
   end: string;
 }
 
-export interface Event {
+export interface TbEvent {
   id: number;
   title: string;
   description: string;
@@ -15,4 +15,4 @@ export interface Event {
 }
 
 /** Minimal event type for footer/navigation */
-export type EventSummary = Pick<Event, 'id' | 'title'>;
+export type EventSummary = Pick<TbEvent, 'id' | 'title'>;
