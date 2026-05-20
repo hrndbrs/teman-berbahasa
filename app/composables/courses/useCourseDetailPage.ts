@@ -39,7 +39,12 @@ export function useCourseDetailPage() {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Beranda', item: '/' },
-        { '@type': 'ListItem', position: 2, name: 'Program Belajar', item: '/courses' },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Program Belajar',
+          item: '/courses',
+        },
         { '@type': 'ListItem', position: 3, name: course.value.title },
       ],
     },

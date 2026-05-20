@@ -5,13 +5,16 @@ export function useLinktreePage() {
 
   useSeoMeta({
     title: 'Link - Teman Berbahasa',
-    description: 'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
+    description:
+      'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
     ogTitle: 'Link - Teman Berbahasa',
-    ogDescription: 'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
+    ogDescription:
+      'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
     ogType: 'website',
     twitterCard: 'summary_large_image',
     twitterTitle: 'Link - Teman Berbahasa',
-    twitterDescription: 'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
+    twitterDescription:
+      'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
   });
 
   const registrationLinks = computed(() =>

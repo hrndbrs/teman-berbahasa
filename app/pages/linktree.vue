@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ layout: false });
 
-const { whatsappUrl, instagramUrl, tiktokUrl, registrationLinks } = useLinktreePage();
+const { whatsappUrl, instagramUrl, tiktokUrl, registrationLinks } =
+  useLinktreePage();
 </script>
 
 <template>

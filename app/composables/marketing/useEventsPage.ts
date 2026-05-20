@@ -1,7 +1,8 @@
 import { events } from '#shared/data/events';
 
 export function useEventsPage() {
-  const seoDescription = 'Mini course dan webinar belajar bahasa Jepang dari Teman Berbahasa.';
+  const seoDescription =
+    'Mini course dan webinar belajar bahasa Jepang dari Teman Berbahasa.';
 
   useSeoMeta({
     title: 'Mini Courses - Teman Berbahasa',
