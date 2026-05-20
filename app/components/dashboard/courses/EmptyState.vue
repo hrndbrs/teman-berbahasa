@@ -9,7 +9,10 @@ defineEmits<{ create: [] }>();
 
 <template>
   <div class="flex flex-col items-center justify-center py-20 text-center">
-    <UIcon name="i-lucide-book-open" class="size-12 text-dimmed mb-4" />
+    <UIcon
+      name="i-lucide-book-open"
+      class="size-12 text-dimmed mb-4"
+    />
     <p class="text-default font-medium">Belum ada kursus</p>
     <p class="text-sm text-muted mt-1 mb-4">
       {{

@@ -23,7 +23,9 @@ const statusTabs = [
   <div class="px-6 pt-6 pb-4 border-b border-muted shrink-0">
     <div class="flex items-start justify-between gap-4">
       <div>
-        <p class="text-label font-mono tracking-looser uppercase text-dimmed mb-1">
+        <p
+          class="text-label font-mono tracking-looser uppercase text-dimmed mb-1"
+        >
           Catalog
         </p>
         <h1 class="text-4xl font-bold text-default leading-tight">
@@ -73,7 +75,9 @@ const statusTabs = [
 
         <span class="text-sm text-dimmed">
           {{ totalCount }} courses
-          <span class="text-success-500 dark:text-success-400">· {{ activeCount }} active</span>
+          <span class="text-success-500 dark:text-success-400"
+            >· {{ activeCount }} active</span
+          >
           <span class="text-muted">· {{ archivedCount }} archived</span>
         </span>
       </div>
@@ -83,7 +87,10 @@ const statusTabs = [
         class="flex items-center gap-1 text-sm text-muted hover:text-default transition-colors"
       >
         See all batches
-        <UIcon name="i-lucide-arrow-right" class="size-3.5" />
+        <UIcon
+          name="i-lucide-arrow-right"
+          class="size-3.5"
+        />
       </NuxtLink>
     </div>
   </div>

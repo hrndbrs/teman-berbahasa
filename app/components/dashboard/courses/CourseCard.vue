@@ -112,7 +112,9 @@ const dropdownItems = computed(() => [
           />
         </svg>
         <div class="absolute inset-0 flex items-center justify-center">
-          <span class="text-[0.5rem] font-mono text-muted leading-none text-center">
+          <span
+            class="text-[0.5rem] font-mono text-muted leading-none text-center"
+          >
             {{ course.enrolled_count }}<br />
             <span class="text-dimmed">/{{ course.max_capacity ?? '∞' }}</span>
           </span>
@@ -131,7 +133,9 @@ const dropdownItems = computed(() => [
     <!-- Detail rows -->
     <dl class="border-t border-muted pt-3 space-y-2">
       <div class="flex items-baseline justify-between">
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">Level</dt>
+        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">
+          Level
+        </dt>
         <dd
           class="text-sm font-medium"
           :class="course.level ? LEVEL_COLORS[course.level] : 'text-dimmed'"
@@ -140,15 +144,25 @@ const dropdownItems = computed(() => [
         </dd>
       </div>
       <div class="flex items-baseline justify-between">
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">Sessions</dt>
-        <dd class="text-sm font-semibold text-default">{{ course.session_count ?? '—' }}</dd>
+        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">
+          Sessions
+        </dt>
+        <dd class="text-sm font-semibold text-default">
+          {{ course.session_count ?? '—' }}
+        </dd>
       </div>
       <div class="flex items-baseline justify-between">
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">Price</dt>
-        <dd class="text-sm font-semibold text-default">{{ formatPrice(course.price) }}</dd>
+        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">
+          Price
+        </dt>
+        <dd class="text-sm font-semibold text-default">
+          {{ formatPrice(course.price) }}
+        </dd>
       </div>
       <div class="flex items-baseline justify-between">
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">Enrolled</dt>
+        <dt class="text-label font-mono tracking-loose uppercase text-dimmed">
+          Enrolled
+        </dt>
         <dd class="text-sm font-semibold text-default">
           {{ course.enrolled_count }} / {{ course.max_capacity ?? '∞' }}
         </dd>
@@ -156,12 +170,17 @@ const dropdownItems = computed(() => [
     </dl>
 
     <!-- Footer -->
-    <div class="flex items-center justify-between mt-3 pt-3 border-t border-muted">
+    <div
+      class="flex items-center justify-between mt-3 pt-3 border-t border-muted"
+    >
       <span class="text-label font-mono tracking-loose uppercase text-dimmed">
         Batches
         <span class="text-default font-semibold">{{ course.batch_count }}</span>
         <span v-if="course.ongoing_batch_count > 0">
-          · <span class="text-success-600 dark:text-success-400">{{ course.ongoing_batch_count }} ongoing</span>
+          ·
+          <span class="text-success-600 dark:text-success-400"
+            >{{ course.ongoing_batch_count }} ongoing</span
+          >
         </span>
       </span>
 

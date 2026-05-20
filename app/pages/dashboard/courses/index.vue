@@ -53,7 +53,11 @@ const {
           <USkeleton class="h-6 w-3/4 rounded" />
           <USkeleton class="h-4 w-full rounded" />
           <div class="space-y-2 pt-2">
-            <USkeleton v-for="j in 4" :key="j" class="h-4 w-full rounded" />
+            <USkeleton
+              v-for="j in 4"
+              :key="j"
+              class="h-4 w-full rounded"
+            />
           </div>
         </div>
       </div>
