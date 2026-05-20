@@ -38,7 +38,7 @@ Internal SPA for staff (`admin`, `teacher`, `staff` roles). CSR-only, fully auth
 | Form Builder + Responses          | All roles                     |
 | Public Form Submission (`/f/:id`) | Unauthenticated               |
 
-Auth flow: `/login` → `/forgot-password` → `/reset-password`. Session restored on cold load via silent `POST /auth/refresh` (httpOnly cookie). Token stored in memory only — never localStorage.
+Auth flow: `/login` → `/forgot-password` → `/reset-password`. Session restored on cold load via `GET /auth/me` (requires valid ACCESS token in localStorage). ACCESS and REFRESH tokens stored in localStorage.
 
 ## Tech Stack
 
@@ -51,6 +51,7 @@ Auth flow: `/login` → `/forgot-password` → `/reset-password`. Session restor
 | Icons         | `@nuxt/icon` (SVG mode)                               |
 | SEO           | `@nuxtjs/seo` (sitemap, robots, schema.org, OG image) |
 | Security      | `nuxt-security` (CSP, HSTS, rate limiting, CORS)      |
+| Validation    | Zod v4 (UForm schemas)                                |
 | Utils         | VueUse                                                |
 
 ## Directory Layout
@@ -59,20 +60,36 @@ Auth flow: `/login` → `/forgot-password` → `/reset-password`. Session restor
 app/
   assets/         # CSS design tokens, custom SVG icons, images
   components/     # Vue components
-  composables/    # useAuth, useApi, useContact, useCourse, useGSAP, useTheme
+  composables/
+    auth/         # useLoginPage, useForgotPasswordPage, useResetPasswordPage
+    courses/      # useCourseDetailPage, useCourseListPage
+    dashboard/    # useSchedulesPage
+    marketing/    # useHomePage, useEventsPage, useLinktreePage
+    index.ts      # barrel — re-exports all groups for Nuxt auto-import
+    useAuth.ts    # global auth state + login/logout/refresh/validateSession
+    useApi.ts     # $fetch wrapper with Bearer inject + 401 retry
+    useAuthToken.ts  # localStorage ACCESS/REFRESH token storage
+    useIdleSession.ts  # idle timeout → validateSession on resume
+    useContact.ts # contact/social URLs from runtimeConfig
+    useCourse.ts  # slug → Course lookup (marketing)
+    useGSAP.ts    # SSR-safe GSAP wrapper
   layouts/        # default (marketing), auth (login/reset), dashboard (app shell)
   middleware/     # auth.global.ts — route guard + role gating
   pages/          # file-based routing
   plugins/        # auth.client.ts — session restore on cold load
+  utils/
+    schemas.ts    # Zod schemas for all UForm pages
 shared/
   data/           # courses.ts, events.ts, faq.ts (auto-imported everywhere)
-  types/          # Course, Event, User, AuthState, UserRole, etc.
+  types/          # Course, TbEvent, UserInfo, AuthState, UserRole, etc.
 ```
 
 ## Key Composables
 
-- `useAuth` — global auth state (`user`, `accessToken`, `isAuthenticated`, `role`). Access token in memory; refresh token via httpOnly cookie. Use `can(['admin'])` for role-gated computed.
-- `useApi` — `$fetch` wrapper with Bearer token injection and silent 401 refresh. Single shared promise prevents parallel refresh races.
+- `useAuthToken` — get/set/clear ACCESS and REFRESH tokens in localStorage. Never access localStorage token keys directly.
+- `useAuth` — global auth state (`user`, `isAuthenticated`, `role`). Tokens live in localStorage via `useAuthToken`. Use `can(['admin'])` for role-gated computed. Exposes `validateSession()` and top-level `refresh()`.
+- `useApi` — `$fetch` wrapper with Bearer token injection and 401 retry (RETRY_SENTINEL pattern — no shared Promise).
+- `useIdleSession` — 15 min idle → `validateSession()` on next activity; redirects to `/login` on expired session.
 - `useContact` — single source of truth for all contact/social URLs. Never call `useRuntimeConfig()` directly in components.
 - `useCourse` — resolves route slug to a `Course`, throws fatal 404 if not found.
 - `useGSAP` — SSR-safe GSAP wrapper with ScrollTrigger context management.

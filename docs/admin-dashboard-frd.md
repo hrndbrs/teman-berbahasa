@@ -44,7 +44,7 @@ flowchart TD
     FormPublic[Public Form Submission\nUnauthenticated]
 
     API[REST API Backend]
-    TokenStore[Token Store\nmemory + httpOnly cookie]
+    TokenStore[Token Store\nlocalStorage]
 
     Browser --> AuthPages
     AuthPages -->|on success| Dashboard
@@ -85,11 +85,12 @@ flowchart TD
 
 - `POST /auth/login`
 - `POST /auth/logout`
-- `POST /auth/refresh` — called silently on app boot and on token expiry
-- `POST /auth/password-reset/request`
-- `POST /auth/password-reset/confirm`
+- `POST /auth/refresh` — called on 401 to get a new token pair
+- `GET /auth/me` — called silently on app boot to restore session from stored ACCESS token
+- `POST /auth/forgot-password`
+- `POST /auth/reset-password`
 
-**Auth state shape:** `{ user, role, accessToken }` — held in global state. Access token in memory only. Refresh token via httpOnly cookie preferred; localStorage acceptable if cookie not viable (document trade-off in implementation).
+**Auth state shape:** `{ user }` — held in global `useState`. ACCESS and REFRESH tokens stored in localStorage (via `useAuthToken`); never in component state or Pinia.
 
 **Client-side validation:**
 
@@ -526,11 +527,17 @@ sequenceDiagram
     participant API as Backend API
 
     U->>SPA: Open app
-    SPA->>API: POST /auth/refresh (silent, on boot)
-    alt refresh token valid
-        API-->>Store: New access token + user data
-        SPA->>U: Render dashboard
-    else refresh expired or no cookie
+    SPA->>SPA: Check ACCESS token in localStorage
+    alt ACCESS token present
+        SPA->>API: GET /auth/me (silent, on boot)
+        alt 200 OK
+            API-->>Store: User data
+            SPA->>U: Render dashboard
+        else 401 / expired
+            SPA->>SPA: Clear tokens
+            SPA->>U: Redirect to /login
+        end
+    else no ACCESS token
         SPA->>U: Redirect to /login
     end
 
@@ -548,12 +555,12 @@ sequenceDiagram
 
     note over SPA,API: Mid-session token expiry
     SPA->>API: Any authenticated request → 401
-    SPA->>API: POST /auth/refresh (queue other concurrent 401s)
+    SPA->>API: POST /auth/refresh (RETRY_SENTINEL pattern)
     alt refresh OK
-        API-->>Store: New access token
-        SPA->>API: Retry original queued requests
+        API-->>Store: New token pair stored in localStorage
+        SPA->>API: Retry original request once
     else refresh fails
-        Store->>Store: Clear auth state
+        Store->>Store: Clear auth state + localStorage tokens
         SPA->>U: Redirect to /login
     end
 ```
@@ -700,9 +707,10 @@ sequenceDiagram
 
 ### Auth state
 
-- Initialized on app boot via silent refresh call
-- Cleared on logout or unrecoverable `401`
-- Access token in memory only — not in localStorage
+- Initialized on app boot via `GET /auth/me` (requires ACCESS token in localStorage)
+- Tokens (ACCESS + REFRESH) stored in localStorage via `useAuthToken`
+- User object held in global `useState` — cleared on logout or unrecoverable `401`
+- Idle session: after 15 min of inactivity, first user action re-validates via `GET /auth/me`; redirects to `/login` if expired
 
 ### Form builder state
 
@@ -910,16 +918,15 @@ src/
 - Validation schema defined separately from UI (reusable, testable)
 - Form builder uses local reducer pattern (add / remove / reorder / update actions)
 
-### Token refresh race condition (critical)
+### Token refresh on 401 (critical)
 
-Implement a request queue in the HTTP interceptor layer:
+`useApi` uses a RETRY_SENTINEL symbol pattern:
 
-1. First `401` → trigger refresh, set `isRefreshing = true`
-2. Subsequent `401`s while refreshing → queue their retry callbacks
-3. Refresh succeeds → replay all queued requests with new token
-4. Refresh fails → reject all queued, clear auth state, redirect to login
+1. `onResponseError` catches `401` → calls `refresh()`, throws `RETRY_SENTINEL`
+2. Outer wrapper catches `RETRY_SENTINEL` → retries the original request once with the new token
+3. If refresh fails → tokens cleared, caller receives the original error
 
-This must live in the HTTP client interceptor, not scattered across individual API functions.
+This is simpler than a shared-Promise queue because `$fetch.create` serializes retries naturally. Concurrent 401s each trigger refresh independently; duplicate refreshes are idempotent if the backend accepts a valid REFRESH token.
 
 ---
 

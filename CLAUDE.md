@@ -36,9 +36,10 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 - `useGSAP` — wraps GSAP + ScrollTrigger with context management and SSR safety. Use instead of calling GSAP directly.
 - `useContact` — returns `{ phoneNumber, instagramHandle, whatsappUrl, instagramUrl, tiktokUrl }` from runtimeConfig. Single source of truth for all contact/social URLs.
 - `useCourse` — resolves current route slug to a `Course`, throws fatal 404 if not found.
-- `useAuth` — global auth state `{ user, accessToken, isAuthenticated, role }`. Access token kept in memory (`useState`); never persisted to localStorage. Refresh token delivered via httpOnly cookie. Call `can(['admin', 'staff'])` to derive role-gated computed.
-- `usePublicApi` — returns a pre-configured `$fetch` instance (`baseURL` + `credentials: 'include'`) for unauthenticated API calls. Used internally by `useAuth`; never call raw `$fetch` with manual config — use this instead.
-- `useApi` — `$fetch` wrapper with Bearer token auto-attach and token refresh on 401. Uses a module-level shared `Promise` to prevent parallel 401s from each triggering an independent refresh race.
+- `useAuthToken` — read/write/clear ACCESS and REFRESH tokens in localStorage. Single source of truth for token storage; never access localStorage keys directly.
+- `useAuth` — global auth state `{ user, isAuthenticated, role }`. Access and refresh tokens stored in localStorage via `useAuthToken`; never in `useState`. Call `can(['admin', 'staff'])` to derive role-gated computed. Exposes `validateSession()` (calls `GET /auth/me` to rehydrate user) and a top-level `refresh()` utility.
+- `useApi` — `$fetch` wrapper with Bearer token auto-attach and 401 retry. On 401 calls `refresh()`, then retries the original request once using a `RETRY_SENTINEL` symbol — no shared Promise needed.
+- `useIdleSession` — tracks user activity; after 15 min idle the next interaction triggers `validateSession()` and redirects to `/login` if the session has expired. Mounted globally in `dashboard.vue`.
 
 **Page composable pattern**: Keep page components thin — template + a single composable call. All reactive state, handlers, API calls, and validation logic live in a dedicated page composable named `use[PageName]Page` (e.g., `useLoginPage`). Group related page composables in a nested directory under `app/composables/` and add an `index.ts` barrel that re-exports them all so Nuxt can auto-import from a single entry point.
 
