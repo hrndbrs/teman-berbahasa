@@ -3,6 +3,8 @@ const authPages = ['/login', '/forgot-password', '/reset-password'];
 const adminOnlyRoutes = ['/dashboard/users'];
 
 export default defineNuxtRouteMiddleware((to) => {
+  if (!import.meta.client) return;
+
   const { isAuthenticated, role } = useAuth();
 
   const isDashboard = dashboardPattern.test(to.path);

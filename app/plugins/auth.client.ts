@@ -1,7 +1,14 @@
 export default defineNuxtPlugin(async () => {
-  const { isAuthenticated, refresh } = useAuth();
+  const token = useAuthToken();
+  if (!token.get('ACCESS')) return;
 
-  if (!isAuthenticated.value) {
-    await refresh();
+  const { validateSession } = useAuth();
+
+  try {
+    await validateSession();
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 401) {
+      token.clear();
+    }
   }
 });

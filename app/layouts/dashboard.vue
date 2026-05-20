@@ -2,6 +2,7 @@
 import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui';
 
 const { user, role, logout } = useAuth();
+useIdleSession();
 
 const colorMode = useColorMode();
 
@@ -200,7 +201,9 @@ const userMenuItems = computed<DropdownMenuItem[][]>(() => [
                 <template v-if="!collapsed">
                   <span class="text-left">
                     <span class="block line-clamp-1">
-                      {{ user ? `${user.first_name} ${user.last_name}` : 'User' }}
+                      {{
+                        user ? `${user.first_name} ${user.last_name}` : 'User'
+                      }}
                     </span>
                     <span class="block text-dimmed line-clamp-1">
                       {{ role || 'UNKNOWN' }}
