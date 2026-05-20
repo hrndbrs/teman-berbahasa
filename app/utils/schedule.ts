@@ -1,4 +1,3 @@
-
 export const GRID_START_HOUR = 8;
 export const GRID_END_HOUR = 20;
 export const HOUR_HEIGHT = 64; // px per hour

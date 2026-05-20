@@ -40,6 +40,31 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 - `usePublicApi` — returns a pre-configured `$fetch` instance (`baseURL` + `credentials: 'include'`) for unauthenticated API calls. Used internally by `useAuth`; never call raw `$fetch` with manual config — use this instead.
 - `useApi` — `$fetch` wrapper with Bearer token auto-attach and token refresh on 401. Uses a module-level shared `Promise` to prevent parallel 401s from each triggering an independent refresh race.
 
+**Page composable pattern**: Keep page components thin — template + a single composable call. All reactive state, handlers, API calls, and validation logic live in a dedicated page composable named `use[PageName]Page` (e.g., `useLoginPage`). Group related page composables in a nested directory under `app/composables/` and add an `index.ts` barrel that re-exports them all so Nuxt can auto-import from a single entry point.
+
+```
+app/composables/
+  auth/
+    useLoginPage.ts
+    useForgotPasswordPage.ts
+    useResetPasswordPage.ts
+    index.ts              # re-exports all composables in this group
+```
+
+`index.ts` barrel pattern:
+```ts
+export { useLoginPage } from './useLoginPage'
+export { useForgotPasswordPage } from './useForgotPasswordPage'
+export { useResetPasswordPage } from './useResetPasswordPage'
+```
+
+Page component then becomes:
+```vue
+<script setup lang="ts">
+const { state, schema, loading, serverError, onSubmit } = useLoginPage()
+</script>
+```
+
 **UI components**: Reka UI for headless primitives (`reka-ui/nuxt`). Tailwind CSS v4 via `@tailwindcss/vite` plugin. Design tokens live in `app/assets/css/tokens/colors.css`.
 
 **Styling conventions**:
