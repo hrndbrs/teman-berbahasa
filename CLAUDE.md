@@ -37,6 +37,7 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 - `useContact` — returns `{ phoneNumber, instagramHandle, whatsappUrl, instagramUrl, tiktokUrl }` from runtimeConfig. Single source of truth for all contact/social URLs.
 - `useCourse` — resolves current route slug to a `Course`, throws fatal 404 if not found.
 - `useAuth` — global auth state `{ user, accessToken, isAuthenticated, role }`. Access token kept in memory (`useState`); never persisted to localStorage. Refresh token delivered via httpOnly cookie. Call `can(['admin', 'staff'])` to derive role-gated computed.
+- `usePublicApi` — returns a pre-configured `$fetch` instance (`baseURL` + `credentials: 'include'`) for unauthenticated API calls. Used internally by `useAuth`; never call raw `$fetch` with manual config — use this instead.
 - `useApi` — `$fetch` wrapper with Bearer token auto-attach and token refresh on 401. Uses a module-level shared `Promise` to prevent parallel 401s from each triggering an independent refresh race.
 
 **UI components**: Reka UI for headless primitives (`reka-ui/nuxt`). Tailwind CSS v4 via `@tailwindcss/vite` plugin. Design tokens live in `app/assets/css/tokens/colors.css`.
@@ -96,10 +97,15 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 - Route guard: `app/middleware/auth.global.ts` — redirects unauthenticated users to `/login`, redirects authenticated users away from auth pages, blocks `/dashboard/users` for non-admins.
 - Role-based UI: **hide** write actions (not disable) for unauthorized roles. Check via `can(['admin'])` computed from `useAuth`.
 - API client: always use `useApi().apiFetch` for dashboard API calls — never raw `$fetch` — so token injection and refresh happen automatically.
-- Types in `shared/types/auth.ts`: `UserRole`, `User`, `AuthState`, `LoginPayload`, `AuthResponse`.
+- Types live in `shared/types/` (one file per domain: `auth`, `api`, `course`, `event`, `schedule`, `dashboard`). Nuxt auto-imports all types from `shared/types/` globally — no `import type` statement needed. Never add explicit type imports from `#shared/types` or sub-paths.
 - `API_BASE_URL` env var (default `http://localhost:8000/api`) controls backend endpoint.
 - Dashboard modules use routes `/dashboard/[module]` to avoid collisions with marketing routes `/courses` and `/events`.
 
 **Security**: `nuxt-security` enforces CSP, HSTS, rate limiting, and CORS in `nuxt.config.ts`. Modifying headers there affects all routes. `connect-src` includes `API_BASE_URL` for dashboard API calls.
 
 **Linting**: ESLint 9 flat config (`eslint.config.mjs`) + Prettier. `no-console` is a warning (only `warn`/`error` allowed). `@typescript-eslint/no-explicit-any` is a warning. Unused vars prefixed with `_` are exempt.
+
+**TypeScript conventions**:
+
+- Never use `any`. Use `unknown` in catch blocks. `usePublicApi` normalizes all API errors to `ApiError` (auto-imported from `app/utils/fetchError.ts`) in its `onResponseError` hook — catch blocks just do `err instanceof ApiError` and read `err.status`, `err.code`, `err.fields`. Error codes live on `ApiError.Code` (e.g. `ApiError.Code.ACCOUNT_LOCKED`) — no separate import needed.
+- When a value is an enum (a fixed set of string constants), define it as a `const` object with `as const` and export a companion type — not a bare union of string literals and not a TypeScript `enum`. Example from `shared/types/api.ts`: `ApiErrorCode`. Compare against enum members (`ApiErrorCode.ACCOUNT_LOCKED`), never bare strings (`'ACCOUNT_LOCKED'`).
