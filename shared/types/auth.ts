@@ -9,7 +9,6 @@ export interface UserInfo {
 
 export interface AuthState {
   user: UserInfo | null;
-  accessToken: string | null;
 }
 
 export interface LoginPayload {

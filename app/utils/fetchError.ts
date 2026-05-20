@@ -14,8 +14,10 @@ export class ApiError extends Error {
 
   constructor(
     public readonly status: number | undefined,
-    public readonly code: (typeof ApiError.Code)[keyof typeof ApiError.Code] | undefined,
-    public readonly fields: Record<string, string> | undefined,
+    public readonly code:
+      | (typeof ApiError.Code)[keyof typeof ApiError.Code]
+      | undefined,
+    public readonly fields: Record<string, string> | undefined
   ) {
     super(code ?? 'API_ERROR');
     this.name = 'ApiError';

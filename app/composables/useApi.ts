@@ -1,44 +1,38 @@
-import type { FetchOptions } from 'ofetch';
-
-let refreshPromise: Promise<string | null> | null = null;
+const RETRY_SENTINEL = Symbol('retry');
 
 export const useApi = () => {
-  const config = useRuntimeConfig();
-  const { accessToken, refresh, clearAuth } = useAuth();
-  const router = useRouter();
+  const token = useAuthToken();
+  const {
+    public: { apiBaseUrl },
+  } = useRuntimeConfig();
 
-  const apiFetch = $fetch.create({
-    baseURL: config.public.apiBaseUrl,
-    credentials: 'include',
+  const api = $fetch.create({
+    baseURL: apiBaseUrl,
     onRequest({ options }) {
-      const token = accessToken.value;
-      if (token) {
-        (options.headers as Record<string, string>).Authorization =
-          `Bearer ${token}`;
+      const accessToken = token.get('ACCESS');
+      if (accessToken) {
+        options.headers.set('Authorization', `Bearer ${accessToken}`);
       }
     },
-    async onResponseError({ response, options, request }) {
-      if (response.status !== 401) return;
 
-      if (!refreshPromise) {
-        refreshPromise = refresh().finally(() => {
-          refreshPromise = null;
-        });
+    async onResponseError({ response }) {
+      const refreshToken = token.get('REFRESH');
+
+      if (response.status === 401 && refreshToken) {
+        await refresh();
+        throw RETRY_SENTINEL;
       }
-
-      const newToken = await refreshPromise;
-
-      if (!newToken) {
-        clearAuth();
-        await router.push('/login');
-        return;
-      }
-
-      (options.headers as Record<string, string>).Authorization =
-        `Bearer ${newToken}`;
-      return $fetch(request as string, options as FetchOptions);
     },
   });
 
-  return { apiFetch };
+  return async <T>(request: string, options?: Parameters<typeof api>[1]) => {
+    try {
+      return await api<T>(request, options);
+    } catch (e) {
+      if (e === RETRY_SENTINEL) {
+        return await api<T>(request, options);
+      }
+      throw e;
+    }
+  };
 };
