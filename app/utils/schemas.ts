@@ -45,8 +45,7 @@ export const batchFormSchema = z.object({
     .min(1, 'Kode batch wajib diisi')
     .regex(/^[A-Z0-9-]+$/, 'Hanya huruf kapital, angka, dan tanda hubung'),
   course_id: z.string().min(1, 'Kursus wajib dipilih'),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
+  instructor_user_id: z.string().min(1, 'Instruktur wajib dipilih'),
   academic_year: z.string().optional(),
 });
 

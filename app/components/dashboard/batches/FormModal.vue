@@ -13,6 +13,7 @@ const api = useApi();
 const loading = ref(false);
 const serverError = ref('');
 const courses = ref<ApiCourse[]>([]);
+const instructors = ref<ApiUser[]>([]);
 
 const isEdit = computed(() => !!props.batch);
 const title = computed(() => (isEdit.value ? 'Edit Batch' : 'Batch Baru'));
@@ -24,8 +25,7 @@ const state = reactive<FormState>({
   batch_name: '',
   batch_code: '',
   course_id: '',
-  start_date: '',
-  end_date: '',
+  instructor_user_id: '',
   academic_year: '',
 });
 
@@ -35,16 +35,14 @@ watch(
     if (b) {
       state.batch_name = b.batch_name;
       state.batch_code = b.batch_code;
-      state.course_id = b.course_id;
-      state.start_date = b.start_date ?? '';
-      state.end_date = b.end_date ?? '';
+      state.course_id = b.course.id;
+      state.instructor_user_id = b.instructor.id;
       state.academic_year = b.academic_year ?? '';
     } else {
       state.batch_name = '';
       state.batch_code = '';
       state.course_id = '';
-      state.start_date = '';
-      state.end_date = '';
+      state.instructor_user_id = '';
       state.academic_year = '';
     }
   },
@@ -54,16 +52,21 @@ watch(
 watch(
   () => props.open,
   async (open) => {
-    if (open && courses.value.length === 0) {
-      try {
-        const res = await api<{ data: ApiCourse[] }>('/courses', {
-          query: { per_page: 100, status: 'active' },
-        });
-        courses.value = res.data;
-      } catch {
-        // non-fatal — select will be empty
-      }
-    }
+    if (!open) return;
+    const [coursesRes, instructorsRes] = await Promise.allSettled([
+      courses.value.length === 0
+        ? api<{ data: ApiCourse[] }>('/courses', { query: { per_page: 100, status: 'active' } })
+        : Promise.resolve(null),
+      instructors.value.length === 0
+        ? api<{ data: ApiUser[] }>('/users', {
+            query: { role: 'teacher', status: 'active', per_page: 100 },
+          })
+        : Promise.resolve(null),
+    ]);
+    if (coursesRes.status === 'fulfilled' && coursesRes.value)
+      courses.value = coursesRes.value.data;
+    if (instructorsRes.status === 'fulfilled' && instructorsRes.value)
+      instructors.value = instructorsRes.value.data;
   },
 );
 
@@ -71,6 +74,13 @@ const courseOptions = computed(() =>
   courses.value.map((c) => ({
     label: `${c.course_code} — ${c.course_name}`,
     value: c.id,
+  })),
+);
+
+const instructorOptions = computed(() =>
+  instructors.value.map((u) => ({
+    label: `${u.first_name} ${u.last_name}`,
+    value: u.id,
   })),
 );
 
@@ -82,18 +92,22 @@ const onSubmit = async () => {
   loading.value = true;
   serverError.value = '';
   try {
-    const payload: CreateBatchPayload = {
-      batch_name: state.batch_name,
-      batch_code: state.batch_code,
-      course_id: state.course_id,
-      start_date: state.start_date || undefined,
-      end_date: state.end_date || undefined,
-      academic_year: state.academic_year || undefined,
-    };
-
     if (isEdit.value && props.batch) {
+      const payload: UpdateBatchPayload = {
+        batch_name: state.batch_name,
+        batch_code: state.batch_code,
+        instructor_user_id: state.instructor_user_id,
+        academic_year: state.academic_year || undefined,
+      };
       await api(`/batches/${props.batch.id}`, { method: 'PATCH', body: payload });
     } else {
+      const payload: CreateBatchPayload = {
+        course_id: state.course_id,
+        instructor_user_id: state.instructor_user_id,
+        batch_name: state.batch_name,
+        batch_code: state.batch_code,
+        academic_year: state.academic_year || undefined,
+      };
       await api('/batches', { method: 'POST', body: payload });
     }
     emit('saved');
@@ -141,6 +155,22 @@ const onSubmit = async () => {
             value-key="value"
             label-key="label"
             placeholder="Pilih kursus"
+            :disabled="isEdit"
+            class="w-full"
+          />
+        </UFormField>
+
+        <UFormField
+          name="instructor_user_id"
+          label="Instruktur"
+          required
+        >
+          <USelect
+            v-model="state.instructor_user_id"
+            :items="instructorOptions"
+            value-key="value"
+            label-key="label"
+            placeholder="Pilih instruktur"
             class="w-full"
           />
         </UFormField>
@@ -179,28 +209,6 @@ const onSubmit = async () => {
             <UInput
               v-model="state.academic_year"
               placeholder="2026"
-              class="w-full"
-            />
-          </UFormField>
-
-          <UFormField
-            name="start_date"
-            label="Tanggal Mulai"
-          >
-            <UInput
-              v-model="state.start_date"
-              type="date"
-              class="w-full"
-            />
-          </UFormField>
-
-          <UFormField
-            name="end_date"
-            label="Tanggal Selesai"
-          >
-            <UInput
-              v-model="state.end_date"
-              type="date"
               class="w-full"
             />
           </UFormField>
