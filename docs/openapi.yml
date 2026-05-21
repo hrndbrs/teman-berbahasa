@@ -61,6 +61,11 @@ tags:
       Course catalog CRUD and archive.
       All endpoints require a valid JWT. Create/update/archive restricted to `admin` role.
       All authenticated roles can view courses.
+  - name: Batches
+    description: |
+      Batch management scoped to courses.
+      All endpoints require a valid JWT. Create/update/delete restricted to `admin` and `staff` roles.
+      All authenticated roles can view batches.
 
 paths:
   /health:
@@ -259,6 +264,31 @@ paths:
         "500":
           $ref: "#/components/responses/InternalError"
 
+  /auth/me:
+    get:
+      tags: [Auth]
+      operationId: getCurrentUser
+      summary: Get current user
+      description: |
+        Returns the authenticated user's profile information. Useful for validating
+        that the access token is still valid and retrieving the user's identity
+        (e.g. on page load).
+
+        The response is identical to the `user` object returned by `POST /auth/login`.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current user info.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
   /auth/reset-password:
     post:
       tags: [Auth]
@@ -302,35 +332,6 @@ paths:
                   message: invalid or expired reset token
         "422":
           $ref: "#/components/responses/ValidationError"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
-  /auth/me:
-    get:
-      tags: [Auth]
-      operationId: getMe
-      summary: Get current session
-      description: |
-        Returns the authenticated user's profile. Use to verify a session is still
-        valid and retrieve the same user object returned by `POST /auth/login`.
-
-        Requires a valid Bearer access token.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Session is valid; user info returned.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserInfo"
-              example:
-                id: 019687a2-0000-7000-8000-000000000001
-                first_name: Siti
-                last_name: Rahayu
-                role: admin
-        "401":
-          $ref: "#/components/responses/Unauthorized"
         "500":
           $ref: "#/components/responses/InternalError"
 
@@ -798,6 +799,222 @@ paths:
                   updated_at:
                     type: string
                     format: date-time
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /batches:
+    get:
+      tags: [Batches]
+      operationId: listBatches
+      summary: List batches
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [upcoming, ongoing, completed]
+        - name: course_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        "200":
+          description: Paginated list of batches.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Batch"
+                  pagination:
+                    $ref: "#/components/schemas/PaginationMeta"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      tags: [Batches]
+      operationId: createBatch
+      summary: Create a batch
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBatchRequest"
+      responses:
+        "201":
+          description: Batch created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Batch"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /batches/{id}:
+    get:
+      tags: [Batches]
+      operationId: getBatch
+      summary: Get a batch
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Batch detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Batch"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    patch:
+      tags: [Batches]
+      operationId: updateBatch
+      summary: Update batch fields
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBatchRequest"
+      responses:
+        "200":
+          description: Updated batch.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Batch"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    delete:
+      tags: [Batches]
+      operationId: deleteBatch
+      summary: Delete batch
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Deleted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /batches/{id}/status:
+    patch:
+      tags: [Batches]
+      operationId: transitionBatchStatus
+      summary: Transition batch status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [upcoming, ongoing, completed]
+      responses:
+        "200":
+          description: Status updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchStatusUpdate"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -1324,6 +1541,117 @@ components:
           example: "480000.00"
         max_capacity:
           type: integer
+
+    # ── Batch schemas ─────────────────────────────────────────────────────────
+
+    BatchCourseRef:
+      type: object
+      required: [id, course_name, course_code]
+      properties:
+        id:
+          type: string
+          format: uuid
+        course_name:
+          type: string
+        course_code:
+          type: string
+
+    BatchInstructorRef:
+      type: object
+      required: [id, first_name, last_name]
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+
+    Batch:
+      type: object
+      required:
+        [
+          id,
+          batch_name,
+          batch_code,
+          status,
+          course,
+          instructor,
+          enrolled_count,
+          created_at,
+          updated_at,
+        ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_name:
+          type: string
+        batch_code:
+          type: string
+        academic_year:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [upcoming, ongoing, completed]
+        course:
+          $ref: "#/components/schemas/BatchCourseRef"
+        instructor:
+          $ref: "#/components/schemas/BatchInstructorRef"
+        enrolled_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    BatchStatusUpdate:
+      type: object
+      required: [id, status, updated_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [upcoming, ongoing, completed]
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateBatchRequest:
+      type: object
+      required: [course_id, instructor_user_id, batch_name, batch_code]
+      properties:
+        course_id:
+          type: string
+          format: uuid
+        instructor_user_id:
+          type: string
+          format: uuid
+        batch_name:
+          type: string
+        batch_code:
+          type: string
+        academic_year:
+          type: string
+
+    UpdateBatchRequest:
+      type: object
+      properties:
+        instructor_user_id:
+          type: string
+          format: uuid
+        batch_name:
+          type: string
+        batch_code:
+          type: string
+        academic_year:
+          type: string
 
     MessageResponse:
       type: object
