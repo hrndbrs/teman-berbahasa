@@ -34,14 +34,16 @@ export function useBatchesPage() {
     if (statusFilter.value !== 'all')
       result = result.filter((b) => b.status === statusFilter.value);
     if (courseFilter.value !== 'all')
-      result = result.filter((b) => b.course_code === courseFilter.value);
+      result = result.filter((b) => b.course.course_code === courseFilter.value);
     if (search.value.trim()) {
       const q = search.value.trim().toLowerCase();
+      const fullName = (b: ApiBatch) =>
+        `${b.instructor.first_name} ${b.instructor.last_name}`.toLowerCase();
       result = result.filter(
         (b) =>
           b.batch_name.toLowerCase().includes(q) ||
           b.batch_code.toLowerCase().includes(q) ||
-          b.instructor_name?.toLowerCase().includes(q),
+          fullName(b).includes(q),
       );
     }
     return result;
@@ -56,7 +58,8 @@ export function useBatchesPage() {
 
   const courseTabs = computed(() => {
     const map: Record<string, number> = {};
-    for (const b of batches.value) map[b.course_code] = (map[b.course_code] ?? 0) + 1;
+    for (const b of batches.value)
+      map[b.course.course_code] = (map[b.course.course_code] ?? 0) + 1;
     return Object.entries(map)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([code, count]) => ({ code, count }));

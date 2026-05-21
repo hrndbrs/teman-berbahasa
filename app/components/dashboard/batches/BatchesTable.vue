@@ -14,14 +14,6 @@ const STATUS_DOT: Record<ApiBatchStatus, string> = {
   upcoming: 'bg-warning-500',
   completed: 'bg-dimmed',
 };
-
-function shortDate(iso: string | null): string {
-  if (!iso) return '—';
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(iso));
-}
 </script>
 
 <template>
@@ -59,12 +51,7 @@ function shortDate(iso: string | null): string {
             <th
               class="text-left px-5 py-2.5 text-label font-mono tracking-loose uppercase text-dimmed font-normal"
             >
-              Start
-            </th>
-            <th
-              class="text-left px-5 py-2.5 text-label font-mono tracking-loose uppercase text-dimmed font-normal"
-            >
-              End
+              Year
             </th>
             <th
               class="text-left px-5 py-2.5 text-label font-mono tracking-loose uppercase text-dimmed font-normal"
@@ -87,18 +74,15 @@ function shortDate(iso: string | null): string {
             <td class="px-5 py-3 font-medium text-default">
               {{ batch.batch_name }}
             </td>
-            <td class="px-5 py-3 text-muted">{{ batch.course_name }}</td>
+            <td class="px-5 py-3 text-muted">{{ batch.course.course_name }}</td>
             <td class="px-5 py-3 font-mono text-muted">
               {{ batch.batch_code }}
             </td>
             <td class="px-5 py-3 text-muted">
-              {{ batch.instructor_name ?? '—' }}
+              {{ batch.instructor.first_name }} {{ batch.instructor.last_name }}
             </td>
             <td class="px-5 py-3 text-muted">
-              {{ shortDate(batch.start_date) }}
-            </td>
-            <td class="px-5 py-3 text-muted">
-              {{ shortDate(batch.end_date) }}
+              {{ batch.academic_year ?? '—' }}
             </td>
             <td class="px-5 py-3">
               <span

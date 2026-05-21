@@ -21,32 +21,20 @@ const STATUS_DOT: Record<ApiBatchStatus, string> = {
   completed: 'bg-dimmed',
 };
 
-const progressPct = computed(() => {
-  const { status, start_date, end_date } = props.batch;
-  if (status === 'completed') return 100;
-  if (status === 'upcoming' || !start_date || !end_date) return 0;
-  const start = new Date(start_date).getTime();
-  const end = new Date(end_date).getTime();
-  const now = Date.now();
-  if (now >= end) return 100;
-  if (now <= start) return 0;
-  return Math.round(((now - start) / (end - start)) * 100);
-});
+const PROGRESS_PCT: Record<ApiBatchStatus, number> = {
+  upcoming: 0,
+  ongoing: 50,
+  completed: 100,
+};
 
-const progressLabel = computed(() => {
-  const { status } = props.batch;
-  if (status === 'upcoming') return 'starts soon';
-  if (status === 'completed') return 'complete';
-  return `${progressPct.value}% complete`;
-});
+const PROGRESS_BAR: Record<ApiBatchStatus, string> = {
+  upcoming: 'bg-warning-400',
+  ongoing: 'bg-primary',
+  completed: 'bg-success-500',
+};
 
-function shortDate(iso: string | null): string {
-  if (!iso) return '—';
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(iso));
-}
+const progressPct = computed(() => PROGRESS_PCT[props.batch.status]);
+const progressBar = computed(() => PROGRESS_BAR[props.batch.status]);
 </script>
 
 <template>
@@ -59,7 +47,7 @@ function shortDate(iso: string | null): string {
         <span
           class="px-2 py-0.5 text-label font-mono tracking-wide uppercase rounded border border-default text-muted bg-muted"
         >
-          {{ batch.course_code }}
+          {{ batch.course.course_code }}
         </span>
         <span
           class="px-2 py-0.5 text-label font-mono tracking-wide uppercase rounded border border-default text-muted bg-muted"
@@ -91,7 +79,7 @@ function shortDate(iso: string | null): string {
     <h2 class="text-lg font-bold text-default leading-snug mb-0.5">
       {{ batch.batch_name }}
     </h2>
-    <p class="text-sm text-muted mb-4">{{ batch.course_name }}</p>
+    <p class="text-sm text-muted mb-4">{{ batch.course.course_name }}</p>
 
     <!-- Instructor + academic year -->
     <div class="flex items-center justify-between mb-4">
@@ -100,12 +88,12 @@ function shortDate(iso: string | null): string {
           class="size-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0"
         >
           <span class="text-[0.6rem] font-bold text-primary uppercase">
-            {{ batch.instructor_initials ?? '?' }}
+            {{ batch.instructor.first_name[0] }}{{ batch.instructor.last_name[0] }}
           </span>
         </div>
         <div>
           <p class="text-sm font-medium text-default leading-none">
-            {{ batch.instructor_name ?? '—' }}
+            {{ batch.instructor.first_name }} {{ batch.instructor.last_name }}
           </p>
           <p
             class="text-label font-mono tracking-loose uppercase text-dimmed mt-0.5"
@@ -129,14 +117,10 @@ function shortDate(iso: string | null): string {
 
     <!-- Progress bar -->
     <div class="mt-auto">
-      <div class="flex items-center justify-between text-xs text-dimmed mb-1.5">
-        <span>{{ shortDate(batch.start_date) }}</span>
-        <span class="text-muted font-medium">{{ progressLabel }}</span>
-        <span>{{ shortDate(batch.end_date) }}</span>
-      </div>
-      <div class="h-1 rounded-full bg-muted overflow-hidden">
+      <div class="h-1.5 rounded-full bg-muted overflow-hidden">
         <div
-          class="h-full rounded-full bg-primary transition-all"
+          class="h-full rounded-full transition-all"
+          :class="progressBar"
           :style="{ width: progressPct + '%' }"
         />
       </div>
