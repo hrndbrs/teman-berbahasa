@@ -1,3 +1,4 @@
+
 export function useCourseDetailPage() {
   const route = useRoute();
   const api = useApi();
@@ -12,6 +13,14 @@ export function useCourseDetailPage() {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const editModalOpen = ref(false);
+
+  const enrollmentPct = computed(() => {
+    if (!course.value?.max_capacity) return null;
+    return Math.min(
+      100,
+      Math.round((course.value.enrolled_count / course.value.max_capacity) * 100),
+    );
+  });
 
   const fetchCourse = async () => {
     loading.value = true;
@@ -63,6 +72,7 @@ export function useCourseDetailPage() {
     isAdmin,
     courseId,
     editModalOpen,
+    enrollmentPct,
     fetchCourse,
     onEditSaved,
     onArchived,
