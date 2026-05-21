@@ -37,3 +37,17 @@ export const courseFormSchema = z.object({
 });
 
 export type CourseFormSchema = z.output<typeof courseFormSchema>;
+
+export const batchFormSchema = z.object({
+  batch_name: z.string().min(1, 'Nama batch wajib diisi'),
+  batch_code: z
+    .string()
+    .min(1, 'Kode batch wajib diisi')
+    .regex(/^[A-Z0-9-]+$/, 'Hanya huruf kapital, angka, dan tanda hubung'),
+  course_id: z.string().min(1, 'Kursus wajib dipilih'),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
+  academic_year: z.string().optional(),
+});
+
+export type BatchFormSchema = z.output<typeof batchFormSchema>;
