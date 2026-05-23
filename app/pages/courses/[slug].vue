@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { course, whatsappUrl } = useCourseDetailPage();
+const { course, whatsappUrl } = useCoursePage();
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-export function useCourseDetailPage() {
+export function useCoursePage() {
   const { course } = useCourse();
   const { whatsappUrl } = useContact();
 

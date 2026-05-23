@@ -17,9 +17,9 @@ export function useBatchesPage() {
     loading.value = true;
     error.value = null;
     try {
-      const res = await api<{ data: ApiBatch[]; pagination: { total: number } }>(
+      const res = await api<{ data: ApiBatch[]; pagination: PaginationMeta }>(
         '/batches',
-        { query: { per_page: 100 } },
+        { query: { per_page: 100 } }
       );
       batches.value = res.data;
     } catch {
@@ -34,7 +34,9 @@ export function useBatchesPage() {
     if (statusFilter.value !== 'all')
       result = result.filter((b) => b.status === statusFilter.value);
     if (courseFilter.value !== 'all')
-      result = result.filter((b) => b.course.course_code === courseFilter.value);
+      result = result.filter(
+        (b) => b.course.course_code === courseFilter.value
+      );
     if (search.value.trim()) {
       const q = search.value.trim().toLowerCase();
       const fullName = (b: ApiBatch) =>
@@ -43,7 +45,7 @@ export function useBatchesPage() {
         (b) =>
           b.batch_name.toLowerCase().includes(q) ||
           b.batch_code.toLowerCase().includes(q) ||
-          fullName(b).includes(q),
+          fullName(b).includes(q)
       );
     }
     return result;

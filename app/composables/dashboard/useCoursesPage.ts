@@ -30,7 +30,7 @@ export function useCoursesPage() {
     try {
       const res = await api<{
         data: ApiCourseWithStats[];
-        pagination: { total: number };
+        pagination: PaginationMeta;
       }>('/courses', { query: { per_page: 20 } });
       courses.value = res.data;
       totalCount.value = res.pagination.total;
