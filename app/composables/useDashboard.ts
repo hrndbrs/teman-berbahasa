@@ -168,19 +168,47 @@ const UPCOMING_EVENTS: UpcomingEvent[] = [
 ];
 
 export const useDashboard = () => {
-  const todayLabel = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const loading = ref(true);
+  const error = ref<string | null>(null);
+  const todayLabel = ref('');
+  const stats = ref<Stat[]>([]);
+  const todaysClasses = ref<ClassSession[]>([]);
+  const recentActivity = ref<ActivityItem[]>([]);
+  const courseLoad = ref<CourseLoadItem[]>([]);
+  const upcomingEvents = ref<UpcomingEvent[]>([]);
+
+  const fetchDashboard = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      todayLabel.value = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+      stats.value = STATS;
+      todaysClasses.value = TODAYS_CLASSES;
+      recentActivity.value = RECENT_ACTIVITY;
+      courseLoad.value = COURSE_LOAD;
+      upcomingEvents.value = UPCOMING_EVENTS;
+    } catch {
+      error.value = 'Gagal memuat data dashboard.';
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  onMounted(fetchDashboard);
 
   return {
+    loading,
+    error,
     todayLabel,
-    stats: STATS,
-    todaysClasses: TODAYS_CLASSES,
-    recentActivity: RECENT_ACTIVITY,
-    courseLoad: COURSE_LOAD,
-    upcomingEvents: UPCOMING_EVENTS,
+    stats,
+    todaysClasses,
+    recentActivity,
+    courseLoad,
+    upcomingEvents,
   };
 };

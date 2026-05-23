@@ -39,8 +39,22 @@ const {
         <div
           v-for="i in 6"
           :key="i"
-          class="bg-elevated border border-default rounded-xl p-5 h-52 animate-pulse"
-        />
+          class="bg-elevated border border-default rounded-xl p-5 space-y-3"
+        >
+          <div class="flex items-center justify-between">
+            <USkeleton class="h-5 w-20 rounded" />
+            <USkeleton class="h-5 w-16 rounded" />
+          </div>
+          <USkeleton class="h-6 w-3/4 rounded" />
+          <USkeleton class="h-4 w-1/2 rounded" />
+          <div class="space-y-2 pt-2">
+            <USkeleton
+              v-for="j in 3"
+              :key="j"
+              class="h-4 w-full rounded"
+            />
+          </div>
+        </div>
       </div>
 
       <UAlert

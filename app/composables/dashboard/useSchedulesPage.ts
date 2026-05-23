@@ -1,6 +1,9 @@
 import { ALL_LEVELS, LEVEL_COLORS } from '~/utils/schedule';
 
 export function useSchedulesPage() {
+  const loading = ref(true);
+  const error = ref<string | null>(null);
+
   const {
     visibleSessions,
     weekDays,
@@ -22,9 +25,23 @@ export function useSchedulesPage() {
     isModalOpen.value = true;
   }
 
+  onMounted(async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      await Promise.resolve();
+    } catch {
+      error.value = 'Gagal memuat jadwal.';
+    } finally {
+      loading.value = false;
+    }
+  });
+
   return {
     ALL_LEVELS,
     LEVEL_COLORS,
+    loading,
+    error,
     visibleSessions,
     weekDays,
     weekLabel,
