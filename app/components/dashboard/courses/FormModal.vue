@@ -30,6 +30,8 @@ const state = reactive<FormState>({
   max_capacity: undefined,
 });
 
+const initial = ref<UpdateCoursePayload | null>(null);
+
 watch(
   () => props.course,
   (c) => {
@@ -41,6 +43,7 @@ watch(
       state.session_count = c.session_count ?? undefined;
       state.price = c.price ?? '';
       state.max_capacity = c.max_capacity ?? undefined;
+      initial.value = { ...state };
     } else {
       state.course_name = '';
       state.course_code = '';
@@ -49,6 +52,7 @@ watch(
       state.session_count = undefined;
       state.price = '';
       state.max_capacity = undefined;
+      initial.value = null;
     }
   },
   { immediate: true }
@@ -68,22 +72,32 @@ const onSubmit = async () => {
   loading.value = true;
   serverError.value = '';
   try {
-    const payload: CreateCoursePayload = {
-      course_name: state.course_name,
-      course_code: state.course_code,
-      description: state.description || undefined,
-      level: state.level,
-      session_count: state.session_count,
-      price: state.price || undefined,
-      max_capacity: state.max_capacity,
-    };
-
     if (isEdit.value && props.course) {
+      const payload: UpdateCoursePayload = {};
+      const i = initial.value;
+      if (i) {
+        if (state.course_name !== i.course_name) payload.course_name = state.course_name;
+        if (state.course_code !== i.course_code) payload.course_code = state.course_code;
+        if (state.description !== i.description) payload.description = state.description || null;
+        if (state.level !== i.level) payload.level = state.level ?? null;
+        if (state.session_count !== i.session_count) payload.session_count = state.session_count ?? null;
+        if (state.price !== i.price) payload.price = state.price || null;
+        if (state.max_capacity !== i.max_capacity) payload.max_capacity = state.max_capacity ?? null;
+      }
       await api(`/courses/${props.course.id}`, {
         method: 'PATCH',
         body: payload,
       });
     } else {
+      const payload: CreateCoursePayload = {
+        course_name: state.course_name,
+        course_code: state.course_code,
+        description: state.description || undefined,
+        level: state.level,
+        session_count: state.session_count,
+        price: state.price || undefined,
+        max_capacity: state.max_capacity,
+      };
       await api('/courses', { method: 'POST', body: payload });
     }
     emit('saved');

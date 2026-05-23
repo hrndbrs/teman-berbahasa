@@ -29,6 +29,8 @@ const state = reactive<FormState>({
   academic_year: '',
 });
 
+const initial = ref<UpdateBatchPayload | null>(null);
+
 watch(
   () => props.batch,
   (b) => {
@@ -38,12 +40,19 @@ watch(
       state.course_id = b.course.id;
       state.instructor_user_id = b.instructor.id;
       state.academic_year = b.academic_year ?? '';
+      initial.value = {
+        batch_name: state.batch_name,
+        batch_code: state.batch_code,
+        instructor_user_id: state.instructor_user_id,
+        academic_year: state.academic_year,
+      };
     } else {
       state.batch_name = '';
       state.batch_code = '';
       state.course_id = '';
       state.instructor_user_id = '';
       state.academic_year = '';
+      initial.value = null;
     }
   },
   { immediate: true }
@@ -95,12 +104,14 @@ const onSubmit = async () => {
   serverError.value = '';
   try {
     if (isEdit.value && props.batch) {
-      const payload: UpdateBatchPayload = {
-        batch_name: state.batch_name,
-        batch_code: state.batch_code,
-        instructor_user_id: state.instructor_user_id,
-        academic_year: state.academic_year || undefined,
-      };
+      const payload: UpdateBatchPayload = {};
+      const i = initial.value;
+      if (i) {
+        if (state.batch_name !== i.batch_name) payload.batch_name = state.batch_name;
+        if (state.batch_code !== i.batch_code) payload.batch_code = state.batch_code;
+        if (state.instructor_user_id !== i.instructor_user_id) payload.instructor_user_id = state.instructor_user_id;
+        if (state.academic_year !== i.academic_year) payload.academic_year = state.academic_year || null;
+      }
       await api(`/batches/${props.batch.id}`, {
         method: 'PATCH',
         body: payload,
