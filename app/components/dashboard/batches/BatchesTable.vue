@@ -20,7 +20,9 @@ const STATUS_DOT: Record<ApiBatchStatus, string> = {
   <div class="bg-elevated border border-default rounded-xl overflow-hidden">
     <div class="px-5 py-4 border-b border-muted">
       <h2 class="text-subhead font-semibold text-default">All batches</h2>
-      <p class="text-label font-mono tracking-widest uppercase text-dimmed mt-0.5">
+      <p
+        class="text-label font-mono tracking-widest uppercase text-dimmed mt-0.5"
+      >
         Compact view · respects current filters
       </p>
     </div>

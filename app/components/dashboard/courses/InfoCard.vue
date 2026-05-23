@@ -31,7 +31,9 @@ function formatPrice(price: string | null): string {
   <DashboardCard title="Course Info">
     <div class="px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
       <div>
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed mb-1">
+        <dt
+          class="text-label font-mono tracking-loose uppercase text-dimmed mb-1"
+        >
           Subject
         </dt>
         <dd class="text-sm font-medium text-default">
@@ -39,7 +41,9 @@ function formatPrice(price: string | null): string {
         </dd>
       </div>
       <div>
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed mb-1">
+        <dt
+          class="text-label font-mono tracking-loose uppercase text-dimmed mb-1"
+        >
           Level
         </dt>
         <dd
@@ -50,7 +54,9 @@ function formatPrice(price: string | null): string {
         </dd>
       </div>
       <div>
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed mb-1">
+        <dt
+          class="text-label font-mono tracking-loose uppercase text-dimmed mb-1"
+        >
           Price
         </dt>
         <dd class="text-sm font-semibold text-default">
@@ -58,7 +64,9 @@ function formatPrice(price: string | null): string {
         </dd>
       </div>
       <div>
-        <dt class="text-label font-mono tracking-loose uppercase text-dimmed mb-1">
+        <dt
+          class="text-label font-mono tracking-loose uppercase text-dimmed mb-1"
+        >
           Max Capacity
         </dt>
         <dd class="text-sm font-semibold text-default">

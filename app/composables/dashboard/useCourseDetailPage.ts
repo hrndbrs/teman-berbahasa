@@ -1,4 +1,3 @@
-
 export function useCourseDetailPage() {
   const route = useRoute();
   const api = useApi();
@@ -18,7 +17,9 @@ export function useCourseDetailPage() {
     if (!course.value?.max_capacity) return null;
     return Math.min(
       100,
-      Math.round((course.value.enrolled_count / course.value.max_capacity) * 100),
+      Math.round(
+        (course.value.enrolled_count / course.value.max_capacity) * 100
+      )
     );
   });
 

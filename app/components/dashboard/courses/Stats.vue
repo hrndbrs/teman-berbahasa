@@ -8,7 +8,9 @@ defineProps<{
 <template>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <!-- Enrollment -->
-    <div class="col-span-2 md:col-span-1 bg-elevated border border-default rounded-xl p-5">
+    <div
+      class="col-span-2 md:col-span-1 bg-elevated border border-default rounded-xl p-5"
+    >
       <div class="flex items-center gap-2 mb-3">
         <UIcon
           name="i-lucide-users"

@@ -46,7 +46,7 @@ watch(
       state.academic_year = '';
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 watch(
@@ -55,7 +55,9 @@ watch(
     if (!open) return;
     const [coursesRes, instructorsRes] = await Promise.allSettled([
       courses.value.length === 0
-        ? api<{ data: ApiCourse[] }>('/courses', { query: { per_page: 100, status: 'active' } })
+        ? api<{ data: ApiCourse[] }>('/courses', {
+            query: { per_page: 100, status: 'active' },
+          })
         : Promise.resolve(null),
       instructors.value.length === 0
         ? api<{ data: ApiUser[] }>('/users', {
@@ -67,21 +69,21 @@ watch(
       courses.value = coursesRes.value.data;
     if (instructorsRes.status === 'fulfilled' && instructorsRes.value)
       instructors.value = instructorsRes.value.data;
-  },
+  }
 );
 
 const courseOptions = computed(() =>
   courses.value.map((c) => ({
     label: `${c.course_code} — ${c.course_name}`,
     value: c.id,
-  })),
+  }))
 );
 
 const instructorOptions = computed(() =>
   instructors.value.map((u) => ({
     label: `${u.first_name} ${u.last_name}`,
     value: u.id,
-  })),
+  }))
 );
 
 const onCodeInput = () => {
@@ -99,7 +101,10 @@ const onSubmit = async () => {
         instructor_user_id: state.instructor_user_id,
         academic_year: state.academic_year || undefined,
       };
-      await api(`/batches/${props.batch.id}`, { method: 'PATCH', body: payload });
+      await api(`/batches/${props.batch.id}`, {
+        method: 'PATCH',
+        body: payload,
+      });
     } else {
       const payload: CreateBatchPayload = {
         course_id: state.course_id,

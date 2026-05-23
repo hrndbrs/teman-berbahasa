@@ -3,7 +3,12 @@ const props = defineProps<{
   search: string;
   statusFilter: ApiBatchStatus | 'all';
   courseFilter: string;
-  statusCounts: { all: number; ongoing: number; upcoming: number; completed: number };
+  statusCounts: {
+    all: number;
+    ongoing: number;
+    upcoming: number;
+    completed: number;
+  };
   courseTabs: { code: string; count: number }[];
   shownCount: number;
   isAdmin: boolean;
@@ -33,7 +38,9 @@ function statusCount(v: ApiBatchStatus | 'all') {
     <!-- Title row -->
     <div class="flex items-start justify-between gap-4">
       <div>
-        <p class="text-label font-mono tracking-looser uppercase text-dimmed mb-1">
+        <p
+          class="text-label font-mono tracking-looser uppercase text-dimmed mb-1"
+        >
           Cohorts
         </p>
         <h1 class="text-4xl font-bold text-default leading-tight">
@@ -74,14 +81,14 @@ function statusCount(v: ApiBatchStatus | 'all') {
           type="text"
           placeholder="Search batch, code, instructor..."
           class="pl-8 pr-3 py-1.5 text-sm bg-muted border border-default rounded-lg text-default placeholder:text-dimmed focus:outline-none focus:ring-2 focus:ring-primary/30 w-60"
-          @input="emit('update:search', ($event.target as HTMLInputElement).value)"
+          @input="
+            emit('update:search', ($event.target as HTMLInputElement).value)
+          "
         />
       </div>
 
       <div class="flex items-center gap-2">
-        <span
-          class="text-label font-mono tracking-loose uppercase text-dimmed"
-        >
+        <span class="text-label font-mono tracking-loose uppercase text-dimmed">
           Status
         </span>
         <div class="flex items-center gap-0.5 bg-muted rounded-lg p-0.5">

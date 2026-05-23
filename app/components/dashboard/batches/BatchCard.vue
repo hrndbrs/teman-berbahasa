@@ -69,7 +69,9 @@ const progressBar = computed(() => PROGRESS_BAR[props.batch.status]);
         <span class="text-3xl font-bold text-default leading-none">
           {{ batch.enrolled_count }}
         </span>
-        <p class="text-label font-mono tracking-loose uppercase text-dimmed mt-0.5">
+        <p
+          class="text-label font-mono tracking-loose uppercase text-dimmed mt-0.5"
+        >
           Enrolled
         </p>
       </div>
@@ -88,7 +90,8 @@ const progressBar = computed(() => PROGRESS_BAR[props.batch.status]);
           class="size-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0"
         >
           <span class="text-[0.6rem] font-bold text-primary uppercase">
-            {{ batch.instructor.first_name[0] }}{{ batch.instructor.last_name[0] }}
+            {{ batch.instructor.first_name[0]
+            }}{{ batch.instructor.last_name[0] }}
           </span>
         </div>
         <div>
