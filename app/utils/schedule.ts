@@ -1,8 +1,8 @@
 export const GRID_START_HOUR = 8;
 export const GRID_END_HOUR = 20;
-export const HOUR_HEIGHT = 64; // px per hour
-export const GRID_START = GRID_START_HOUR * 60; // minutes
-export const GRID_END = GRID_END_HOUR * 60; // minutes
+export const HOUR_HEIGHT = 64;
+export const GRID_START = GRID_START_HOUR * 60;
+export const GRID_END = GRID_END_HOUR * 60;
 export const SNAP_MINUTES = 30;
 
 export const LEVEL_COLORS: Record<CourseLevel, string> = {
