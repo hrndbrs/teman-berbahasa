@@ -33,7 +33,12 @@ export interface CreateBatchPayload {
   academic_year?: string;
 }
 
-export type UpdateBatchPayload = Partial<Omit<CreateBatchPayload, 'course_id'>>;
+export interface UpdateBatchPayload {
+  instructor_user_id?: string;
+  batch_name?: string;
+  batch_code?: string;
+  academic_year?: string | null;
+}
 
 export interface BatchStatusUpdate {
   id: string;

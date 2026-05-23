@@ -44,5 +44,5 @@ export interface CreateEnrollmentPayload {
 export interface UpdateEnrollmentPayload {
   status?: 'dropped' | 'completed';
   payment_status?: 'partial' | 'paid';
-  final_grade?: string;
+  final_grade?: string | null;
 }

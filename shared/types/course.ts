@@ -58,4 +58,13 @@ export interface CreateCoursePayload {
   max_capacity?: number;
 }
 
-export type UpdateCoursePayload = Partial<CreateCoursePayload>;
+export interface UpdateCoursePayload {
+  course_name?: string;
+  course_code?: string;
+  description?: string | null;
+  subject?: string | null;
+  level?: ApiCourseLevel | null;
+  session_count?: number | null;
+  price?: string | null;
+  max_capacity?: number | null;
+}
