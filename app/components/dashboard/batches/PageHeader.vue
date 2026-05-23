@@ -34,44 +34,30 @@ function statusCount(v: ApiBatchStatus | 'all') {
 </script>
 
 <template>
-  <div class="px-6 pt-6 pb-4 border-b border-muted shrink-0 space-y-4">
-    <!-- Title row -->
-    <div class="flex items-start justify-between gap-4">
-      <div>
-        <p
-          class="text-label font-mono tracking-looser uppercase text-dimmed mb-1"
-        >
-          Cohorts
-        </p>
-        <h1 class="text-4xl font-bold text-default leading-tight">
-          <em class="not-italic font-(--font-display)">Batches</em>
-        </h1>
-        <p class="mt-1 text-sm text-muted">
-          Every cohort, scoped to its course. Each batch has one default
-          instructor.
-        </p>
-      </div>
-      <div class="flex items-center gap-2 shrink-0 mt-1">
-        <UButton
-          label="Export"
-          icon="i-lucide-download"
-          color="neutral"
-          variant="outline"
-          size="sm"
-        />
-        <UButton
-          v-if="isAdmin"
-          label="New batch"
-          icon="i-lucide-plus"
-          size="sm"
-          @click="emit('create')"
-        />
-      </div>
-    </div>
-
+  <DashboardPageHeader
+    eyebrow="Cohorts"
+    title="Batches"
+    description="Every cohort, scoped to its course. Each batch has one default instructor."
+  >
+    <template #actions>
+      <UButton
+        label="Export"
+        icon="i-lucide-download"
+        color="neutral"
+        variant="outline"
+        size="sm"
+      />
+      <UButton
+        v-if="isAdmin"
+        label="New batch"
+        icon="i-lucide-plus"
+        size="sm"
+        @click="emit('create')"
+      />
+    </template>
     <!-- Search + status tabs + count -->
-    <div class="flex items-center gap-3 flex-wrap">
-      <div class="relative">
+    <div class="flex flex-wrap items-center gap-3">
+      <div class="relative w-full sm:w-60">
         <UIcon
           name="i-lucide-search"
           class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-dimmed pointer-events-none"
@@ -80,14 +66,14 @@ function statusCount(v: ApiBatchStatus | 'all') {
           :value="search"
           type="text"
           placeholder="Search batch, code, instructor..."
-          class="pl-8 pr-3 py-1.5 text-sm bg-muted border border-default rounded-lg text-default placeholder:text-dimmed focus:outline-none focus:ring-2 focus:ring-primary/30 w-60"
+          class="w-full pl-8 pr-3 py-1.5 text-sm bg-muted border border-default rounded-lg text-default placeholder:text-dimmed focus:outline-none focus:ring-2 focus:ring-primary/30"
           @input="
             emit('update:search', ($event.target as HTMLInputElement).value)
           "
         />
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <span class="text-label font-mono tracking-loose uppercase text-dimmed">
           Status
         </span>
@@ -104,14 +90,14 @@ function statusCount(v: ApiBatchStatus | 'all') {
             @click="emit('update:statusFilter', tab.value)"
           >
             {{ tab.label }}
-            <span class="text-dimmed font-normal">
-              {{ statusCount(tab.value) }}
-            </span>
+            <span class="text-dimmed font-normal">{{
+              statusCount(tab.value)
+            }}</span>
           </button>
         </div>
       </div>
 
-      <span class="ml-auto text-sm text-dimmed">
+      <span class="text-sm text-dimmed sm:ml-auto">
         {{ shownCount }} of {{ statusCounts.all }} shown
       </span>
     </div>
@@ -143,5 +129,5 @@ function statusCount(v: ApiBatchStatus | 'all') {
         {{ tab.code }} {{ tab.count }}
       </button>
     </div>
-  </div>
+  </DashboardPageHeader>
 </template>
