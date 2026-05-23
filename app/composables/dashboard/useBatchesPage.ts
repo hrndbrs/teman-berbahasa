@@ -22,8 +22,8 @@ export function useBatchesPage() {
         { query: { per_page: 100 } }
       );
       batches.value = res.data;
-    } catch {
-      error.value = 'Gagal memuat data batch.';
+    } catch (err) {
+      error.value = isApiError(err) ? err.message : 'Gagal memuat data batch.';
     } finally {
       loading.value = false;
     }

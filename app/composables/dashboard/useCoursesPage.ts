@@ -34,8 +34,8 @@ export function useCoursesPage() {
       }>('/courses', { query: { per_page: 20 } });
       courses.value = res.data;
       totalCount.value = res.pagination.total;
-    } catch {
-      error.value = 'Gagal memuat data kursus.';
+    } catch (err) {
+      error.value = isApiError(err) ? err.message : 'Gagal memuat data kursus.';
     } finally {
       loading.value = false;
     }

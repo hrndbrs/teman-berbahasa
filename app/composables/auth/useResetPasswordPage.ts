@@ -21,10 +21,7 @@ export function useResetPasswordPage() {
       await resetPassword(token!, event.data.password);
       done.value = true;
     } catch (err: unknown) {
-      if (
-        isApiError(err) &&
-        (err.status === 400 || err.status === 422)
-      ) {
+      if (isApiError(err) && (err.status === 400 || err.status === 422)) {
         serverError.value = 'Link reset tidak valid atau sudah kedaluwarsa';
       } else {
         serverError.value = 'Terjadi kesalahan. Coba lagi.';

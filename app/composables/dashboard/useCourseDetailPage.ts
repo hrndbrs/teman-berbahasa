@@ -28,8 +28,10 @@ export function useCourseDetailPage() {
     error.value = null;
     try {
       course.value = await api<ApiCourseWithStats>(`/courses/${courseId}`);
-    } catch {
-      error.value = 'Gagal memuat detail kursus.';
+    } catch (err) {
+      error.value = isApiError(err)
+        ? err.message
+        : 'Gagal memuat detail kursus.';
     } finally {
       loading.value = false;
     }
