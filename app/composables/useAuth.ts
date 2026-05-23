@@ -45,6 +45,7 @@ export const useAuth = () => {
     const response = await api<LoginResponse>('/auth/login', {
       method: 'POST',
       body: payload,
+      skipAuthRefresh: true,
     });
     token.set('ACCESS', response.access_token);
     token.set('REFRESH', response.refresh_token);
@@ -58,6 +59,7 @@ export const useAuth = () => {
       await api('/auth/logout', {
         method: 'POST',
         body: { refresh_token: refreshToken },
+        skipAuthRefresh: true,
       }).catch(() => {});
     }
     clearAuth();
@@ -88,6 +90,7 @@ export const useAuth = () => {
     await api('/auth/forgot-password', {
       method: 'POST',
       body: { email },
+      skipAuthRefresh: true,
     });
   };
 
@@ -95,6 +98,7 @@ export const useAuth = () => {
     await api('/auth/reset-password', {
       method: 'POST',
       body: { token, new_password: newPassword },
+      skipAuthRefresh: true,
     });
   };
 
