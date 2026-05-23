@@ -107,10 +107,14 @@ const onSubmit = async () => {
       const payload: UpdateBatchPayload = {};
       const i = initial.value;
       if (i) {
-        if (state.batch_name !== i.batch_name) payload.batch_name = state.batch_name;
-        if (state.batch_code !== i.batch_code) payload.batch_code = state.batch_code;
-        if (state.instructor_user_id !== i.instructor_user_id) payload.instructor_user_id = state.instructor_user_id;
-        if (state.academic_year !== i.academic_year) payload.academic_year = state.academic_year || null;
+        if (state.batch_name !== i.batch_name)
+          payload.batch_name = state.batch_name;
+        if (state.batch_code !== i.batch_code)
+          payload.batch_code = state.batch_code;
+        if (state.instructor_user_id !== i.instructor_user_id)
+          payload.instructor_user_id = state.instructor_user_id;
+        if (state.academic_year !== i.academic_year)
+          payload.academic_year = state.academic_year || null;
       }
       await api(`/batches/${props.batch.id}`, {
         method: 'PATCH',
