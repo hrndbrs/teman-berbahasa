@@ -34,3 +34,9 @@ export interface CreateBatchPayload {
 }
 
 export type UpdateBatchPayload = Partial<Omit<CreateBatchPayload, 'course_id'>>;
+
+export interface BatchStatusUpdate {
+  id: string;
+  status: ApiBatchStatus;
+  updated_at: string;
+}

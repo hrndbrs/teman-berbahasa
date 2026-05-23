@@ -30,6 +30,7 @@ export const courseFormSchema = z.object({
     .min(1, 'Kode kursus wajib diisi')
     .regex(/^[A-Z0-9-]+$/, 'Hanya huruf kapital, angka, dan tanda hubung'),
   description: z.string().optional(),
+  subject: z.string().optional(),
   level: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
   session_count: z.number().int().positive().optional(),
   price: z.string().optional(),
