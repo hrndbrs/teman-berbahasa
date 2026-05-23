@@ -25,7 +25,7 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 
 **Data layer**: `shared/data/` holds static TypeScript arrays (`courses.ts`, `events.ts`, `faq.ts`). These are auto-imported everywhere via `nuxt.config.ts` `imports.dirs`. Import from `#shared/data/courses` in pages/components. No DB, no API routes.
 
-**Types**: `shared/types/` defines `Course`, `Event`, `CourseSchedule`, etc. Always import types from here rather than redefining inline.
+**Types**: `shared/types/` defines all API shapes and domain types (one file per domain: `api.ts`, `auth.ts`, `course.ts`, `batch.ts`, `student.ts`, `enrollment.ts`, `schedule.ts`, `event.ts`, `dashboard.ts`). Files in `app/` get these auto-imported globally by Nuxt — no explicit `import type` needed. Files in `shared/` (under `tsconfig.shared.json`) do NOT have Nuxt auto-imports; use `import type { ... } from '#imports'` for cross-file type references inside `shared/`.
 
 **Routing**: File-based. `app/pages/courses/[slug].vue` uses the `useCourse()` composable which does slug lookup against the static `courses` array and throws a 404 via `createError` if not found.
 
@@ -53,18 +53,43 @@ app/composables/
 ```
 
 `index.ts` barrel pattern:
+
 ```ts
-export { useLoginPage } from './useLoginPage'
-export { useForgotPasswordPage } from './useForgotPasswordPage'
-export { useResetPasswordPage } from './useResetPasswordPage'
+export { useLoginPage } from './useLoginPage';
+export { useForgotPasswordPage } from './useForgotPasswordPage';
+export { useResetPasswordPage } from './useResetPasswordPage';
 ```
 
 Page component then becomes:
+
 ```vue
 <script setup lang="ts">
-const { state, schema, loading, serverError, onSubmit } = useLoginPage()
+const { state, schema, loading, serverError, onSubmit } = useLoginPage();
 </script>
 ```
+
+**Dashboard composables** live in `app/composables/dashboard/`:
+
+- `useCoursesPage` — courses list with CRUD, archive, status filter
+- `useCourseDetailPage` — single course view with stats, edit, archive
+- `useBatchesPage` — batches list with CRUD, status/course filter, search
+- `useSchedulesPage` — timetable management
+
+**Marketing composables** live in `app/composables/marketing/`:
+
+- `useHomePage` — landing page
+- `useCourseListPage` — course catalog
+- `useCoursePage` — course detail (slug lookup)
+- `useEventsPage` — upcoming events
+- `useLinktreePage` — contact/social link hub
+
+**Zod validation schemas** live in `app/utils/schemas.ts`:
+
+- `loginSchema`, `forgotPasswordSchema`, `resetPasswordSchema` — auth forms
+- `courseFormSchema` — create/edit course (description/subject/level/session_count/price/max_capacity are optional)
+- `batchFormSchema` — create/edit batch (course_id, instructor_user_id required; academic_year optional)
+
+**PATCH convention**: All `PATCH` requests only send changed fields. For nullable fields, send explicit `null` to clear the value. Implement dirty-tracking by storing an `initial` snapshot when the edit modal opens and comparing current state on submit.
 
 **UI components**: Reka UI for headless primitives (`reka-ui/nuxt`). Tailwind CSS v4 via `@tailwindcss/vite` plugin. Design tokens live in `app/assets/css/tokens/colors.css`.
 
@@ -123,7 +148,7 @@ const { state, schema, loading, serverError, onSubmit } = useLoginPage()
 - Route guard: `app/middleware/auth.global.ts` — redirects unauthenticated users to `/login`, redirects authenticated users away from auth pages, blocks `/dashboard/users` for non-admins.
 - Role-based UI: **hide** write actions (not disable) for unauthorized roles. Check via `can(['admin'])` computed from `useAuth`.
 - API client: always use `useApi().apiFetch` for dashboard API calls — never raw `$fetch` — so token injection and refresh happen automatically.
-- Types live in `shared/types/` (one file per domain: `auth`, `api`, `course`, `event`, `schedule`, `dashboard`). Nuxt auto-imports all types from `shared/types/` globally — no `import type` statement needed. Never add explicit type imports from `#shared/types` or sub-paths.
+- Types live in `shared/types/` (one file per domain: `auth`, `api`, `course`, `batch`, `student`, `enrollment`, `schedule`, `event`, `dashboard`). Nuxt auto-imports all types from `shared/types/` globally — no `import type` statement needed. Never add explicit type imports from `#shared/types` or sub-paths.
 - `API_BASE_URL` env var (default `http://localhost:8000/api`) controls backend endpoint.
 - Dashboard modules use routes `/dashboard/[module]` to avoid collisions with marketing routes `/courses` and `/events`.
 

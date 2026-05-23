@@ -26,17 +26,17 @@ Data is static TypeScript arrays in `shared/data/` — no DB, no API routes.
 
 Internal SPA for staff (`admin`, `teacher`, `staff` roles). CSR-only, fully auth-gated, communicates with a REST API backend.
 
-| Module                            | Access                        |
-| --------------------------------- | ----------------------------- |
-| Users                             | Admin only                    |
-| Students                          | All roles                     |
-| Courses                           | All roles (write: admin only) |
-| Batches                           | All roles                     |
-| Enrollments                       | All roles                     |
-| Schedules + Overrides             | All roles                     |
-| Events                            | All roles                     |
-| Form Builder + Responses          | All roles                     |
-| Public Form Submission (`/f/:id`) | Unauthenticated               |
+| Module                             | Access                        |
+| ---------------------------------- | ----------------------------- |
+| Users (planned)                    | Admin only                    |
+| Students (planned)                 | All roles                     |
+| Courses                            | All roles (write: admin only) |
+| Batches                            | All roles                     |
+| Enrollments (planned)              | All roles                     |
+| Schedules                          | All roles                     |
+| Events (planned)                   | All roles                     |
+| Form Builder + Responses (planned) | All roles                     |
+| Public Form Submission (planned)   | Unauthenticated               |
 
 Auth flow: `/login` → `/forgot-password` → `/reset-password`. Session restored on cold load via `GET /auth/me` (requires valid ACCESS token in localStorage). ACCESS and REFRESH tokens stored in localStorage.
 
@@ -61,18 +61,17 @@ app/
   assets/         # CSS design tokens, custom SVG icons, images
   components/     # Vue components
   composables/
-    auth/         # useLoginPage, useForgotPasswordPage, useResetPasswordPage
-    courses/      # useCourseDetailPage, useCourseListPage
-    dashboard/    # useSchedulesPage
-    marketing/    # useHomePage, useEventsPage, useLinktreePage
-    index.ts      # barrel — re-exports all groups for Nuxt auto-import
-    useAuth.ts    # global auth state + login/logout/refresh/validateSession
-    useApi.ts     # $fetch wrapper with Bearer inject + 401 retry
-    useAuthToken.ts  # localStorage ACCESS/REFRESH token storage
-    useIdleSession.ts  # idle timeout → validateSession on resume
-    useContact.ts # contact/social URLs from runtimeConfig
-    useCourse.ts  # slug → Course lookup (marketing)
-    useGSAP.ts    # SSR-safe GSAP wrapper
+    auth/             # useLoginPage, useForgotPasswordPage, useResetPasswordPage
+    dashboard/        # useCoursesPage, useCourseDetailPage, useBatchesPage, useSchedulesPage
+    marketing/        # useHomePage, useCourseListPage, useCoursePage, useEventsPage, useLinktreePage
+    index.ts          # barrel — re-exports all groups for Nuxt auto-import
+    useAuth.ts        # global auth state + login/logout/refresh/validateSession
+    useApi.ts         # $fetch wrapper with Bearer inject + 401 retry
+    useAuthToken.ts   # localStorage ACCESS/REFRESH token storage
+    useIdleSession.ts # idle timeout → validateSession on resume
+    useContact.ts     # contact/social URLs from runtimeConfig
+    useCourse.ts      # slug → Course lookup (marketing)
+    useGSAP.ts        # SSR-safe GSAP wrapper
   layouts/        # default (marketing), auth (login/reset), dashboard (app shell)
   middleware/     # auth.global.ts — route guard + role gating
   pages/          # file-based routing
@@ -81,7 +80,7 @@ app/
     schemas.ts    # Zod schemas for all UForm pages
 shared/
   data/           # courses.ts, events.ts, faq.ts (auto-imported everywhere)
-  types/          # Course, TbEvent, UserInfo, AuthState, UserRole, etc.
+  types/          # api, auth, course, batch, student, enrollment, schedule, event, dashboard
 ```
 
 ## Key Composables
@@ -93,6 +92,10 @@ shared/
 - `useContact` — single source of truth for all contact/social URLs. Never call `useRuntimeConfig()` directly in components.
 - `useCourse` — resolves route slug to a `Course`, throws fatal 404 if not found.
 - `useGSAP` — SSR-safe GSAP wrapper with ScrollTrigger context management.
+- `useCoursesPage` — dashboard courses list with CRUD, archive, status filter.
+- `useCourseDetailPage` — dashboard single course view with stats, edit, archive.
+- `useBatchesPage` — dashboard batches list with CRUD, status/course filter, search.
+- `useSchedulesPage` — dashboard timetable management.
 
 ## Environment Variables
 
