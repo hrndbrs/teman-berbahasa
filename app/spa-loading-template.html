@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+  <head>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('nuxt-color-mode');
+          var dark;
+          if (stored === 'dark') dark = true;
+          else if (stored === 'light') dark = false;
+          else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute(
+            'data-theme',
+            dark ? 'dark' : 'light'
+          );
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --spa-bg: #ffffff;
+        --spa-text: #0a1023;
+        --spa-sidebar-bg: #f5f5f5;
+        --spa-border: #e5eaf0;
+        --spa-skeleton: #e5eaf0;
+        --spa-avatar: #d2d8df;
+      }
+
+      [data-theme='dark'] {
+        --spa-bg: #0c121a;
+        --spa-text: #ebf3f9;
+        --spa-sidebar-bg: #0c121a;
+        --spa-border: #2b3340;
+        --spa-skeleton: #1f2733;
+        --spa-avatar: #1f2733;
+      }
+
+      body {
+        background: var(--spa-bg);
+        color: var(--spa-text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .layout {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 15rem;
+        background: var(--spa-sidebar-bg);
+        border-right: 1px solid var(--spa-border);
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        flex-shrink: 0;
+      }
+
+      .logo {
+        margin-bottom: 24px;
+      }
+
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--spa-skeleton);
+        border-radius: 8px;
+      }
+
+      .logo-text {
+        width: 140px;
+        height: 14px;
+        background: var(--spa-skeleton);
+        border-radius: 4px;
+        margin-top: 6px;
+      }
+
+      .nav-group {
+        margin-bottom: 20px;
+      }
+
+      .nav-label {
+        width: 60px;
+        height: 10px;
+        background: var(--spa-skeleton);
+        border-radius: 3px;
+        margin-bottom: 10px;
+      }
+
+      .nav-item {
+        height: 32px;
+        background: var(--spa-skeleton);
+        border-radius: 6px;
+        margin-bottom: 4px;
+      }
+      .nav-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 16px;
+        border-top: 1px solid var(--spa-border);
+      }
+
+      .avatar {
+        width: 28px;
+        height: 28px;
+        background: var(--spa-avatar);
+        border-radius: 50%;
+      }
+
+      .avatar-text {
+        width: 100px;
+        height: 10px;
+        background: var(--spa-skeleton);
+        border-radius: 3px;
+        margin-top: 4px;
+      }
+
+      .panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .navbar {
+        height: 56px;
+        border-bottom: 1px solid var(--spa-border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .navbar-icon {
+        width: 16px;
+        height: 16px;
+        background: var(--spa-skeleton);
+        border-radius: 4px;
+      }
+
+      .navbar-breadcrumb {
+        width: 120px;
+        height: 12px;
+        background: var(--spa-skeleton);
+        border-radius: 3px;
+      }
+
+      .navbar-search {
+        width: 200px;
+        height: 32px;
+        background: var(--spa-skeleton);
+        border-radius: 6px;
+        margin-left: auto;
+      }
+
+      .navbar-bell {
+        width: 32px;
+        height: 32px;
+        background: var(--spa-skeleton);
+        border-radius: 6px;
+      }
+
+      .content {
+        flex: 1;
+        padding: 24px;
+        overflow-y: auto;
+      }
+
+      .content-title {
+        width: 180px;
+        height: 12px;
+        background: var(--spa-skeleton);
+        border-radius: 3px;
+        margin-bottom: 8px;
+      }
+
+      .content-heading {
+        width: 320px;
+        height: 24px;
+        background: var(--spa-skeleton);
+        border-radius: 6px;
+        margin-bottom: 6px;
+      }
+
+      .content-sub {
+        width: 160px;
+        height: 14px;
+        background: var(--spa-skeleton);
+        border-radius: 3px;
+        margin-bottom: 24px;
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .stat-card {
+        height: 112px;
+        background: var(--spa-skeleton);
+        border-radius: 12px;
+      }
+
+      .widget-row {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .widget {
+        height: 256px;
+        background: var(--spa-skeleton);
+        border-radius: 12px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .stat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .widget-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .skeleton {
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .logo-icon.skeleton {
+        animation-delay: 0s;
+      }
+      .logo-text.skeleton {
+        animation-delay: 0.1s;
+      }
+      .nav-label.skeleton {
+        animation-delay: 0.2s;
+      }
+      .stat-card.skeleton {
+        animation-delay: 0.3s;
+      }
+      .widget.skeleton {
+        animation-delay: 0.4s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-icon skeleton"></div>
+          <div class="logo-text skeleton"></div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label skeleton"></div>
+          <div class="nav-item skeleton"></div>
+          <div class="nav-item skeleton"></div>
+          <div class="nav-item skeleton"></div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label skeleton"></div>
+          <div class="nav-item skeleton"></div>
+          <div class="nav-item skeleton"></div>
+          <div class="nav-item skeleton"></div>
+        </div>
+        <div class="sidebar-footer">
+          <div class="nav-label skeleton"></div>
+          <div class="avatar skeleton"></div>
+          <div class="avatar-text skeleton"></div>
+        </div>
+      </aside>
+      <div class="panel">
+        <div class="navbar">
+          <div class="navbar-icon skeleton"></div>
+          <div class="navbar-breadcrumb skeleton"></div>
+          <div class="navbar-search skeleton"></div>
+          <div class="navbar-bell skeleton"></div>
+        </div>
+        <div class="content">
+          <div class="content-title skeleton"></div>
+          <div class="content-heading skeleton"></div>
+          <div class="content-sub skeleton"></div>
+          <div class="stat-grid">
+            <div class="stat-card skeleton"></div>
+            <div class="stat-card skeleton"></div>
+            <div class="stat-card skeleton"></div>
+            <div class="stat-card skeleton"></div>
+          </div>
+          <div class="widget-row">
+            <div class="widget skeleton"></div>
+            <div class="widget skeleton"></div>
+          </div>
+          <div class="widget-row">
+            <div class="widget skeleton"></div>
+            <div class="widget skeleton"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
