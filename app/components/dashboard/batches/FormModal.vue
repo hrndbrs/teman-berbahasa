@@ -128,7 +128,7 @@ const onSubmit = async () => {
     }
     emit('saved');
   } catch (err) {
-    if (err instanceof ApiError && err.fields) {
+    if (isApiError(err) && err.fields) {
       serverError.value = Object.values(err.fields)[0] ?? 'Terjadi kesalahan.';
     } else {
       serverError.value = 'Terjadi kesalahan. Coba lagi.';

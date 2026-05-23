@@ -17,7 +17,7 @@ export function useLoginPage() {
       const redirect = route.query.redirect as string | undefined;
       await navigateTo(redirect || '/dashboard');
     } catch (err: unknown) {
-      if (err instanceof ApiError && err.status === 401) {
+      if (isApiError(err) && err.status === 401) {
         serverError.value =
           err.code === ApiError.Code.ACCOUNT_LOCKED
             ? 'Akun dikunci karena terlalu banyak percobaan login'

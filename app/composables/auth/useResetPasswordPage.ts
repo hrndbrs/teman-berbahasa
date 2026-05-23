@@ -22,7 +22,7 @@ export function useResetPasswordPage() {
       done.value = true;
     } catch (err: unknown) {
       if (
-        err instanceof ApiError &&
+        isApiError(err) &&
         (err.status === 400 || err.status === 422)
       ) {
         serverError.value = 'Link reset tidak valid atau sudah kedaluwarsa';

@@ -1,3 +1,7 @@
+export function isApiError(e: unknown): e is ApiError {
+  return e instanceof Error && e.name === 'ApiError';
+}
+
 export class ApiError extends Error {
   static readonly Code = {
     BAD_REQUEST: 'BAD_REQUEST',
@@ -18,9 +22,10 @@ export class ApiError extends Error {
     public readonly code:
       | (typeof ApiError.Code)[keyof typeof ApiError.Code]
       | undefined,
+    message: string | undefined,
     public readonly fields: Record<string, string> | undefined
   ) {
-    super(code ?? 'API_ERROR');
+    super(message ?? code ?? 'API_ERROR');
     this.name = 'ApiError';
   }
 }

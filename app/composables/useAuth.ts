@@ -67,7 +67,7 @@ export const useAuth = () => {
     const accessToken = token.get('ACCESS');
 
     if (!accessToken) {
-      throw new ApiError(401, ApiError.Code.UNAUTHORIZED, undefined);
+      throw new ApiError(401, ApiError.Code.UNAUTHORIZED, undefined, undefined);
     }
 
     try {
