@@ -117,3 +117,49 @@ export function layoutDaySessions(
     return { session: s, colIndex: colOf.get(s.id)!, colCount };
   });
 }
+
+/** "09:00:00" → "9:00 AM" */
+export function formatApiTime(hhmmss: string): string {
+  const [hStr = '0', mStr = '0'] = hhmmss.split(':');
+  const h = Number(hStr);
+  const m = Number(mStr);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
+  return `${displayH}:${m.toString().padStart(2, '0')} ${period}`;
+}
+
+export const DAY_MAP: Record<string, DayOfWeek> = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+  saturday: 5,
+  sunday: 6,
+};
+
+const LEVEL_MAP: Record<string, CourseLevel> = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
+};
+
+export function mapApiLevel(level: string | null): CourseLevel {
+  return LEVEL_MAP[level ?? ''] ?? 'Beginner';
+}
+
+export function apiSessionToScheduleSession(s: ApiSession): ScheduleSession {
+  return {
+    id: s.schedule_id,
+    date: s.date,
+    code: s.batch.batch_code,
+    course: s.course.course_name,
+    instructor: `${s.effective_instructor.first_name} ${s.effective_instructor.last_name}`,
+    room: s.room ?? '',
+    day: DAY_MAP[s.day_of_week] ?? 0,
+    timeStart: formatApiTime(s.start_time),
+    timeEnd: formatApiTime(s.end_time),
+    level: mapApiLevel(s.course.level),
+    recurrence: 'Weekly',
+  };
+}

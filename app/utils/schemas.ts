@@ -51,3 +51,38 @@ export const batchFormSchema = z.object({
 });
 
 export type BatchFormSchema = z.output<typeof batchFormSchema>;
+
+export const scheduleFormSchema = z.object({
+  batch_id: z.string().min(1, 'Batch wajib dipilih'),
+  instructor_user_id: z.string().optional(),
+  day_of_week: z.enum([
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+  ]),
+  start_time: z.string().min(1, 'Jam mulai wajib diisi'),
+  end_time: z.string().min(1, 'Jam selesai wajib diisi'),
+  room: z.string().optional(),
+  recurrence: z.enum(['weekly', 'one-time']),
+  effective_from: z.string().min(1, 'Tanggal mulai wajib diisi'),
+  effective_until: z.string().optional(),
+});
+
+export type ScheduleFormSchema = z.output<typeof scheduleFormSchema>;
+
+export const overrideFormSchema = z.object({
+  original_date: z.string().min(1, 'Tanggal asli wajib diisi'),
+  override_type: z.enum(['reschedule', 'instructor_change']),
+  new_date: z.string().optional(),
+  new_start_time: z.string().optional(),
+  new_end_time: z.string().optional(),
+  new_room: z.string().optional(),
+  new_instructor_user_id: z.string().optional(),
+  reason: z.string().optional(),
+});
+
+export type OverrideFormSchema = z.output<typeof overrideFormSchema>;
