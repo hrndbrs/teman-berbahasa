@@ -1,7 +1,6 @@
 import type { Ref } from 'vue';
 import {
   toMinutes,
-  minutesToTime,
   GRID_START,
   GRID_END,
   HOUR_HEIGHT,
@@ -21,10 +20,10 @@ export function useScheduleDrag(
   dayColumnRefs: Ref<HTMLElement[]>,
   onSelect: (session: ScheduleSession) => void,
   onReschedule: (
-    id: string,
+    session: ScheduleSession,
     day: DayOfWeek,
-    timeStart: string,
-    timeEnd: string
+    startMin: number,
+    endMin: number
   ) => void
 ) {
   const dragState = ref<DragState | null>(null);
@@ -108,10 +107,10 @@ export function useScheduleDrag(
     } else {
       const { targetDay, targetStartMin, duration } = dragState.value;
       onReschedule(
-        activeSession.id,
+        activeSession,
         targetDay,
-        minutesToTime(targetStartMin),
-        minutesToTime(targetStartMin + duration)
+        targetStartMin,
+        targetStartMin + duration
       );
     }
 

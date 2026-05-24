@@ -16,6 +16,19 @@ export function useSchedulesPage() {
   const overrideDate = ref('');
   const overrideId = ref<string | null>(null);
 
+  const isDragConfirmOpen = ref(false);
+  const dragSaving = ref(false);
+  const pendingReschedule = ref<{
+    session: ScheduleSession;
+    rawSession: ApiSession;
+    targetDay: DayOfWeek;
+    targetDate: string;
+    targetStart: string;
+    targetEnd: string;
+    startMin: number;
+    endMin: number;
+  } | null>(null);
+
   const {
     loading,
     error,
@@ -146,6 +159,90 @@ export function useSchedulesPage() {
     }
   }
 
+  function onReschedule(
+    session: ScheduleSession,
+    targetDay: DayOfWeek,
+    startMin: number,
+    endMin: number
+  ) {
+    const rawSession = rawSessions.value.find(
+      (r) => r.schedule_id === session.id && r.date === session.date
+    );
+    if (!rawSession) return;
+
+    const targetDateObj = weekDays.value[targetDay];
+    if (!targetDateObj) return;
+
+    pendingReschedule.value = {
+      session,
+      rawSession,
+      targetDay,
+      targetDate: toISODate(targetDateObj),
+      targetStart: minutesToTime(startMin),
+      targetEnd: minutesToTime(endMin),
+      startMin,
+      endMin,
+    };
+    isDragConfirmOpen.value = true;
+  }
+
+  async function onConfirmReschedule() {
+    const p = pendingReschedule.value;
+    if (!p) return;
+
+    dragSaving.value = true;
+    try {
+      const newStartTime = minutesToApiTime(p.startMin);
+      const newEndTime = minutesToApiTime(p.endMin);
+      const dayChanged = p.targetDay !== p.session.day;
+
+      if (p.rawSession.override?.id) {
+        const payload: UpdateOverridePayload = {
+          new_start_time: newStartTime,
+          new_end_time: newEndTime,
+        };
+        if (dayChanged) {
+          payload.new_date = p.targetDate;
+        } else if (p.rawSession.override.new_date) {
+          payload.new_date = null;
+        }
+        await api(`/schedule-overrides/${p.rawSession.override.id}`, {
+          method: 'PATCH',
+          body: payload,
+        });
+      } else {
+        const payload: CreateOverridePayload = {
+          original_date: p.session.date,
+          override_type: 'reschedule',
+          new_start_time: newStartTime,
+          new_end_time: newEndTime,
+        };
+        if (dayChanged) payload.new_date = p.targetDate;
+        await api(`/schedules/${p.session.id}/overrides`, {
+          method: 'POST',
+          body: payload,
+        });
+      }
+
+      isDragConfirmOpen.value = false;
+      pendingReschedule.value = null;
+      fetchWeek();
+      toast.add({
+        title: 'Sesi dipindahkan',
+        color: 'success',
+        icon: 'i-lucide-check-circle',
+      });
+    } catch (err: unknown) {
+      toast.add({
+        title: isApiError(err) ? err.message : 'Gagal memindahkan sesi',
+        color: 'error',
+        icon: 'i-lucide-x-circle',
+      });
+    } finally {
+      dragSaving.value = false;
+    }
+  }
+
   onMounted(() => fetchWeek());
 
   return {
@@ -184,5 +281,10 @@ export function useSchedulesPage() {
     closeOverride,
     onSavedOverride,
     onDeleteOverride,
+    isDragConfirmOpen,
+    dragSaving,
+    pendingReschedule,
+    onReschedule,
+    onConfirmReschedule,
   };
 }

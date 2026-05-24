@@ -8,6 +8,7 @@ const props = defineProps<{
   colIndex?: number;
   colCount?: number;
   isDragging?: boolean;
+  canDrag?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -31,10 +32,10 @@ const blockStyle = computed(() => {
     class="absolute rounded-lg border p-2 overflow-hidden transition-opacity"
     :class="[
       LEVEL_COLORS[session.level],
-      isDragging ? 'opacity-0' : 'cursor-grab',
+      isDragging ? 'opacity-0' : canDrag ? 'cursor-grab' : 'cursor-pointer',
     ]"
     :style="blockStyle"
-    @pointerdown="emit('dragstart', $event, session)"
+    @pointerdown="canDrag && emit('dragstart', $event, session)"
   >
     <div class="flex items-start gap-1.5 mb-0.5">
       <UBadge

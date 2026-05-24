@@ -18,11 +18,17 @@ import { useScheduleDrag } from '~/composables/useScheduleDrag';
 const props = defineProps<{
   sessions: ScheduleSession[];
   weekDays: Date[];
+  canDrag?: boolean;
 }>();
 
 const emit = defineEmits<{
   select: [session: ScheduleSession];
-  reschedule: [id: string, day: DayOfWeek, timeStart: string, timeEnd: string];
+  reschedule: [
+    session: ScheduleSession,
+    day: DayOfWeek,
+    startMin: number,
+    endMin: number,
+  ];
 }>();
 
 const TOTAL_HEIGHT = (GRID_END_HOUR - GRID_START_HOUR) * HOUR_HEIGHT;
@@ -45,8 +51,8 @@ const dayColumnRefs = ref<HTMLElement[]>([]);
 const { dragState, startDrag } = useScheduleDrag(
   dayColumnRefs,
   (session) => emit('select', session),
-  (id, day, timeStart, timeEnd) =>
-    emit('reschedule', id, day, timeStart, timeEnd)
+  (session, day, startMin, endMin) =>
+    emit('reschedule', session, day, startMin, endMin)
 );
 
 const draggingSession = computed(() =>
@@ -135,6 +141,7 @@ function ghostHeight(state: DragState): number {
               :col-index="colIndex"
               :col-count="colCount"
               :is-dragging="dragState?.sessionId === session.id"
+              :can-drag="canDrag"
               @dragstart="startDrag"
             />
 

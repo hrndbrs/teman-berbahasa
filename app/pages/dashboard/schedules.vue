@@ -36,6 +36,11 @@ const {
   openEditOverride,
   onSavedOverride,
   onDeleteOverride,
+  isDragConfirmOpen,
+  dragSaving,
+  pendingReschedule,
+  onReschedule,
+  onConfirmReschedule,
 } = useSchedulesPage();
 </script>
 
@@ -168,7 +173,9 @@ const {
         <ScheduleTimetable
           :sessions="visibleSessions"
           :week-days="weekDays"
+          :can-drag="isAdmin"
           @select="onSelect"
+          @reschedule="onReschedule"
         />
       </div>
 
@@ -207,6 +214,18 @@ const {
         :original-date="overrideDate"
         :override-id="overrideId"
         @saved="onSavedOverride"
+      />
+
+      <!-- Drag reschedule confirm modal -->
+      <ScheduleDragConfirmModal
+        v-model:open="isDragConfirmOpen"
+        :session="pendingReschedule?.session ?? null"
+        :target-day="pendingReschedule?.targetDay ?? 0"
+        :target-date="pendingReschedule?.targetDate ?? ''"
+        :target-start="pendingReschedule?.targetStart ?? ''"
+        :target-end="pendingReschedule?.targetEnd ?? ''"
+        :saving="dragSaving"
+        @confirm="onConfirmReschedule"
       />
     </template>
   </div>

@@ -118,6 +118,21 @@ export function layoutDaySessions(
   });
 }
 
+/** Date → "YYYY-MM-DD" */
+export function toISODate(date: Date): string {
+  const y = date.getFullYear();
+  const m = (date.getMonth() + 1).toString().padStart(2, '0');
+  const d = date.getDate().toString().padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/** 540 → "09:00" (HH:MM for API) */
+export function minutesToApiTime(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+}
+
 /** "09:00:00" → "9:00 AM" */
 export function formatApiTime(hhmmss: string): string {
   const [hStr = '0', mStr = '0'] = hhmmss.split(':');
