@@ -36,7 +36,7 @@ const {
       <!-- Loading skeleton -->
       <div
         v-if="loading"
-        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+        class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
       >
         <div
           v-for="i in 6"
@@ -81,7 +81,7 @@ const {
       <!-- Course grid -->
       <div
         v-else
-        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+        class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
       >
         <DashboardCoursesCourseCard
           v-for="course in filteredCourses"

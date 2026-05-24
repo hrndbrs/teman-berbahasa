@@ -137,7 +137,7 @@ useGSAP(
               <li
                 v-for="schedule in course.schedules"
                 :key="schedule.id"
-                class="grid grid-cols-1 items-center gap-3 p-5 text-sm md:grid-cols-[1fr_1fr_1fr_auto] md:gap-6"
+                class="grid items-center gap-3 p-5 text-sm md:grid-cols-[1fr_1fr_1fr_auto] md:gap-6"
               >
                 <dl class="contents">
                   <!-- Days -->

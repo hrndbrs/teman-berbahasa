@@ -19,7 +19,7 @@ export function useBatchesPage() {
     try {
       const res = await api<{ data: ApiBatch[]; pagination: PaginationMeta }>(
         '/batches',
-        { query: { per_page: 100 } }
+        { query: { per_page: 20 } }
       );
       batches.value = res.data;
     } catch (err) {

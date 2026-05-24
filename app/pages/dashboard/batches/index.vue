@@ -20,7 +20,7 @@ const {
 
 <template>
   <div class="min-h-screen bg-default">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 @container">
       <DashboardBatchesPageHeader
         v-model:search="search"
         v-model:status-filter="statusFilter"
@@ -34,7 +34,7 @@ const {
 
       <div
         v-if="loading"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8"
+        class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8"
       >
         <div
           v-for="i in 6"
@@ -66,7 +66,7 @@ const {
       />
 
       <template v-else-if="filteredBatches.length > 0">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+        <div class="grid @2xl:grid-cols-2 @5xl:grid-cols-3 gap-4 mt-8">
           <DashboardBatchesBatchCard
             v-for="batch in filteredBatches"
             :key="batch.id"

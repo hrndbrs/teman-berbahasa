@@ -32,12 +32,12 @@ const {
         />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div class="grid lg:grid-cols-5 gap-4">
         <USkeleton class="lg:col-span-3 h-64 rounded-xl" />
         <USkeleton class="lg:col-span-2 h-64 rounded-xl" />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div class="grid lg:grid-cols-5 gap-4">
         <USkeleton class="lg:col-span-3 h-64 rounded-xl" />
         <USkeleton class="lg:col-span-2 h-64 rounded-xl" />
       </div>
@@ -83,7 +83,7 @@ const {
         />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div class="grid lg:grid-cols-5 gap-4">
         <DashboardClassesTable
           class="lg:col-span-3"
           :classes="todaysClasses"
@@ -94,7 +94,7 @@ const {
         />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div class="grid lg:grid-cols-5 gap-4">
         <DashboardCourseLoad
           class="lg:col-span-3"
           :courses="courseLoad"
