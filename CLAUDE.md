@@ -38,8 +38,9 @@ Nuxt 4 app with two surfaces: a **marketing site** (SSR, static data) and an **a
 - `useCourse` — resolves current route slug to a `Course`, throws fatal 404 if not found.
 - `useAuthToken` — read/write/clear ACCESS and REFRESH tokens in localStorage. Single source of truth for token storage; never access localStorage keys directly.
 - `useAuth` — global auth state `{ user, isAuthenticated, role }`. Access and refresh tokens stored in localStorage via `useAuthToken`; never in `useState`. Call `can(['admin', 'staff'])` to derive role-gated computed. Exposes `validateSession()` (calls `GET /auth/me` to rehydrate user) and a top-level `refresh()` utility.
-- `useApi` — `$fetch` wrapper with Bearer token auto-attach and 401 retry. On 401 calls `refresh()`, then retries the original request once using a `RETRY_SENTINEL` symbol — no shared Promise needed.
+- `useApi` — `$fetch` wrapper with Bearer token auto-attach and 401 retry. Returns a typed async function directly: `const api = useApi(); await api<T>('/endpoint', options)`. On 401 calls `refresh()`, then retries the original request once using a `RETRY_SENTINEL` symbol — no shared Promise needed.
 - `useIdleSession` — tracks user activity; after 15 min idle the next interaction triggers `validateSession()` and redirects to `/login` if the session has expired. Mounted globally in `dashboard.vue`.
+- `useSchedules` — fetches and transforms the weekly timetable grid. Manages week navigation (`prev`, `next`, `today`), active filters, and exposes `rawSessions` (API shape) alongside `visibleSessions` (display shape). Call via `useSchedulesPage` — do not instantiate directly in components.
 
 **Page composable pattern**: Keep page components thin — template + a single composable call. All reactive state, handlers, API calls, and validation logic live in a dedicated page composable named `use[PageName]Page` (e.g., `useLoginPage`). Group related page composables in a nested directory under `app/composables/` and add an `index.ts` barrel that re-exports them all so Nuxt can auto-import from a single entry point.
 
@@ -73,7 +74,7 @@ const { state, schema, loading, serverError, onSubmit } = useLoginPage();
 - `useCoursesPage` — courses list with CRUD, archive, status filter
 - `useCourseDetailPage` — single course view with stats, edit, archive
 - `useBatchesPage` — batches list with CRUD, status/course filter, search
-- `useSchedulesPage` — timetable management
+- `useSchedulesPage` — timetable management; owns all modal open state and schedule/override CRUD handlers; delegates data fetching to `useSchedules`
 
 **Marketing composables** live in `app/composables/marketing/`:
 
@@ -88,8 +89,14 @@ const { state, schema, loading, serverError, onSubmit } = useLoginPage();
 - `loginSchema`, `forgotPasswordSchema`, `resetPasswordSchema` — auth forms
 - `courseFormSchema` — create/edit course (description/subject/level/session_count/price/max_capacity are optional)
 - `batchFormSchema` — create/edit batch (course_id, instructor_user_id required; academic_year optional)
+- `scheduleFormSchema` — create/edit schedule slot (batch_id, day_of_week, start_time, end_time, recurrence, effective_from required; instructor_user_id, room, effective_until optional)
+- `overrideFormSchema` — create/edit session override (original_date, override_type required; new_date, new_start_time, new_end_time, new_room, new_instructor_user_id, reason optional)
 
 **PATCH convention**: All `PATCH` requests only send changed fields. For nullable fields, send explicit `null` to clear the value. Implement dirty-tracking by storing an `initial` snapshot when the edit modal opens and comparing current state on submit.
+
+**Modal open state**: Use `defineModel<boolean>('open', { required: true })` in modal components — not a manual `open` prop + `'update:open'` emit pair. Parent binds with `v-model:open`. Cancel buttons set `open.value = false` directly. Internal `UModal` binds `v-model:open="open"`.
+
+**Date inputs**: Use `FormDateInput` (`app/components/form/DateInput.vue`) instead of `UInput type="date"`. It wraps `UInputDate` and bridges `CalendarDate` ↔ ISO date string (`YYYY-MM-DD`) internally — callers bind a plain string via `v-model`. Time fields (`HH:MM:SS`) use `UInput type="time"` directly since they stay as strings throughout.
 
 **UI components**: Reka UI for headless primitives (`reka-ui/nuxt`). Tailwind CSS v4 via `@tailwindcss/vite` plugin. Design tokens live in `app/assets/css/tokens/colors.css`.
 
@@ -147,7 +154,7 @@ const { state, schema, loading, serverError, onSubmit } = useLoginPage();
 - Auth boot: `app/plugins/auth.client.ts` silently calls `POST /auth/refresh` on every cold load to restore session from httpOnly cookie.
 - Route guard: `app/middleware/auth.global.ts` — redirects unauthenticated users to `/login`, redirects authenticated users away from auth pages, blocks `/dashboard/users` for non-admins.
 - Role-based UI: **hide** write actions (not disable) for unauthorized roles. Check via `can(['admin'])` computed from `useAuth`.
-- API client: always use `useApi().apiFetch` for dashboard API calls — never raw `$fetch` — so token injection and refresh happen automatically.
+- API client: always use `const api = useApi()` and call `api('/endpoint', options)` for dashboard API calls — never raw `$fetch` — so token injection and refresh happen automatically.
 - Types live in `shared/types/` (one file per domain: `auth`, `api`, `course`, `batch`, `student`, `enrollment`, `schedule`, `event`, `dashboard`). Nuxt auto-imports all types from `shared/types/` globally — no `import type` statement needed. Never add explicit type imports from `#shared/types` or sub-paths.
 - `API_BASE_URL` env var (default `http://localhost:8000/api`) controls backend endpoint.
 - Dashboard modules use routes `/dashboard/[module]` to avoid collisions with marketing routes `/courses` and `/events`.

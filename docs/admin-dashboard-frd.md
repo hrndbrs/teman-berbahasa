@@ -272,6 +272,8 @@ flowchart TD
 
 **Purpose:** Define recurring sessions per batch. Log one-off session overrides.
 
+> **Implementation status (2026-05-24):** Weekly timetable page (`/dashboard/schedules`) is live with schedule CRUD and session override CRUD. Drag-to-reschedule is **deferred** — blocks are click-only. Batch detail Schedules tab not yet built.
+
 **UI responsibilities — Schedule list (tab within Batch detail):**
 
 - List of recurring slots: day of week, time range, room, effective instructor, recurrence type
