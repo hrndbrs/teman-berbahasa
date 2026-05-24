@@ -99,9 +99,8 @@ const {
 
   <DashboardCoursesFormModal
     v-if="course"
-    :open="editModalOpen"
+    v-model:open="editModalOpen"
     :course="course"
     @saved="onEditSaved"
-    @update:open="editModalOpen = $event"
   />
 </template>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
+const open = defineModel<boolean>('open', { required: true });
+
 const props = defineProps<{
-  open: boolean;
   batch?: ApiBatch | null;
 }>();
 
 const emit = defineEmits<{
-  'update:open': [value: boolean];
   saved: [];
 }>();
 
@@ -58,28 +58,25 @@ watch(
   { immediate: true }
 );
 
-watch(
-  () => props.open,
-  async (open) => {
-    if (!open) return;
-    const [coursesRes, instructorsRes] = await Promise.allSettled([
-      courses.value.length === 0
-        ? api<{ data: ApiCourse[] }>('/courses', {
-            query: { per_page: 100, status: 'active' },
-          })
-        : Promise.resolve(null),
-      instructors.value.length === 0
-        ? api<{ data: ApiUser[] }>('/users', {
-            query: { role: 'teacher', status: 'active', per_page: 100 },
-          })
-        : Promise.resolve(null),
-    ]);
-    if (coursesRes.status === 'fulfilled' && coursesRes.value)
-      courses.value = coursesRes.value.data;
-    if (instructorsRes.status === 'fulfilled' && instructorsRes.value)
-      instructors.value = instructorsRes.value.data;
-  }
-);
+watch(open, async (open) => {
+  if (!open) return;
+  const [coursesRes, instructorsRes] = await Promise.allSettled([
+    courses.value.length === 0
+      ? api<{ data: ApiCourse[] }>('/courses', {
+          query: { per_page: 100, status: 'active' },
+        })
+      : Promise.resolve(null),
+    instructors.value.length === 0
+      ? api<{ data: ApiUser[] }>('/users', {
+          query: { role: 'teacher', status: 'active', per_page: 100 },
+        })
+      : Promise.resolve(null),
+  ]);
+  if (coursesRes.status === 'fulfilled' && coursesRes.value)
+    courses.value = coursesRes.value.data;
+  if (instructorsRes.status === 'fulfilled' && instructorsRes.value)
+    instructors.value = instructorsRes.value.data;
+});
 
 const courseOptions = computed(() =>
   courses.value.map((c) => ({
@@ -145,9 +142,8 @@ const onSubmit = async () => {
 
 <template>
   <UModal
-    :open="open"
+    v-model:open="open"
     :title="title"
-    @update:open="$emit('update:open', $event)"
   >
     <template #body>
       <UAlert
@@ -239,7 +235,7 @@ const onSubmit = async () => {
             label="Batal"
             color="neutral"
             variant="ghost"
-            @click="$emit('update:open', false)"
+            @click="open = false"
           />
           <UButton
             type="submit"

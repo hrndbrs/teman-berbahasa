@@ -1,21 +1,32 @@
 <script setup lang="ts">
 import { DAY_NAMES_FULL } from '~/utils/schedule';
 
+const open = defineModel<boolean>('open', { required: true });
+
 defineProps<{
   session: ScheduleSession | null;
-  open: boolean;
+  rawSession: ApiSession | null;
 }>();
 
 defineEmits<{
-  'update:open': [value: boolean];
+  edit: [scheduleId: string];
+  'add-override': [payload: { scheduleId: string; originalDate: string }];
+  'edit-override': [
+    payload: {
+      overrideId: string;
+      scheduleId: string;
+      originalDate: string;
+    },
+  ];
+  'delete-override': [overrideId: string];
+  delete: [scheduleId: string];
 }>();
 </script>
 
 <template>
   <UModal
-    :open
+    v-model:open="open"
     title="Session details"
-    @update:open="$emit('update:open', $event)"
   >
     <template #body>
       <div v-if="session">
@@ -81,23 +92,83 @@ defineEmits<{
               {{ session.recurrence }}
             </dd>
           </div>
+          <div
+            v-if="rawSession?.override"
+            class="flex gap-4"
+          >
+            <dt
+              class="w-28 shrink-0 text-label font-mono tracking-loose uppercase text-dimmed"
+            >
+              Override
+            </dt>
+            <dd class="text-sm font-medium text-default capitalize">
+              {{ rawSession.override.override_type.replace('_', ' ') }}
+              <template v-if="rawSession.override.reason">
+                — {{ rawSession.override.reason }}
+              </template>
+            </dd>
+          </div>
         </dl>
       </div>
     </template>
 
     <template #footer>
-      <div class="flex justify-end gap-2">
-        <UButton
-          label="Edit"
-          icon="i-lucide-pencil"
-          color="neutral"
-          variant="outline"
-        />
-        <UButton
-          label="Take attendance"
-          icon="i-lucide-clipboard-list"
-          color="primary"
-        />
+      <div class="flex items-center justify-between w-full gap-2">
+        <div class="flex gap-2">
+          <UButton
+            v-if="rawSession?.override"
+            label="Edit Override"
+            icon="i-lucide-calendar-clock"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="
+              $emit('edit-override', {
+                overrideId: rawSession!.override!.id,
+                scheduleId: session!.id,
+                originalDate: rawSession!.override!.original_date,
+              })
+            "
+          />
+          <UButton
+            v-if="rawSession?.override"
+            icon="i-lucide-x"
+            color="error"
+            variant="ghost"
+            size="sm"
+            @click="$emit('delete-override', rawSession!.override!.id)"
+          />
+        </div>
+        <div class="flex gap-2">
+          <UButton
+            v-if="rawSession && !rawSession.override"
+            label="Override"
+            icon="i-lucide-calendar-clock"
+            color="neutral"
+            variant="outline"
+            size="sm"
+            @click="
+              $emit('add-override', {
+                scheduleId: session!.id,
+                originalDate: rawSession!.date,
+              })
+            "
+          />
+          <UButton
+            label="Edit"
+            icon="i-lucide-pencil"
+            color="neutral"
+            variant="outline"
+            size="sm"
+            @click="$emit('edit', session!.id)"
+          />
+          <UButton
+            label="Take attendance"
+            icon="i-lucide-clipboard-list"
+            color="primary"
+            size="sm"
+          />
+        </div>
       </div>
     </template>
   </UModal>

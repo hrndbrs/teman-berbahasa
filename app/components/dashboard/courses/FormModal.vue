@@ -1,11 +1,11 @@
 <script setup lang="ts">
+const open = defineModel<boolean>('open', { required: true });
+
 const props = defineProps<{
-  open: boolean;
   course?: ApiCourseWithStats | null;
 }>();
 
 const emit = defineEmits<{
-  'update:open': [value: boolean];
   saved: [];
 }>();
 
@@ -120,9 +120,8 @@ const onSubmit = async () => {
 
 <template>
   <UModal
-    :open="open"
+    v-model:open="open"
     :title="title"
-    @update:open="$emit('update:open', $event)"
   >
     <template #body>
       <UAlert
@@ -236,7 +235,7 @@ const onSubmit = async () => {
             label="Batal"
             color="neutral"
             variant="ghost"
-            @click="$emit('update:open', false)"
+            @click="open = false"
           />
           <UButton
             type="submit"
