@@ -1,29 +1,15 @@
-import type { ApiBatchStatus, ApiCourseLevel, PaginationMeta } from '#imports';
+import type { ApiBatchRef, ApiCourseRef, PaginationMeta } from '#imports';
 
 export type StudentStatus = 'active' | 'inactive' | 'graduated';
 export type StudentGender = 'male' | 'female' | 'other';
-
-export interface BatchRef {
-  id: string;
-  batch_name: string;
-  batch_code: string;
-  status: ApiBatchStatus;
-}
-
-export interface CourseRef {
-  id: string;
-  course_name: string;
-  course_code: string;
-  level: ApiCourseLevel | null;
-}
 
 export interface EnrollmentSummary {
   id: string;
   status: 'enrolled' | 'dropped' | 'completed';
   payment_status: 'pending' | 'partial' | 'paid';
   enrollment_date: string;
-  batch: BatchRef;
-  course: CourseRef;
+  batch: ApiBatchRef;
+  course: ApiCourseRef;
 }
 
 export interface StudentObject {

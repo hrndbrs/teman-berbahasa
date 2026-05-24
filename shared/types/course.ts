@@ -26,6 +26,13 @@ export interface Course {
 export type ApiCourseLevel = 'beginner' | 'intermediate' | 'advanced';
 export type ApiCourseStatus = 'active' | 'archived';
 
+export interface ApiCourseRef {
+  id: string;
+  course_name: string;
+  course_code: string;
+  level: ApiCourseLevel | null;
+}
+
 export interface ApiCourse {
   id: string;
   course_name: string;

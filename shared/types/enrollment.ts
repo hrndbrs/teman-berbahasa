@@ -1,4 +1,4 @@
-import type { ApiBatchStatus } from '#imports';
+import type { ApiBatchRef, ApiCourseRef } from '#imports';
 
 export type EnrollmentStatus = 'enrolled' | 'dropped' | 'completed';
 export type PaymentStatus = 'pending' | 'partial' | 'paid';
@@ -10,18 +10,7 @@ export interface EnrollmentStudentRef {
   email: string | null;
 }
 
-export interface EnrollmentBatchRef {
-  id: string;
-  batch_name: string;
-  batch_code: string;
-  status: ApiBatchStatus;
-}
-
-export interface EnrollmentCourseRef {
-  id: string;
-  course_name: string;
-  course_code: string;
-}
+export type EnrollmentCourseRef = Omit<ApiCourseRef, 'level'>;
 
 export interface EnrollmentDetail {
   id: string;
@@ -30,7 +19,7 @@ export interface EnrollmentDetail {
   final_grade: string | null;
   enrollment_date: string;
   student: EnrollmentStudentRef;
-  batch: EnrollmentBatchRef;
+  batch: ApiBatchRef;
   course: EnrollmentCourseRef;
   created_at: string;
   updated_at: string;

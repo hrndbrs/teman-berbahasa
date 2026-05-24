@@ -1,5 +1,11 @@
 export type UserRole = 'admin' | 'teacher' | 'staff';
 
+export interface ApiInstructorRef {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
 export interface UserInfo {
   id: string;
   first_name: string;

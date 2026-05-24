@@ -1,15 +1,14 @@
+import type { ApiCourseRef, ApiInstructorRef } from '#imports';
+
 export type ApiBatchStatus = 'ongoing' | 'upcoming' | 'completed';
 
-export interface ApiBatchCourseRef {
-  id: string;
-  course_name: string;
-  course_code: string;
-}
+export type ApiBatchCourseRef = Omit<ApiCourseRef, 'level'>;
 
-export interface ApiBatchInstructorRef {
+export interface ApiBatchRef {
   id: string;
-  first_name: string;
-  last_name: string;
+  batch_name: string;
+  batch_code: string;
+  status?: ApiBatchStatus;
 }
 
 export interface ApiBatch {
@@ -18,7 +17,7 @@ export interface ApiBatch {
   batch_code: string;
   status: ApiBatchStatus;
   course: ApiBatchCourseRef;
-  instructor: ApiBatchInstructorRef;
+  instructor: ApiInstructorRef;
   enrolled_count: number;
   academic_year: string | null;
   created_at: string;
