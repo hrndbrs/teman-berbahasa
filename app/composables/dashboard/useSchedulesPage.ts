@@ -1,10 +1,25 @@
-import { ALL_LEVELS, LEVEL_COLORS } from '~/utils/schedule';
-
 export function useSchedulesPage() {
-  const loading = ref(true);
-  const error = ref<string | null>(null);
+  const api = useApi();
+  const { can } = useAuth();
+  const toast = useToast();
+
+  const isAdmin = can(['admin']);
+
+  const selectedSession = ref<ScheduleSession | null>(null);
+  const isDetailModalOpen = ref(false);
+  const isCreateModalOpen = ref(false);
+  const editingScheduleId = ref<string | null>(null);
+  const createBatchId = ref('');
+
+  const isOverrideModalOpen = ref(false);
+  const overrideScheduleId = ref('');
+  const overrideDate = ref('');
+  const overrideId = ref<string | null>(null);
 
   const {
+    loading,
+    error,
+    rawSessions,
     visibleSessions,
     weekDays,
     weekLabel,
@@ -14,28 +29,124 @@ export function useSchedulesPage() {
     prev,
     next,
     today,
-    reschedule,
-  } = useSchedules();
+    fetchWeek,
+  } = useSchedules(api);
 
-  const selectedSession = ref<ScheduleSession | null>(null);
-  const isModalOpen = ref(false);
+  const selectedRawSession = computed(() => {
+    if (!selectedSession.value) return null;
+    return (
+      rawSessions.value.find(
+        (r) =>
+          r.schedule_id === selectedSession.value!.id &&
+          r.date === selectedSession.value!.date
+      ) ?? null
+    );
+  });
 
   function onSelect(session: ScheduleSession) {
     selectedSession.value = session;
-    isModalOpen.value = true;
+    isDetailModalOpen.value = true;
   }
 
-  onMounted(async () => {
-    loading.value = true;
-    error.value = null;
+  function openCreate(batchId: string = '') {
+    createBatchId.value = batchId;
+    editingScheduleId.value = null;
+    isCreateModalOpen.value = true;
+  }
+
+  function openEdit(scheduleId: string) {
+    editingScheduleId.value = scheduleId;
+    isCreateModalOpen.value = true;
+  }
+
+  function closeCreate() {
+    isCreateModalOpen.value = false;
+    editingScheduleId.value = null;
+    createBatchId.value = '';
+  }
+
+  const onSaved = () => {
+    closeCreate();
+    fetchWeek();
+    toast.add({
+      title: 'Jadwal disimpan',
+      color: 'success',
+      icon: 'i-lucide-check-circle',
+    });
+  };
+
+  async function onDelete(scheduleId: string) {
     try {
-      await Promise.resolve();
-    } catch {
-      error.value = 'Gagal memuat jadwal.';
-    } finally {
-      loading.value = false;
+      await api(`/schedules/${scheduleId}`, { method: 'DELETE' });
+      isDetailModalOpen.value = false;
+      fetchWeek();
+      toast.add({
+        title: 'Jadwal dihapus',
+        color: 'neutral',
+        icon: 'i-lucide-trash-2',
+      });
+    } catch (err: unknown) {
+      toast.add({
+        title: isApiError(err) ? err.message : 'Gagal menghapus jadwal',
+        color: 'error',
+        icon: 'i-lucide-x-circle',
+      });
     }
-  });
+  }
+
+  function openAddOverride(scheduleId: string, originalDate: string) {
+    overrideScheduleId.value = scheduleId;
+    overrideDate.value = originalDate;
+    overrideId.value = null;
+    isOverrideModalOpen.value = true;
+  }
+
+  function openEditOverride(
+    id: string,
+    scheduleId: string,
+    originalDate: string
+  ) {
+    overrideId.value = id;
+    overrideScheduleId.value = scheduleId;
+    overrideDate.value = originalDate;
+    isOverrideModalOpen.value = true;
+  }
+
+  function closeOverride() {
+    isOverrideModalOpen.value = false;
+    overrideId.value = null;
+  }
+
+  const onSavedOverride = () => {
+    closeOverride();
+    fetchWeek();
+    toast.add({
+      title: 'Override disimpan',
+      color: 'success',
+      icon: 'i-lucide-check-circle',
+    });
+  };
+
+  async function onDeleteOverride(id: string) {
+    try {
+      await api(`/schedule-overrides/${id}`, { method: 'DELETE' });
+      isDetailModalOpen.value = false;
+      fetchWeek();
+      toast.add({
+        title: 'Override dihapus',
+        color: 'neutral',
+        icon: 'i-lucide-trash-2',
+      });
+    } catch (err: unknown) {
+      toast.add({
+        title: isApiError(err) ? err.message : 'Gagal menghapus override',
+        color: 'error',
+        icon: 'i-lucide-x-circle',
+      });
+    }
+  }
+
+  onMounted(() => fetchWeek());
 
   return {
     ALL_LEVELS,
@@ -51,9 +162,27 @@ export function useSchedulesPage() {
     prev,
     next,
     today,
-    reschedule,
     selectedSession,
-    isModalOpen,
+    selectedRawSession,
+    isDetailModalOpen,
+    isCreateModalOpen,
+    editingScheduleId,
+    createBatchId,
+    isOverrideModalOpen,
+    overrideScheduleId,
+    overrideDate,
+    overrideId,
+    isAdmin,
     onSelect,
+    openCreate,
+    openEdit,
+    closeCreate,
+    onSaved,
+    onDelete,
+    openAddOverride,
+    openEditOverride,
+    closeOverride,
+    onSavedOverride,
+    onDeleteOverride,
   };
 }
