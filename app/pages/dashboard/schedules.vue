@@ -16,10 +16,26 @@ const {
   prev,
   next,
   today,
-  reschedule,
   selectedSession,
-  isModalOpen,
+  selectedRawSession,
+  isDetailModalOpen,
+  isCreateModalOpen,
+  editingScheduleId,
+  createBatchId,
+  isOverrideModalOpen,
+  overrideScheduleId,
+  overrideDate,
+  overrideId,
+  isAdmin,
   onSelect,
+  openCreate,
+  openEdit,
+  onSaved,
+  onDelete,
+  openAddOverride,
+  openEditOverride,
+  onSavedOverride,
+  onDeleteOverride,
 } = useSchedulesPage();
 </script>
 
@@ -85,34 +101,43 @@ const {
               Weekly <em class="not-italic font-(--font-display)">schedule</em>
             </h1>
             <p class="mt-1 text-sm text-muted">
-              Drag any class block to reschedule. Click for details.
+              Click a class block for details.
             </p>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0 mt-1">
+          <div class="flex items-center gap-2 shrink-0 mt-1">
             <UButton
-              icon="i-lucide-chevron-left"
-              color="neutral"
-              variant="ghost"
+              v-if="isAdmin"
+              label="Tambah Jadwal"
+              icon="i-lucide-plus"
               size="sm"
-              @click="prev"
+              @click="openCreate()"
             />
-            <UButton
-              label="Today"
-              color="neutral"
-              variant="outline"
-              size="sm"
-              @click="today"
-            />
-            <UButton
-              icon="i-lucide-chevron-right"
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              @click="next"
-            />
-            <span class="ml-2 text-sm text-muted whitespace-nowrap">{{
-              weekLabel
-            }}</span>
+            <div class="flex items-center gap-1.5">
+              <UButton
+                icon="i-lucide-chevron-left"
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                @click="prev"
+              />
+              <UButton
+                label="Today"
+                color="neutral"
+                variant="outline"
+                size="sm"
+                @click="today"
+              />
+              <UButton
+                icon="i-lucide-chevron-right"
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                @click="next"
+              />
+              <span class="ml-2 text-sm text-muted whitespace-nowrap">{{
+                weekLabel
+              }}</span>
+            </div>
           </div>
         </div>
 
@@ -144,14 +169,44 @@ const {
           :sessions="visibleSessions"
           :week-days="weekDays"
           @select="onSelect"
-          @reschedule="reschedule"
         />
       </div>
 
       <!-- Session detail modal -->
       <ScheduleSessionModal
-        v-model:open="isModalOpen"
+        v-model:open="isDetailModalOpen"
         :session="selectedSession"
+        :raw-session="selectedRawSession"
+        @edit="openEdit"
+        @delete="onDelete"
+        @add-override="
+          ({ scheduleId, originalDate }) =>
+            openAddOverride(scheduleId, originalDate)
+        "
+        @edit-override="
+          ({ overrideId: oid, scheduleId, originalDate }) =>
+            openEditOverride(oid, scheduleId, originalDate)
+        "
+        @delete-override="onDeleteOverride"
+      />
+
+      <!-- Schedule create/edit modal -->
+      <ScheduleFormModal
+        key="create"
+        v-model:open="isCreateModalOpen"
+        :schedule-id="editingScheduleId"
+        :batch-id="createBatchId"
+        @saved="onSaved"
+      />
+
+      <!-- Override create/edit modal -->
+      <ScheduleOverrideFormModal
+        key="override"
+        v-model:open="isOverrideModalOpen"
+        :schedule-id="overrideScheduleId"
+        :original-date="overrideDate"
+        :override-id="overrideId"
+        @saved="onSavedOverride"
       />
     </template>
   </div>
