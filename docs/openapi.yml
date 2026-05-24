@@ -2413,10 +2413,12 @@ components:
           enum: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
         start_time:
           type: string
-          example: "09:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "09:00"
         end_time:
           type: string
-          example: "11:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "11:00"
         room:
           type: string
           description: Room number or name (optional).
@@ -2446,10 +2448,12 @@ components:
           enum: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
         start_time:
           type: string
-          example: "09:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "09:00"
         end_time:
           type: string
-          example: "11:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "11:00"
         room:
           type: [string, "null"]
           description: Send explicit `null` to clear the room.
@@ -2545,12 +2549,12 @@ components:
           description: Required for `reschedule`. Must not be set for `instructor_change`.
         new_start_time:
           type: string
-          example: "10:00:00"
-          description: Must not be set for `instructor_change`.
+          description: "24h time, HH:MM or HH:MM:SS. Must not be set for `instructor_change`."
+          example: "10:00"
         new_end_time:
           type: string
-          example: "12:00:00"
-          description: Must not be set for `instructor_change`.
+          description: "24h time, HH:MM or HH:MM:SS. Must not be set for `instructor_change`."
+          example: "12:00"
         new_room:
           type: string
         new_instructor_user_id:
@@ -2568,10 +2572,12 @@ components:
           format: date
         new_start_time:
           type: string
-          example: "10:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "10:00"
         new_end_time:
           type: string
-          example: "12:00:00"
+          description: "24h time. Accepts HH:MM or HH:MM:SS."
+          example: "12:00"
         new_room:
           type: string
         new_instructor_user_id:
