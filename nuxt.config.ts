@@ -90,11 +90,6 @@ export default defineNuxtConfig({
     ],
   },
 
-  colorMode: {
-    dataValue: 'theme',
-    classSuffix: '',
-  },
-
   modules: [
     'reka-ui/nuxt',
     '@nuxt/eslint',
@@ -104,6 +99,10 @@ export default defineNuxtConfig({
     'nuxt-security',
     '@nuxt/ui',
   ],
+
+  ui: {
+    colorMode: false,
+  },
 
   security: {
     headers: {
