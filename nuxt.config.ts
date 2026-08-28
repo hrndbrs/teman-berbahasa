@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   vite: { plugins: [tailwindcss()] },
-  css: ['./app/assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
 
   imports: {
     dirs: ['./shared/data'],

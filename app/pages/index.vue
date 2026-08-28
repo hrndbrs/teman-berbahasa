@@ -9,7 +9,7 @@ const { events } = useHomePage();
   <AppSectionsHomeFaq />
   <section
     aria-labelledby="past-events"
-    class="bg-white py-8"
+    class="py-8"
   >
     <div class="container px-6">
       <div class="mb-12">
