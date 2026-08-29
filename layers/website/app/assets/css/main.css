@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme {
+  --color-tb-blue-1: #e1f4ff;
+  --color-tb-blue-2: #c4e6ff;
+  --color-tb-blue-3: #0013c2;
+}
+
+:root {
+  --color-primary-50: oklch(0.97 0.02 268);
+  --color-primary-100: oklch(0.93 0.05 268);
+  --color-primary-200: oklch(0.86 0.09 268);
+  --color-primary-300: oklch(0.76 0.14 268);
+  --color-primary-400: oklch(0.66 0.19 268);
+  --color-primary-500: oklch(0.55 0.22 268);
+  --color-primary-600: oklch(0.46 0.22 268);
+  --color-primary-700: oklch(0.38 0.2 268);
+  --color-primary-800: oklch(0.3 0.17 268);
+  --color-primary-900: oklch(0.22 0.13 268);
+  --color-primary-950: oklch(0.16 0.09 268);
+
+  --color-neutral-50: oklch(0.985 0.004 250);
+  --color-neutral-100: oklch(0.965 0.006 250);
+  --color-neutral-200: oklch(0.935 0.01 250);
+  --color-neutral-300: oklch(0.88 0.012 250);
+  --color-neutral-400: oklch(0.68 0.02 250);
+  --color-neutral-500: oklch(0.5 0.03 250);
+  --color-neutral-600: oklch(0.42 0.035 258);
+  --color-neutral-700: oklch(0.34 0.04 268);
+  --color-neutral-800: oklch(0.24 0.04 268);
+  --color-neutral-900: oklch(0.18 0.04 268);
+  --color-neutral-950: oklch(0.12 0.03 268);
+
+  --color-success-500: oklch(0.58 0.1 145);
+  --color-warning-500: oklch(0.72 0.13 70);
+  --color-error-500: oklch(0.58 0.18 25);
+  --color-info-500: oklch(0.66 0.165 244);
+  --color-secondary-500: oklch(0.48 0.01 60);
+
+  --ui-bg: #ffffff;
+  --ui-bg-muted: var(--color-neutral-50);
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-accented: var(--color-neutral-100);
+  --ui-bg-inverted: var(--color-neutral-900);
+  --ui-text: var(--color-neutral-900);
+  --ui-text-muted: var(--color-neutral-500);
+  --ui-text-toned: var(--color-neutral-700);
+  --ui-text-dimmed: var(--color-neutral-400);
+  --ui-text-highlighted: var(--color-neutral-900);
+  --ui-text-inverted: var(--color-neutral-50);
+  --ui-border: var(--color-neutral-200);
+  --ui-border-muted: var(--color-neutral-100);
+  --ui-border-accented: var(--color-neutral-300);
+  --ui-border-inverted: var(--color-neutral-900);
+  --ui-primary: var(--color-primary-500);
+  --ui-secondary: var(--color-secondary-500);
+  --ui-success: var(--color-success-500);
+  --ui-info: var(--color-info-500);
+  --ui-warning: var(--color-warning-500);
+  --ui-error: var(--color-error-500);
+  --ui-radius: 0.5rem;
+  --ui-container: 80rem;
+
+  --font-display: 'Instrument Serif', 'Source Serif Pro', Georgia, serif;
+  --font-sans:
+    'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica,
+    Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  --font-jp: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+@utility container {
+  @apply mx-auto;
+  max-width: 70rem;
+}

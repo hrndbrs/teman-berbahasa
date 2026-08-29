@@ -1,0 +1,232 @@
+<script setup lang="ts">
+definePageMeta({ layout: 'dashboard' });
+useSeoMeta({ title: 'Schedule — Teman Berbahasa', robots: 'noindex' });
+
+const {
+  ALL_LEVELS,
+  LEVEL_COLORS,
+  loading,
+  error,
+  visibleSessions,
+  weekDays,
+  weekLabel,
+  totalHours,
+  activeFilters,
+  toggleFilter,
+  prev,
+  next,
+  today,
+  selectedSession,
+  selectedRawSession,
+  isDetailModalOpen,
+  isCreateModalOpen,
+  editingScheduleId,
+  createBatchId,
+  isOverrideModalOpen,
+  overrideScheduleId,
+  overrideDate,
+  overrideId,
+  isAdmin,
+  onSelect,
+  openCreate,
+  openEdit,
+  onSaved,
+  onDelete,
+  openAddOverride,
+  openEditOverride,
+  onSavedOverride,
+  onDeleteOverride,
+  isDragConfirmOpen,
+  dragSaving,
+  pendingReschedule,
+  onReschedule,
+  onConfirmReschedule,
+} = useSchedulesPage();
+</script>
+
+<template>
+  <div class="flex h-full flex-col overflow-hidden">
+    <!-- Loading skeleton -->
+    <template v-if="loading">
+      <div class="border-muted shrink-0 space-y-4 border-b px-6 pt-6 pb-4">
+        <div class="flex items-start justify-between">
+          <div class="space-y-2">
+            <USkeleton class="h-3 w-20 rounded" />
+            <USkeleton class="h-10 w-64 rounded-lg" />
+            <USkeleton class="h-4 w-72 rounded" />
+          </div>
+          <div class="flex gap-1.5">
+            <USkeleton
+              v-for="i in 3"
+              :key="i"
+              class="size-8 rounded-lg"
+            />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex gap-2">
+            <USkeleton
+              v-for="i in 5"
+              :key="i"
+              class="h-5 w-16 rounded"
+            />
+          </div>
+          <USkeleton class="h-4 w-32 rounded" />
+        </div>
+      </div>
+      <div class="flex-1 p-6">
+        <USkeleton class="h-full w-full rounded-xl" />
+      </div>
+    </template>
+
+    <!-- Error state -->
+    <template v-else-if="error">
+      <div class="p-6">
+        <UAlert
+          color="error"
+          variant="subtle"
+          :description="error"
+        />
+      </div>
+    </template>
+
+    <!-- Content -->
+    <template v-else>
+      <!-- Page header -->
+      <div class="border-muted shrink-0 border-b px-6 pt-6 pb-4">
+        <!-- Row 1: title + week nav -->
+        <div class="mb-4 flex items-start justify-between gap-4">
+          <div>
+            <p
+              class="text-label tracking-looser text-dimmed mb-1 font-mono uppercase"
+            >
+              This week
+            </p>
+            <h1 class="text-default text-4xl leading-tight font-bold">
+              Weekly <em class="font-(--font-display) not-italic">schedule</em>
+            </h1>
+            <p class="text-muted mt-1 text-sm">
+              Click a class block for details.
+            </p>
+          </div>
+          <div class="mt-1 flex shrink-0 items-center gap-2">
+            <UButton
+              v-if="isAdmin"
+              label="Tambah Jadwal"
+              icon="i-lucide-plus"
+              size="sm"
+              @click="openCreate()"
+            />
+            <div class="flex items-center gap-1.5">
+              <UButton
+                icon="i-lucide-chevron-left"
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                @click="prev"
+              />
+              <UButton
+                label="Today"
+                color="neutral"
+                variant="outline"
+                size="sm"
+                @click="today"
+              />
+              <UButton
+                icon="i-lucide-chevron-right"
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                @click="next"
+              />
+              <span class="text-muted ml-2 text-sm whitespace-nowrap">{{
+                weekLabel
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: filter badges + stats -->
+        <div class="flex items-center justify-between">
+          <div class="flex gap-2">
+            <button
+              v-for="level in ALL_LEVELS"
+              :key="level"
+              class="text-label rounded border px-2.5 py-0.5 font-mono tracking-wide uppercase transition-opacity"
+              :class="[
+                LEVEL_COLORS[level],
+                activeFilters.has(level) ? 'opacity-100' : 'opacity-35',
+              ]"
+              @click="toggleFilter(level)"
+            >
+              {{ level }}
+            </button>
+          </div>
+          <span class="text-muted text-sm">
+            {{ visibleSessions.length }} sessions · {{ totalHours }} hours
+          </span>
+        </div>
+      </div>
+
+      <!-- Timetable -->
+      <div class="flex-1 overflow-y-auto">
+        <ScheduleTimetable
+          :sessions="visibleSessions"
+          :week-days="weekDays"
+          :can-drag="isAdmin"
+          @select="onSelect"
+          @reschedule="onReschedule"
+        />
+      </div>
+
+      <!-- Session detail modal -->
+      <ScheduleSessionModal
+        v-model:open="isDetailModalOpen"
+        :session="selectedSession"
+        :raw-session="selectedRawSession"
+        @edit="openEdit"
+        @delete="onDelete"
+        @add-override="
+          ({ scheduleId, originalDate }) =>
+            openAddOverride(scheduleId, originalDate)
+        "
+        @edit-override="
+          ({ overrideId: oid, scheduleId, originalDate }) =>
+            openEditOverride(oid, scheduleId, originalDate)
+        "
+        @delete-override="onDeleteOverride"
+      />
+
+      <!-- Schedule create/edit modal -->
+      <ScheduleFormModal
+        key="create"
+        v-model:open="isCreateModalOpen"
+        :schedule-id="editingScheduleId"
+        :batch-id="createBatchId"
+        @saved="onSaved"
+      />
+
+      <!-- Override create/edit modal -->
+      <ScheduleOverrideFormModal
+        key="override"
+        v-model:open="isOverrideModalOpen"
+        :schedule-id="overrideScheduleId"
+        :original-date="overrideDate"
+        :override-id="overrideId"
+        @saved="onSavedOverride"
+      />
+
+      <!-- Drag reschedule confirm modal -->
+      <ScheduleDragConfirmModal
+        v-model:open="isDragConfirmOpen"
+        :session="pendingReschedule?.session ?? null"
+        :target-day="pendingReschedule?.targetDay ?? 0"
+        :target-date="pendingReschedule?.targetDate ?? ''"
+        :target-start="pendingReschedule?.targetStart ?? ''"
+        :target-end="pendingReschedule?.targetEnd ?? ''"
+        :saving="dragSaving"
+        @confirm="onConfirmReschedule"
+      />
+    </template>
+  </div>
+</template>

@@ -4,30 +4,9 @@ const siteUrl = process.env.SITE_URL || 'https://temanberbahasa.com';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  future: { compatibilityVersion: 4 },
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: '2026-06-30',
   devtools: { enabled: true },
   vite: { plugins: [tailwindcss()] },
-  css: ['~/assets/css/main.css'],
-
-  imports: {
-    dirs: ['./shared/data'],
-  },
-
-  routeRules: {
-    '/dashboard/**': { ssr: false },
-  },
-
-  runtimeConfig: {
-    public: {
-      phoneNumber: process.env.CONTACT_PHONE_NUMBER || '',
-      instagramHandle: process.env.CONTACT_INSTAGRAM_HANDLE || '',
-      tiktokHandle: process.env.CONTACT_TIKTOK_HANDLE || '',
-      eventRegistrationUrl: process.env.EVENT_REGISTRATION_URL || '',
-      siteUrl,
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000/api',
-    },
-  },
 
   app: {
     head: {
@@ -35,48 +14,6 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-    },
-  },
-
-  site: {
-    url: siteUrl,
-    name: 'Teman Berbahasa',
-    description:
-      'Teman Berbahasa adalah tempat bimbingan belajar bahasa asing yang menyenangkan dan interaktif. Belajar bahasa Jepang dengan discussion partner dari mahasiswa Indonesia di Jepang.',
-    defaultLocale: 'id',
-  },
-
-  ogImage: {
-    enabled: true,
-  },
-
-  sitemap: {
-    enabled: true,
-  },
-
-  robots: {
-    enabled: true,
-  },
-
-  seo: {
-    meta: {
-      themeColor: '#0013c2',
-      author: 'Teman Berbahasa',
-    },
-  },
-
-  schemaOrg: {
-    identity: {
-      type: 'EducationalOrganization',
-      name: 'Teman Berbahasa',
-      url: siteUrl,
-      logo: `${siteUrl}/favicon.svg`,
-      description:
-        'Platform pembelajaran bahasa Jepang online berbasis diskusi interaktif bersama Discussion Partner dari mahasiswa Indonesia di Jepang.',
-      sameAs: [
-        `https://instagram.com/${process.env.CONTACT_INSTAGRAM_HANDLE || 'teman.berbahasa'}`,
-        `https://www.tiktok.com/@${(process.env.CONTACT_TIKTOK_HANDLE || 'teman.berbahasa').replace(/^@/, '')}`,
-      ],
     },
   },
 
@@ -90,15 +27,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: [
-    'reka-ui/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/image',
-    '@nuxt/hints',
-    '@nuxtjs/seo',
-    'nuxt-security',
-    '@nuxt/ui',
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/image', 'nuxt-security', '@nuxt/ui'],
 
   ui: {
     colorMode: false,

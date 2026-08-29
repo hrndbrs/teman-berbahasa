@@ -1,11 +1,7 @@
 import type { ApiInstructorRef, ApiBatchRef, ApiCourseRef } from '#imports';
 
 export type CourseLevel =
-  | 'Beginner'
-  | 'Bridge'
-  | 'Intermediate'
-  | 'Advanced'
-  | 'Specialty';
+  'Beginner' | 'Bridge' | 'Intermediate' | 'Advanced' | 'Specialty';
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Mon, 6 = Sun
 export type Recurrence = 'Weekly' | 'Biweekly' | 'Once';
 
@@ -35,9 +31,7 @@ export type ApiDayOfWeek =
 export type ApiRecurrence = 'weekly' | 'one-time';
 
 export type ApiSessionStatus =
-  | 'scheduled'
-  | 'rescheduled'
-  | 'instructor_changed';
+  'scheduled' | 'rescheduled' | 'instructor_changed';
 
 export type ApiOverrideType = 'reschedule' | 'instructor_change';
 

@@ -1,9 +1,5 @@
 export type ActivityColor =
-  | 'success'
-  | 'info'
-  | 'error'
-  | 'warning'
-  | 'neutral';
+  'success' | 'info' | 'error' | 'warning' | 'neutral';
 
 export type EventType = 'MEETING' | 'WORKSHOP' | 'HOLIDAY';
 
