@@ -1,5 +1,5 @@
-export const refresh = async (): Promise<string | null> => {
-  const token = useAuthToken();
+export const refresh = async (area?: AuthArea): Promise<string | null> => {
+  const token = useAuthToken(area);
   const refreshToken = token.get('REFRESH');
   const { apiBaseUrl } = useRuntimeConfig().public;
 
@@ -24,10 +24,11 @@ export const refresh = async (): Promise<string | null> => {
   }
 };
 
-export const useAuth = () => {
-  const state = useState<AuthState>('auth', () => ({ user: null }));
-  const token = useAuthToken();
-  const api = useApi();
+export const useAuth = (area?: AuthArea) => {
+  const scope = area ?? useAuthArea();
+  const state = useState<AuthState>(`auth:${scope}`, () => ({ user: null }));
+  const token = useAuthToken(scope);
+  const api = useApi(scope);
 
   const user = computed(() => state.value.user);
   const isAuthenticated = computed(() => !!state.value.user);
@@ -119,7 +120,7 @@ export const useAuth = () => {
     userInitials,
     login,
     logout,
-    refresh,
+    refresh: () => refresh(scope),
     validateSession,
     forgotPassword,
     resetPassword,

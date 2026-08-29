@@ -1,9 +1,10 @@
 type AuthTokenType = 'ACCESS' | 'REFRESH';
 
-export const useAuthToken = () => {
+export const useAuthToken = (area?: AuthArea) => {
+  const scope = area ?? useAuthArea();
   const storageKeys: Record<AuthTokenType, string> = {
-    ACCESS: 'access_token',
-    REFRESH: 'refresh_token',
+    ACCESS: `tb:${scope}:access_token`,
+    REFRESH: `tb:${scope}:refresh_token`,
   } as const;
 
   function get(type: AuthTokenType): string | null {

@@ -1,5 +1,7 @@
 export type UserRole = 'admin' | 'teacher' | 'staff';
 
+export type AuthArea = 'dashboard' | 'lms';
+
 export interface ApiInstructorRef {
   id: string;
   first_name: string;

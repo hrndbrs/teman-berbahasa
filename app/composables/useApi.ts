@@ -4,8 +4,9 @@ type ApiFetchOptions = Parameters<typeof $fetch>[1] & {
 
 const RETRY_SENTINEL = Symbol('retry');
 
-export const useApi = () => {
-  const token = useAuthToken();
+export const useApi = (area?: AuthArea) => {
+  const scope = area ?? useAuthArea();
+  const token = useAuthToken(scope);
   const {
     public: { apiBaseUrl },
   } = useRuntimeConfig();
@@ -25,7 +26,7 @@ export const useApi = () => {
         (options as ApiFetchOptions)?.skipAuthRefresh || false;
 
       if (!skipAuthRefresh && response.status === 401 && refreshToken) {
-        await refresh();
+        await refresh(scope);
         throw RETRY_SENTINEL;
       }
 
@@ -33,8 +34,7 @@ export const useApi = () => {
       throw new ApiError(
         response.status,
         body?.error?.code as
-          | (typeof ApiError.Code)[keyof typeof ApiError.Code]
-          | undefined,
+          (typeof ApiError.Code)[keyof typeof ApiError.Code] | undefined,
         body?.error?.message,
         body?.error?.fields
       );
