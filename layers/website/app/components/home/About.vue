@@ -10,7 +10,10 @@ const { instagramHandle, instagramUrl } = useContact();
     >
       <NuxtImg
         src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1400&auto=format&fit=crop"
-        alt="Jalan di Kyoto"
+        alt=""
+        width="1400"
+        height="900"
+        sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw"
         loading="lazy"
         class="absolute inset-0 h-full w-full object-cover mix-blend-multiply brightness-106 contrast-122 grayscale"
       />

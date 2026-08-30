@@ -137,6 +137,9 @@ watch(query, () => {
               <NuxtImg
                 :src="program.image"
                 :alt="program.imageAlt"
+                width="640"
+                height="800"
+                sizes="sm:100vw lg:440px"
                 loading="lazy"
                 class="absolute inset-0 h-full w-full object-cover"
               />

@@ -28,7 +28,12 @@ onBeforeUnmount(() => clearInterval(intervalId.value));
           :key="`banner-${activeBannerIndex}`"
           v-parallax="70"
           :src="activeBanner"
-          alt="Kuil Jepang dengan Gunung Fuji"
+          alt=""
+          sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw"
+          width="1600"
+          height="900"
+          :preload="activeBannerIndex === 0"
+          :fetchpriority="activeBannerIndex === 0 ? 'high' : 'auto'"
           class="absolute inset-0 size-full object-cover"
         />
       </Transition>

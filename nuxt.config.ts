@@ -39,6 +39,11 @@ export default defineNuxtConfig({
     colorMode: false,
   },
 
+  image: {
+    domains: ['images.unsplash.com'],
+    format: ['avif', 'webp'],
+  },
+
   security: {
     headers: {
       // Prevent clickjacking

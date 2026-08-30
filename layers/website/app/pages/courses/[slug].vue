@@ -109,6 +109,9 @@ const { program, whatsappUrl } = useCoursePage();
           <NuxtImg
             :src="program.image"
             :alt="program.imageAlt"
+            width="600"
+            height="800"
+            sizes="sm:100vw lg:400px"
             loading="lazy"
             class="absolute inset-0 h-full w-full object-cover"
           />

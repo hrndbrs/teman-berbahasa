@@ -37,6 +37,9 @@ const { whatsappUrl } = useContact();
             v-wipe
             :src="item.image"
             :alt="item.title"
+            width="600"
+            height="600"
+            sizes="sm:100vw lg:360px"
             loading="lazy"
             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-103"
           />
