@@ -31,5 +31,5 @@ export function useEventsPage() {
     })),
   ]);
 
-  return { events };
+  return { miniCourses: events.map(toMiniCourse) };
 }

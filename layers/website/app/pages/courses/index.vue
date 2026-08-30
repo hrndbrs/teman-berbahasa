@@ -1,97 +1,179 @@
 <script setup lang="ts">
-const { courses } = useCourseListPage();
+definePageMeta({ pageTransition: { name: 'page', mode: 'out-in' } });
+
+const { programs } = useCourseListPage();
+const { whatsappUrl } = useContact();
+
+const PER_PAGE = 4;
+const query = ref('');
+const page = ref(1);
+
+const matched = computed(() => {
+  const q = query.value.trim().toLowerCase();
+  if (!q) return programs;
+  return programs.filter((program) =>
+    `${program.title} ${program.kind}`.toLowerCase().includes(q)
+  );
+});
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(matched.value.length / PER_PAGE))
+);
+
+const visible = computed(() => {
+  const start = (Math.min(page.value, totalPages.value) - 1) * PER_PAGE;
+  return matched.value.slice(start, start + PER_PAGE);
+});
+
+const resultLabel = computed(() => {
+  const n = matched.value.length;
+  return query.value.trim()
+    ? `${n} hasil untuk “${query.value.trim()}”`
+    : `${n} program`;
+});
+
+watch(query, () => {
+  page.value = 1;
+});
 </script>
 
 <template>
-  <main class="pt-40 pb-20">
-    <div class="container px-6">
-      <div class="mb-12 max-w-2xl">
-        <h1 class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
-          Program Belajar
-        </h1>
-        <p class="text-lg text-gray-600">
-          Tingkatkan kemampuan bahasa Jepangmu bersama tutor berpengalaman dan
-          metode belajar yang interaktif.
-        </p>
-      </div>
+  <main
+    class="screen pb-section pt-page shell:px-gutter relative px-5"
+    data-screen-label="Program Belajar"
+  >
+    <div
+      class="mb-flow border-rule-bright text-eyebrow tracking-eyebrow flex items-baseline justify-between gap-5 border-b pb-3.5 uppercase"
+    >
+      <span class="text-lilac">Program belajar</span>
+    </div>
 
-      <div
-        v-if="courses.length > 0"
-        class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-      >
-        <article
-          v-for="course in courses"
-          :key="course.id"
-          class="flex flex-col overflow-hidden rounded-xl border border-gray-200 transition hover:shadow-lg"
-        >
-          <div class="flex flex-1 flex-col p-6">
-            <span
-              class="text-tb-blue-3 mb-4 inline-block w-fit rounded-full bg-blue-50 px-3 py-1 text-xs font-medium"
-            >
-              {{ course.category }}
-            </span>
-            <h2 class="mb-3 text-xl font-bold text-gray-900">
-              {{ course.title }}
-            </h2>
-            <p class="mb-6 line-clamp-3 text-sm leading-relaxed text-gray-600">
-              {{ course.description }}
-            </p>
+    <h1
+      v-words
+      class="font-display text-title mb-6 max-w-[14ch] font-normal text-pretty"
+    >
+      Semua program.
+    </h1>
 
-            <ul class="mb-8 space-y-3 text-sm text-gray-600">
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:users"
-                  class="size-4 text-gray-400"
-                />
-                <span>Maks. {{ course.maxStudents }} orang</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:banknote"
-                  class="size-4 text-gray-400"
-                />
-                <span class="font-semibold text-gray-900">
-                  {{ formatCurrency(course.price) }}
-                </span>
-              </li>
-            </ul>
+    <div class="mb-flow flex flex-wrap items-end justify-between gap-6">
+      <p class="text-lead text-paper/65 m-0 max-w-[44ch] text-pretty">
+        Temukan cara belajar yang sesuai dengan langkahmu. Dari mulai mengenal
+        bahasa hingga membawanya lebih jauh, pilih program yang ingin kamu
+        jelajahi.
+      </p>
+      <UInput
+        v-model="query"
+        icon="i-lucide-search"
+        variant="none"
+        placeholder="Cari nama program"
+        aria-label="Cari nama program"
+        :ui="{
+          root: 'w-full sm:w-auto sm:min-w-75 border-b border-rule-strong',
+          base: 'py-2 text-sm text-paper placeholder:text-muted',
+        }"
+      />
+    </div>
 
-            <div class="mt-auto">
-              <NuxtLink
-                :to="`/courses/${course.slug}`"
-                class="bg-tb-blue-3 inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-2.5 text-center text-sm font-medium text-white transition hover:bg-blue-800"
-              >
-                Lihat Detail
-                <Icon
-                  name="lucide:arrow-right"
-                  class="size-4"
-                />
-              </NuxtLink>
-            </div>
-          </div>
-        </article>
-      </div>
+    <div
+      class="border-rule-bright text-eyebrow tracking-eyebrow text-muted mb-2 flex items-baseline justify-between gap-5 border-t pt-3 uppercase"
+    >
+      <span>{{ resultLabel }}</span>
+      <span>Halaman {{ Math.min(page, totalPages) }} / {{ totalPages }}</span>
+    </div>
 
-      <div
-        v-else
-        class="flex min-h-[40vh] flex-col items-center justify-center text-center"
+    <TransitionGroup
+      appear
+      tag="div"
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="translate-y-2.5 opacity-0"
+      appear-active-class="transition duration-200 ease-out"
+      appear-from-class="translate-y-2.5 opacity-0"
+      leave-active-class="absolute w-full transition-opacity duration-100 ease-out"
+      leave-to-class="opacity-0"
+    >
+      <article
+        v-for="program in visible"
+        :key="program.id"
+        class="border-rule-bright py-flow border-b"
       >
         <div
-          class="mb-6 flex size-20 items-center justify-center rounded-full bg-gray-50"
+          class="gap-flow shell:grid-cols-major grid grid-cols-1 items-start *:min-w-0"
         >
-          <Icon
-            name="lucide:book-x"
-            class="size-10 text-gray-400"
-          />
+          <div>
+            <div class="mb-3 flex items-baseline justify-between gap-5">
+              <span class="text-eyebrow tracking-label text-muted uppercase">
+                {{ program.num }} · {{ program.kind }}
+              </span>
+              <span class="font-display text-lilac text-2xl whitespace-nowrap">
+                {{ program.price }}
+              </span>
+            </div>
+            <h2 class="font-display text-headline mb-4 font-normal text-pretty">
+              {{ program.title }}
+            </h2>
+            <p
+              class="leading-copy text-paper/65 mb-5 max-w-[60ch] text-sm text-pretty"
+            >
+              {{ program.desc }}
+            </p>
+            <div
+              class="flex flex-wrap gap-2.5 max-sm:flex-col max-sm:items-stretch"
+            >
+              <SiteButton :to="`/courses/${program.slug}`"
+                >Lihat detail</SiteButton
+              >
+              <SiteButton
+                :to="whatsappUrl"
+                target="_blank"
+                rel="noopener"
+                tone="outline"
+              >
+                Daftar
+              </SiteButton>
+            </div>
+          </div>
+          <div>
+            <div class="relative mb-4 aspect-4/5 w-full overflow-hidden">
+              <NuxtImg
+                :src="program.image"
+                :alt="program.imageAlt"
+                loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            <div class="flex flex-col">
+              <span
+                v-for="fact in program.facts"
+                :key="fact"
+                class="border-rule text-eyebrow text-muted border-b py-2 tracking-widest uppercase"
+              >
+                {{ fact }}
+              </span>
+            </div>
+          </div>
         </div>
-        <h3 class="mb-2 text-xl font-bold text-gray-900">
-          Belum Ada Program Aktif
-        </h3>
-        <p class="max-w-md text-gray-600">
-          Saat ini belum ada program belajar yang tersedia. Silakan cek kembali
-          nanti atau hubungi kami untuk informasi lebih lanjut.
-        </p>
-      </div>
-    </div>
+      </article>
+    </TransitionGroup>
+
+    <p
+      v-if="matched.length === 0"
+      class="mt-flow leading-copy text-muted text-sm"
+    >
+      Tidak ada program dengan nama itu. Coba kata kunci lain.
+    </p>
+
+    <UPagination
+      v-if="totalPages > 1"
+      v-model:page="page"
+      :total="matched.length"
+      :items-per-page="PER_PAGE"
+      :sibling-count="1"
+      color="neutral"
+      variant="outline"
+      active-color="neutral"
+      active-variant="solid"
+      :ui="{ list: 'flex flex-wrap items-center gap-1.5' }"
+      class="border-rule-bright mt-8 border-t pt-4"
+    />
   </main>
 </template>

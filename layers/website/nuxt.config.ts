@@ -1,7 +1,28 @@
+import { resolve } from 'node:path';
+
 const siteUrl = process.env.SITE_URL || 'https://temanberbahasa.com';
 
 export default defineNuxtConfig({
   modules: ['@nuxtjs/seo'],
+  alias: {
+    '@website': resolve('./layers/website/app'),
+  },
+
+  fonts: {
+    families: [
+      {
+        name: 'Bodoni Moda',
+        provider: 'google',
+        weights: [400, 500],
+        styles: ['normal', 'italic'],
+      },
+      {
+        name: 'Zen Kaku Gothic New',
+        provider: 'google',
+        weights: [400, 500, 700, 900],
+      },
+    ],
+  },
 
   runtimeConfig: {
     public: {

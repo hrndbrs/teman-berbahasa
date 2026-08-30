@@ -27,7 +27,13 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ['@nuxt/eslint', '@nuxt/image', 'nuxt-security', '@nuxt/ui'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/image',
+    'nuxt-security',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
+  ],
 
   ui: {
     colorMode: false,

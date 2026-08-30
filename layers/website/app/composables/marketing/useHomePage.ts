@@ -11,8 +11,6 @@ export function useHomePage() {
     twitterTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
     twitterDescription:
       'Belajar bahasa Jepang dengan cara yang menyenangkan dan interaktif bersama Teman Berbahasa.',
-    keywords:
-      'belajar bahasa jepang, kursus bahasa jepang online, teman berbahasa, JLPT, discussion partner bahasa jepang, kelas bahasa jepang indonesia',
   });
 
   useSchemaOrg([
@@ -25,5 +23,9 @@ export function useHomePage() {
     },
   ]);
 
-  return { events };
+  return {
+    programs: courses.map(toProgram),
+    miniCourses: events.map(toMiniCourse),
+    faqs,
+  };
 }

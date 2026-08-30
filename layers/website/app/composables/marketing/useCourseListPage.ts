@@ -30,5 +30,5 @@ export function useCourseListPage() {
     },
   ]);
 
-  return { courses };
+  return { programs: courses.map(toProgram) };
 }

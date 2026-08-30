@@ -2,11 +2,14 @@ export function useCoursePage() {
   const { course } = useCourse();
   const { whatsappUrl } = useContact();
 
+  const program = computed<Program>(() => {
+    const index = courses.findIndex((c) => c.slug === course.value.slug);
+    return toProgram(course.value, index < 0 ? 0 : index);
+  });
+
   useSeoMeta({
     title: () => `${course.value.title} - Teman Berbahasa`,
     description: () => course.value.description,
-    keywords: () =>
-      `${course.value.title}, kelas bahasa jepang online, teman berbahasa, ${course.value.category.toLowerCase()}, belajar bahasa jepang`,
     ogTitle: () => `${course.value.title} - Teman Berbahasa`,
     ogDescription: () => course.value.description,
     ogType: 'website',
@@ -50,5 +53,5 @@ export function useCoursePage() {
     },
   ]);
 
-  return { course, whatsappUrl };
+  return { program, whatsappUrl };
 }
