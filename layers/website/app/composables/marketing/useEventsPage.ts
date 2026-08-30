@@ -1,6 +1,6 @@
 export function useEventsPage() {
   const seoDescription =
-    'Ikuti mini course dan webinar bahasa Jepang dari Teman Berbahasa: sesi singkat dan interaktif untuk memperkuat dasar, percakapan, dan persiapan JLPT.';
+    'Ikuti berbagai acara seperti mini course dan webinar dari Teman Berbahasa: sesi singkat dan interaktif untuk memperkuat dasar pembelajaran bahasa kamu.';
 
   const upcomingEvents = events.filter((event) =>
     event.dates.some((date) => !isPast(date.start))

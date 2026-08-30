@@ -3,13 +3,13 @@ export function useHomePage() {
     'Belajar bahasa Jepang online bersama discussion partner dari mahasiswa Indonesia di Jepang. Kelas interaktif untuk dasar, percakapan, hingga persiapan JLPT.';
 
   useSeoMeta({
-    title: 'Teman Berbahasa - Belajar Bahasa Jepang',
+    title: 'Teman Berbahasa - Belajar Bahasa',
     description,
-    ogTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
+    ogTitle: 'Teman Berbahasa - Belajar Bahasa',
     ogDescription: description,
     ogType: 'website',
     twitterCard: 'summary_large_image',
-    twitterTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
+    twitterTitle: 'Teman Berbahasa - Belajar Bahasa',
     twitterDescription: description,
   });
 
