@@ -16,8 +16,10 @@ export const events: TbEvent[] = [
     ],
     platform: 'Zoom Meeting',
     duration: 90,
+    tag: '90 menit',
+    speaker: 'Davis Hioe',
     image:
-      'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&h=500&fit=crop',
+      'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=1200&auto=format&fit=crop',
     speaker_image: '/assets/mc-01.png',
   },
   {
@@ -37,8 +39,10 @@ export const events: TbEvent[] = [
     ],
     platform: 'Zoom Meeting',
     duration: 90,
+    tag: 'Beasiswa',
+    speaker: 'Davis Hioe',
     image:
-      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=500&fit=crop',
+      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1400&auto=format&fit=crop',
     speaker_image: '/assets/mc-02.png',
   },
 ] as const;

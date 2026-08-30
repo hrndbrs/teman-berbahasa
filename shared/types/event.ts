@@ -10,9 +10,24 @@ export interface TbEvent {
   dates: EventDate[];
   platform: string;
   duration: number;
+  tag: string;
+  speaker: string;
   image: string;
   speaker_image: string;
 }
 
 /** Minimal event type for footer/navigation */
 export type EventSummary = Pick<TbEvent, 'id' | 'title'>;
+
+/** View model consumed by the marketing site, derived from `TbEvent`. */
+export interface MiniCourse {
+  id: number;
+  tag: string;
+  title: string;
+  description: string;
+  meta: string;
+  dates: string[];
+  speaker: string;
+  image: string;
+  past: boolean;
+}

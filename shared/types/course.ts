@@ -2,6 +2,11 @@
 
 export type CourseCategory = 'Kelas Reguler' | 'Kelas Intensif JLPT';
 
+export interface CourseLanguage {
+  name: string;
+  ready: boolean;
+}
+
 export interface CourseSchedule {
   id: string;
   days: string;
@@ -16,9 +21,41 @@ export interface Course {
   title: string;
   description: string;
   category: CourseCategory;
+  language: string;
+  sessionCount: number;
   maxStudents: number;
   price: number;
+  image: string;
+  imageAlt: string;
   schedules: CourseSchedule[];
+}
+
+// View model consumed by the marketing site, derived from `Course`.
+
+export interface ProgramSchedule {
+  id: string;
+  label: string;
+  days: string;
+  time: string;
+  start: string;
+  open: boolean;
+  registrationUrl: string;
+}
+
+export interface Program {
+  id: string;
+  slug: string;
+  num: string;
+  kind: CourseCategory;
+  title: string;
+  language: string;
+  price: string;
+  priceValue: number;
+  desc: string;
+  facts: string[];
+  image: string;
+  imageAlt: string;
+  schedules: ProgramSchedule[];
 }
 
 // ── Dashboard / API course types ──────────────────────────────────────────────
