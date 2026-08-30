@@ -1,24 +1,34 @@
 export function useCourseListPage() {
   const description =
-    'Temukan program belajar bahasa Jepang yang sesuai dengan kebutuhanmu, mulai dari kelas dasar hingga persiapan ujian JLPT.';
+    'Temukan program belajar bahasa yang sesuai dengan kebutuhanmu, mulai dari kelas dasar hingga persiapan ujian.';
 
   useSeoMeta({
-    title: 'Program Belajar - Teman Berbahasa',
+    title: 'Program Belajar Bahasa - Teman Berbahasa',
     description,
-    ogTitle: 'Program Belajar Bahasa Jepang - Teman Berbahasa',
+    ogTitle: 'Program Belajar Bahasa - Teman Berbahasa',
     ogDescription: description,
     ogType: 'website',
     twitterCard: 'summary_large_image',
-    twitterTitle: 'Program Belajar Bahasa Jepang - Teman Berbahasa',
+    twitterTitle: 'Program Belajar Bahasa - Teman Berbahasa',
     twitterDescription: description,
-    keywords:
-      'kursus bahasa jepang, kelas bahasa jepang online, belajar JLPT, teman berbahasa, kelas reguler jepang, intensif JLPT N4',
   });
 
   useSchemaOrg([
     {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Beranda', item: '/' },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Program Belajar',
+          item: '/courses',
+        },
+      ],
+    },
+    {
       '@type': 'ItemList',
-      name: 'Program Belajar Bahasa Jepang',
+      name: 'Program Belajar Bahasa',
       description,
       numberOfItems: courses.length,
       itemListElement: courses.map((course, i) => ({

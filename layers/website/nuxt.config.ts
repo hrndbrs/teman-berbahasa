@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       type: 'EducationalOrganization',
       name: 'Teman Berbahasa',
       url: siteUrl,
-      logo: `${siteUrl}/favicon.svg`,
+      logo: `${siteUrl}/assets/logo-horizontal.png`,
       description:
         'Platform pembelajaran bahasa Jepang online berbasis diskusi interaktif bersama Discussion Partner dari mahasiswa Indonesia di Jepang.',
       sameAs: [

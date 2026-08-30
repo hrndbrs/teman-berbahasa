@@ -1,16 +1,16 @@
 export function useHomePage() {
+  const description =
+    'Belajar bahasa Jepang online bersama discussion partner dari mahasiswa Indonesia di Jepang. Kelas interaktif untuk dasar, percakapan, hingga persiapan JLPT.';
+
   useSeoMeta({
     title: 'Teman Berbahasa - Belajar Bahasa Jepang',
-    description:
-      'Teman Berbahasa adalah tempat bimbingan belajar bahasa asing yang menyenangkan dan interaktif. Belajar bahasa Jepang dengan discussion partner dari mahasiswa Indonesia di Jepang.',
+    description,
     ogTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
-    ogDescription:
-      'Belajar bahasa Jepang dengan cara yang menyenangkan dan interaktif bersama Teman Berbahasa.',
+    ogDescription: description,
     ogType: 'website',
     twitterCard: 'summary_large_image',
     twitterTitle: 'Teman Berbahasa - Belajar Bahasa Jepang',
-    twitterDescription:
-      'Belajar bahasa Jepang dengan cara yang menyenangkan dan interaktif bersama Teman Berbahasa.',
+    twitterDescription: description,
   });
 
   useSchemaOrg([
@@ -20,6 +20,14 @@ export function useHomePage() {
       description:
         'Platform pembelajaran bahasa Jepang online berbasis diskusi interaktif bersama Discussion Partner.',
       url: '/',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
     },
   ]);
 

@@ -13,6 +13,8 @@ export const courses: Course[] = [
     sessionCount: 30,
     description:
       'Kelas ini dirancang bagi peserta yang ingin belajar bahasa Jepang dari tingkat dasar. Program terdiri dari 30 kali pertemuan dengan materi yang disusun secara bertahap, sehingga peserta dapat membangun kemampuan bahasa Jepang secara kuat, terstruktur, dan mudah dipraktikkan dalam kehidupan sehari-hari.',
+    seoDescription:
+      'Kelas dasar bahasa Jepang online: 30 pertemuan dari nol bersama discussion partner untuk membangun kosakata, tata bahasa, dan percakapan sehari-hari.',
     maxStudents: 10,
     price: 2_736_000,
     image: '/assets/courses/kiso.png',
@@ -47,6 +49,8 @@ export const courses: Course[] = [
     title: 'Kelas Intensif JLPT N4',
     description:
       'Kelas N4 Bahasa Jepang terdiri dari 30 pertemuan yang dirancang untuk peserta yang telah memiliki dasar bahasa Jepang dan ingin meningkatkan kemampuan ke level N4. Program ini mencakup materi kosakata, tata bahasa, pola kalimat, dan percakapan yang sesuai dengan standar JLPT N4. Program ini juga dilengkapi dengan latihan praktik dan evaluasi untuk memastikan peserta dapat menguasai materi secara bertahap dan efektif.',
+    seoDescription:
+      'Kelas intensif JLPT N4: 30 pertemuan kosakata, tata bahasa, dan latihan sesuai standar ujian untuk kamu yang sudah punya dasar bahasa Jepang.',
     category: 'Kelas Intensif JLPT',
     language: 'Bahasa Jepang',
     sessionCount: 30,

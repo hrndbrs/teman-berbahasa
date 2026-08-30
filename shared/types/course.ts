@@ -20,6 +20,7 @@ export interface Course {
   slug: string;
   title: string;
   description: string;
+  seoDescription: string;
   category: CourseCategory;
   language: string;
   sessionCount: number;

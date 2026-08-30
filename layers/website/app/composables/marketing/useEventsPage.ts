@@ -1,6 +1,10 @@
 export function useEventsPage() {
   const seoDescription =
-    'Mini course dan webinar belajar bahasa Jepang dari Teman Berbahasa.';
+    'Ikuti mini course dan webinar bahasa Jepang dari Teman Berbahasa: sesi singkat dan interaktif untuk memperkuat dasar, percakapan, dan persiapan JLPT.';
+
+  const upcomingEvents = events.filter((event) =>
+    event.dates.some((date) => !isPast(date.start))
+  );
 
   useSeoMeta({
     title: 'Mini Courses - Teman Berbahasa',
@@ -11,24 +15,42 @@ export function useEventsPage() {
     twitterCard: 'summary_large_image',
     twitterTitle: 'Mini Courses - Teman Berbahasa',
     twitterDescription: seoDescription,
-    keywords:
-      'mini course bahasa jepang, webinar bahasa jepang, belajar bahasa jepang online, kursus jepang, beasiswa jepang',
+    robots: upcomingEvents.length > 0 ? undefined : 'noindex, follow',
   });
 
   useSchemaOrg([
-    defineWebPage({ name: 'Mini Courses', description: seoDescription }),
-    ...events.map((event) => ({
-      '@type': 'Event',
-      name: event.title,
-      description: event.description,
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-      location: { '@type': 'VirtualLocation', url: 'https://zoom.us' },
-      organizer: { '@type': 'Organization', name: 'Teman Berbahasa' },
-      startDate: event.dates[0]?.start,
-      endDate: event.dates.at(-1)?.end,
-      image: event.image,
-    })),
+    defineWebPage({
+      name: 'Mini Course Bahasa Jepang',
+      description: seoDescription,
+    }),
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Beranda', item: '/' },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Mini Course',
+          item: '/events',
+        },
+      ],
+    },
+    ...upcomingEvents.flatMap((event) =>
+      event.dates
+        .filter((date) => !isPast(date.start))
+        .map((session) => ({
+          '@type': 'Event',
+          name: event.title,
+          description: event.description,
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+          location: { '@type': 'VirtualLocation', url: 'https://zoom.us' },
+          organizer: { '@type': 'Organization', name: 'Teman Berbahasa' },
+          startDate: session.start,
+          endDate: session.end,
+          image: event.image,
+        }))
+    ),
   ]);
 
   return { miniCourses: events.map(toMiniCourse) };

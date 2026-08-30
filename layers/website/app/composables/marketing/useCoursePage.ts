@@ -9,13 +9,13 @@ export function useCoursePage() {
 
   useSeoMeta({
     title: () => `${course.value.title} - Teman Berbahasa`,
-    description: () => course.value.description,
+    description: () => course.value.seoDescription,
     ogTitle: () => `${course.value.title} - Teman Berbahasa`,
-    ogDescription: () => course.value.description,
+    ogDescription: () => course.value.seoDescription,
     ogType: 'website',
     twitterCard: 'summary_large_image',
     twitterTitle: () => `${course.value.title} - Teman Berbahasa`,
-    twitterDescription: () => course.value.description,
+    twitterDescription: () => course.value.seoDescription,
   });
 
   useSchemaOrg([
@@ -23,19 +23,27 @@ export function useCoursePage() {
       '@type': 'Course',
       name: course.value.title,
       description: course.value.description,
+      url: `/courses/${course.value.slug}`,
+      image: course.value.image,
       provider: { '@type': 'EducationalOrganization', name: 'Teman Berbahasa' },
-      courseMode: 'online',
-      inLanguage: ['id', 'ja'],
-      offers: course.value.schedules.map((s) => ({
-        '@type': 'Offer',
-        price: course.value.price,
-        priceCurrency: 'IDR',
-        validFrom: s.startDate.toISOString(),
-        url: s.registrationUrl,
-        availability:
-          new Date() > s.startDate
-            ? 'https://schema.org/SoldOut'
-            : 'https://schema.org/InStock',
+      inLanguage: 'id',
+      hasCourseInstance: course.value.schedules.map((schedule) => ({
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        inLanguage: 'id',
+        startDate: schedule.startDate.toISOString(),
+        location: { '@type': 'VirtualLocation', url: 'https://zoom.us' },
+        offers: {
+          '@type': 'Offer',
+          price: course.value.price,
+          priceCurrency: 'IDR',
+          url: schedule.registrationUrl,
+          validFrom: schedule.startDate.toISOString(),
+          availability:
+            new Date() > schedule.startDate
+              ? 'https://schema.org/SoldOut'
+              : 'https://schema.org/InStock',
+        },
       })),
     },
     {
@@ -48,7 +56,12 @@ export function useCoursePage() {
           name: 'Program Belajar',
           item: '/courses',
         },
-        { '@type': 'ListItem', position: 3, name: course.value.title },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: course.value.title,
+          item: `/courses/${course.value.slug}`,
+        },
       ],
     },
   ]);
