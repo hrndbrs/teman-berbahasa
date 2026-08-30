@@ -82,11 +82,10 @@ const registrationItems = [
                       aria-hidden="true"
                     />
                   </div>
-                  <a
+                  <NuxtLink
                     v-else
-                    :href="link.url"
+                    :to="link.url"
                     target="_blank"
-                    rel="noopener noreferrer"
                     class="group flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm font-medium text-gray-900 transition hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-gray-200/60 active:scale-[0.99]"
                   >
                     <div class="space-y-2 pr-2">
@@ -98,7 +97,7 @@ const registrationItems = [
                       class="size-4 shrink-0 text-gray-500 transition-transform group-hover:translate-x-0.5"
                       aria-hidden="true"
                     />
-                  </a>
+                  </NuxtLink>
                 </template>
               </template>
             </UAccordion>
@@ -139,11 +138,10 @@ const registrationItems = [
               />
             </NuxtLink>
 
-            <a
+            <NuxtLink
               v-if="whatsappUrl"
-              :href="whatsappUrl"
+              :to="whatsappUrl"
               target="_blank"
-              rel="noopener noreferrer"
               aria-label="Chat via WhatsApp"
               class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
               style="--delay: 160ms"
@@ -161,13 +159,12 @@ const registrationItems = [
                 class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
-            </a>
+            </NuxtLink>
 
-            <a
+            <NuxtLink
               v-if="instagramUrl"
-              :href="instagramUrl"
+              :to="instagramUrl"
               target="_blank"
-              rel="noopener noreferrer"
               aria-label="Buka Instagram Teman Berbahasa"
               class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
               style="--delay: 240ms"
@@ -185,13 +182,12 @@ const registrationItems = [
                 class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
-            </a>
+            </NuxtLink>
 
-            <a
+            <NuxtLink
               v-if="tiktokUrl"
-              :href="tiktokUrl"
+              :to="tiktokUrl"
               target="_blank"
-              rel="noopener noreferrer"
               aria-label="Buka TikTok Teman Berbahasa"
               class="tb-link tb-enter group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-left text-sm font-medium text-gray-900 transition hover:-translate-y-0.5 hover:border-gray-300 hover:bg-white hover:shadow-lg hover:shadow-gray-200/60 active:scale-[0.99]"
               style="--delay: 320ms"
@@ -209,7 +205,7 @@ const registrationItems = [
                 class="size-4 text-gray-500 transition-transform group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>

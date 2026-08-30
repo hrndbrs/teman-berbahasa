@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps<{
   session: ScheduleSession;
   top: number;
