@@ -3,6 +3,7 @@ defineProps<{
   programs: Program[];
 }>();
 
+const { whatsappUrl } = useContact();
 const activeShot = ref(0);
 </script>
 
@@ -13,10 +14,31 @@ const activeShot = ref(0);
       class="mb-flow border-rule-bright text-eyebrow tracking-eyebrow flex items-baseline justify-between gap-5 border-b pb-3.5 uppercase"
     >
       <span class="text-lilac">Program Belajar</span>
-      <span class="text-faint">01</span>
     </div>
 
+    <SiteEmpty v-if="!programs.length">
+      <template #heading>
+        Belum ada angkatan yang
+        <em>dibuka</em>.
+      </template>
+      <template #body>
+        Angkatan baru dibuka secara berkala. Hubungi admin supaya kamu tahu
+        saat pendaftaran berikutnya dibuka.
+      </template>
+      <template #action>
+        <SiteButton
+          :to="whatsappUrl"
+          target="_blank"
+          rel="noopener"
+          tone="outline"
+        >
+          Hubungi admin
+        </SiteButton>
+      </template>
+    </SiteEmpty>
+
     <div
+      v-else
       class="gap-flow shell:grid-cols-major grid grid-cols-1 items-start *:min-w-0"
     >
       <div

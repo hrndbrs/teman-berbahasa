@@ -24,7 +24,31 @@ const { whatsappUrl } = useContact();
       </p>
     </div>
 
-    <div class="gap-flow shell:grid-cols-2 grid grid-cols-1 *:min-w-0">
+    <SiteEmpty v-if="!items.length">
+      <template #heading>
+        Belum ada mini course yang
+        <em>dijadwalkan</em>.
+      </template>
+      <template #body>
+        Sesi baru dijadwalkan secara berkala. Tanyakan jadwal terdekat ke
+        admin kami.
+      </template>
+      <template #action>
+        <SiteButton
+          :to="whatsappUrl"
+          target="_blank"
+          rel="noopener"
+          tone="outline"
+        >
+          Tanya sesi berikutnya
+        </SiteButton>
+      </template>
+    </SiteEmpty>
+
+    <div
+      v-else
+      class="gap-flow shell:grid-cols-2 grid grid-cols-1 *:min-w-0"
+    >
       <article
         v-for="item in items"
         :key="item.id"

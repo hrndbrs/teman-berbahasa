@@ -62,6 +62,7 @@ watch(query, () => {
         jelajahi.
       </p>
       <UInput
+        v-if="programs.length"
         v-model="query"
         icon="i-lucide-search"
         variant="none"
@@ -74,7 +75,35 @@ watch(query, () => {
       />
     </div>
 
+    <SiteEmpty v-if="!programs.length">
+      <template #heading>
+        Belum ada angkatan yang
+        <em>dibuka</em>.
+      </template>
+      <template #body>
+        Angkatan baru dibuka secara berkala. Hubungi admin supaya kamu tahu
+        lebih dulu, atau ikuti mini course sambil menunggu.
+      </template>
+      <template #action>
+        <SiteButton
+          :to="whatsappUrl"
+          target="_blank"
+          rel="noopener"
+          tone="outline"
+        >
+          Hubungi admin
+        </SiteButton>
+        <SiteButton
+          to="/events"
+          tone="link"
+        >
+          Lihat mini course
+        </SiteButton>
+      </template>
+    </SiteEmpty>
+
     <div
+      v-if="programs.length"
       class="border-rule-bright text-eyebrow tracking-eyebrow text-muted mb-2 flex items-baseline justify-between gap-5 border-t pt-3 uppercase"
     >
       <span>{{ resultLabel }}</span>
@@ -159,7 +188,7 @@ watch(query, () => {
     </TransitionGroup>
 
     <p
-      v-if="matched.length === 0"
+      v-if="programs.length && matched.length === 0"
       class="mt-flow leading-copy text-muted text-sm"
     >
       Tidak ada program dengan nama itu. Coba kata kunci lain.

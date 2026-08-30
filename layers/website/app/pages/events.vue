@@ -25,7 +25,31 @@ const { whatsappUrl } = useContact();
       menyenangkan dan praktis dalam waktu singkat.
     </p>
 
-    <div class="border-rule-bright border-t">
+    <SiteEmpty v-if="!miniCourses.length">
+      <template #heading>
+        Belum ada mini course yang
+        <em>dijadwalkan</em>.
+      </template>
+      <template #body>
+        Sesi baru dijadwalkan secara berkala. Tanyakan jadwal terdekat ke
+        admin kami.
+      </template>
+      <template #action>
+        <SiteButton
+          :to="whatsappUrl"
+          target="_blank"
+          rel="noopener"
+          tone="outline"
+        >
+          Tanya sesi berikutnya
+        </SiteButton>
+      </template>
+    </SiteEmpty>
+
+    <div
+      v-else
+      class="border-rule-bright border-t"
+    >
       <article
         v-for="item in miniCourses"
         :key="item.id"
