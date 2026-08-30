@@ -63,7 +63,7 @@ onBeforeUnmount(() => clearInterval(intervalId.value));
         v-rise="0.28"
         class="gap-flow shell:grid-cols-major grid grid-cols-1 items-end *:min-w-0"
       >
-        <p class="text-lead text-paper/75 m-0 max-w-[50ch] text-pretty">
+        <p class="text-lead text-paper/75 m-0 max-w-[52ch] text-pretty">
           Setiap bahasa membawa cara baru untuk melihat dunia.<br />
           Teman Berbahasa menemanimu mempelajari bahasa, memahami budaya, dan
           menemukan cerita yang mungkin sebelumnya terasa jauh.

@@ -25,7 +25,7 @@ const { instagramHandle, instagramUrl } = useContact();
       <div
         class="mb-flow border-paper/40 text-eyebrow tracking-eyebrow relative flex items-baseline justify-between gap-5 border-b pb-3 uppercase"
       >
-        <span>Tentang Teman Berbahasa</span>
+        <h2 class="text-eyebrow font-normal">Tentang Teman Berbahasa</h2>
       </div>
 
       <div

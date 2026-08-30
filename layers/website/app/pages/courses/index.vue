@@ -50,7 +50,7 @@ watch(query, () => {
 
     <h1
       v-words
-      class="font-display text-title mb-6 max-w-[14ch] font-normal text-pretty"
+      class="font-display text-title mb-6 max-w-[18ch] font-normal text-pretty"
     >
       Semua program.
     </h1>

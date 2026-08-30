@@ -14,7 +14,6 @@ const { whatsappUrl } = useContact();
       class="mb-flow border-rule-bright text-eyebrow tracking-eyebrow flex items-baseline justify-between gap-5 border-b pb-3.5 uppercase"
     >
       <span class="text-lilac">Arsip</span>
-      <span class="text-faint">04</span>
     </div>
 
     <h1 class="font-display text-title mb-6 font-normal text-pretty">

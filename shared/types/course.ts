@@ -1,5 +1,3 @@
-// ── Marketing site (static data) ─────────────────────────────────────────────
-
 export type CourseCategory = 'Kelas Reguler' | 'Kelas Intensif JLPT';
 
 export interface CourseLanguage {
@@ -31,8 +29,6 @@ export interface Course {
   schedules: CourseSchedule[];
 }
 
-// View model consumed by the marketing site, derived from `Course`.
-
 export interface ProgramSchedule {
   id: string;
   label: string;
@@ -58,8 +54,6 @@ export interface Program {
   imageAlt: string;
   schedules: ProgramSchedule[];
 }
-
-// ── Dashboard / API course types ──────────────────────────────────────────────
 
 export type ApiCourseLevel = 'beginner' | 'intermediate' | 'advanced';
 export type ApiCourseStatus = 'active' | 'archived';

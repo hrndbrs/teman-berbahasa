@@ -1,6 +1,12 @@
 <script setup lang="ts">
 const { phoneNumber, whatsappUrl, instagramUrl, tiktokUrl } = useContact();
 
+const siteLinks = [
+  { label: 'Beranda', to: '/' },
+  { label: 'Program Belajar', to: '/courses' },
+  { label: 'Mini Course', to: '/events' },
+];
+
 const links = computed(() =>
   [
     phoneNumber && {
@@ -28,6 +34,21 @@ const links = computed(() =>
         Mulai perjalananmu.
       </p>
     </NuxtLink>
+
+    <nav
+      aria-label="Tautan situs"
+      class="mb-8 flex flex-wrap gap-x-6 gap-y-2"
+    >
+      <SiteButton
+        v-for="link in siteLinks"
+        :key="link.to"
+        :to="link.to"
+        tone="link-muted"
+        class="tracking-wide! normal-case!"
+      >
+        {{ link.label }}
+      </SiteButton>
+    </nav>
 
     <div
       class="border-rule flex flex-wrap items-end justify-between gap-8 border-t pt-5"
