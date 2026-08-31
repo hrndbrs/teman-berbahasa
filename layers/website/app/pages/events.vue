@@ -30,8 +30,8 @@ const { whatsappUrl } = useContact();
         <em>dijadwalkan</em>.
       </template>
       <template #body>
-        Sesi baru dijadwalkan secara berkala. Tanyakan jadwal terdekat ke
-        admin kami.
+        Sesi baru dijadwalkan secara berkala. Tanyakan jadwal terdekat ke admin
+        kami.
       </template>
       <template #action>
         <SiteButton

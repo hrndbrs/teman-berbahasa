@@ -9,11 +9,11 @@ from context, a finished task, or a passing build. Read-only git (`status`,
 ## Code style
 
 **Comments**: Default to zero comments. The bar for adding one is high: it must
-explain something the code cannot — a non-obvious *why* (a workaround, a spec
+explain something the code cannot — a non-obvious _why_ (a workaround, a spec
 quirk, a deliberate deviation), or the contract of an exported function/type
 that its signature does not convey. If a comment restates what the next line
 does, labels a block, marks a section, or narrates the obvious, it is noise —
-do not write it. When tempted to explain *what* code does, rename or restructure
+do not write it. When tempted to explain _what_ code does, rename or restructure
 instead. Examples of banned comments:
 
 ```

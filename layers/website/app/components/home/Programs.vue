@@ -22,8 +22,8 @@ const activeShot = ref(0);
         <em>dibuka</em>.
       </template>
       <template #body>
-        Angkatan baru dibuka secara berkala. Hubungi admin supaya kamu tahu
-        saat pendaftaran berikutnya dibuka.
+        Angkatan baru dibuka secara berkala. Hubungi admin supaya kamu tahu saat
+        pendaftaran berikutnya dibuka.
       </template>
       <template #action>
         <SiteButton
