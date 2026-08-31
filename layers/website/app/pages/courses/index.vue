@@ -69,7 +69,7 @@ watch(query, () => {
         placeholder="Cari nama program"
         aria-label="Cari nama program"
         :ui="{
-          root: 'w-full sm:w-auto sm:min-w-75 border-b border-rule-strong',
+          root: 'w-full sm:w-auto sm:min-w-75',
           base: 'py-2 text-sm text-paper placeholder:text-muted',
         }"
       />
