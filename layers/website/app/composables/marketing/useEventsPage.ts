@@ -18,6 +18,11 @@ export function useEventsPage() {
     robots: upcomingEvents.length > 0 ? undefined : 'noindex, follow',
   });
 
+  defineOgImage('Default', {
+    title: 'Mini Courses - Teman Berbahasa',
+    description: seoDescription,
+  });
+
   useSchemaOrg([
     defineWebPage({
       name: 'Mini Course Bahasa Jepang',

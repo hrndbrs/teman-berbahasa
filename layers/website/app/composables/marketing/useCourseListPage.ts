@@ -13,6 +13,11 @@ export function useCourseListPage() {
     twitterDescription: description,
   });
 
+  defineOgImage('Default', {
+    title: 'Program Belajar Bahasa - Teman Berbahasa',
+    description,
+  });
+
   useSchemaOrg([
     {
       '@type': 'BreadcrumbList',

@@ -18,6 +18,11 @@ export function useCoursePage() {
     twitterDescription: () => course.value.seoDescription,
   });
 
+  defineOgImage('Default', {
+    title: () => `${course.value.title} - Teman Berbahasa`,
+    description: () => course.value.seoDescription,
+  });
+
   useSchemaOrg([
     {
       '@type': 'Course',

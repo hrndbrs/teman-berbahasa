@@ -1,3 +1,5 @@
+import { resolve } from 'node:path';
+
 import tailwindcss from '@tailwindcss/vite';
 
 const siteUrl = process.env.SITE_URL || 'https://temanberbahasa.com';
@@ -25,6 +27,15 @@ export default defineNuxtConfig({
         dir: './app/assets/icons',
       },
     ],
+  },
+
+  nitro: {
+    externals: {
+      traceInclude: [
+        resolve('node_modules/harfbuzzjs/hb.wasm'),
+        resolve('node_modules/harfbuzzjs/hb-subset.wasm'),
+      ],
+    },
   },
 
   modules: [

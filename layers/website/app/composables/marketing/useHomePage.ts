@@ -13,6 +13,11 @@ export function useHomePage() {
     twitterDescription: description,
   });
 
+  defineOgImage('Default', {
+    title: 'Teman Berbahasa - Belajar Bahasa',
+    description,
+  });
+
   useSchemaOrg([
     {
       '@type': 'WebSite',

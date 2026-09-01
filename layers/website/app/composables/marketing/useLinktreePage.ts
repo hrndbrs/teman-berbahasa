@@ -15,6 +15,12 @@ export function useLinktreePage() {
       'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
   });
 
+  defineOgImage('Default', {
+    title: 'Link - Teman Berbahasa',
+    description:
+      'Semua link resmi Teman Berbahasa: pendaftaran, WhatsApp, dan media sosial.',
+  });
+
   const registrationLinks = computed(() =>
     courses.flatMap((course) =>
       course.schedules
